@@ -10,15 +10,29 @@ class FeatureExtractor:
 
     def create_ngram_vectors(self, texts, n):
         """Crée les vecteurs n-gram"""
-        vectorizer = CountVectorizer(ngram_range=(n, n))
-        vectors = vectorizer.fit_transform(texts)
-        self.count_vectorizers[n] = vectorizer
+        with tqdm(total=2, desc=f"Création vecteurs {n}-gram") as pbar:
+            vectorizer = CountVectorizer(ngram_range=(n, n))
+            pbar.set_description(f"Fitting {n}-gram vectorizer")
+            vectors = vectorizer.fit_transform(texts)
+            pbar.update(1)
+            
+            pbar.set_description(f"Sauvegarde {n}-gram vectorizer")
+            self.count_vectorizers[n] = vectorizer
+            pbar.update(1)
+            
         return vectors
 
     def extract_tfidf_features(self, texts, max_features=1000):
         """Extrait les caractéristiques TF-IDF"""
-        self.tfidf_vectorizer = TfidfVectorizer(max_features=max_features)
-        tfidf_matrix = self.tfidf_vectorizer.fit_transform(texts)
+        with tqdm(total=2, desc="Extraction TF-IDF") as pbar:
+            self.tfidf_vectorizer = TfidfVectorizer(max_features=max_features)
+            pbar.set_description("Fitting TF-IDF vectorizer")
+            tfidf_matrix = self.tfidf_vectorizer.fit_transform(texts)
+            pbar.update(1)
+            
+            pbar.set_description("Finalisation TF-IDF")
+            pbar.update(1)
+            
         return tfidf_matrix
 
     def get_top_words(self, n_words=15):
@@ -26,10 +40,16 @@ class FeatureExtractor:
         if self.tfidf_vectorizer is None:
             raise ValueError("TF-IDF vectorizer n'a pas encore été entraîné")
         
-        feature_names = self.tfidf_vectorizer.get_feature_names_out()
-        scores = self.tfidf_vectorizer.idf_
-        word_scores = list(zip(feature_names, scores))
-        
-        print("Tri des mots par score TF-IDF...")
-        word_scores.sort(key=lambda x: x[1], reverse=True)
+        with tqdm(total=3, desc="Extraction top mots") as pbar:
+            feature_names = self.tfidf_vectorizer.get_feature_names_out()
+            pbar.update(1)
+            
+            scores = self.tfidf_vectorizer.idf_
+            word_scores = list(zip(feature_names, scores))
+            pbar.update(1)
+            
+            pbar.set_description("Tri des mots")
+            word_scores.sort(key=lambda x: x[1], reverse=True)
+            pbar.update(1)
+            
         return word_scores[:n_words]

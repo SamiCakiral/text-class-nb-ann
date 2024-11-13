@@ -31,20 +31,15 @@ def run_naive_bayes_experiments(train_texts, test_texts, train_labels, test_labe
     for n in tqdm(range(1, 4), desc="Progression globale n-grams"):
         print(f"\nTraitement des {n}-grams...")
         
-        # Création des vecteurs avec barre de progression
-        print("Création des vecteurs d'entraînement...")
+        # Création des vecteurs
         train_vectors = feature_extractor.create_ngram_vectors(train_texts, n)
-        
-        print("Création des vecteurs de test...")
         test_vectors = feature_extractor.count_vectorizers[n].transform(test_texts)
         
         # Entraînement avec barre de progression
-        print(f"Entraînement du modèle {n}-gram...")
         with tqdm(total=100, desc=f"Entraînement {n}-gram") as pbar:
             nb_classifier.train_model(train_vectors, train_labels, n, pbar)
             
         # Évaluation avec barre de progression
-        print(f"Évaluation du modèle {n}-gram...")
         with tqdm(total=len(test_labels), desc=f"Évaluation {n}-gram") as pbar:
             results[f'{n}-gram'] = nb_classifier.evaluate(test_vectors, test_labels, n, pbar)
         
@@ -58,7 +53,6 @@ def run_ann_experiments(train_texts, test_texts, train_labels, test_labels):
     feature_extractor = FeatureExtractor()
     results = {}
 
-    # Extraction des caractéristiques TF-IDF avec barre de progression
     print("\nCalcul des TF-IDF...")
     with tqdm(total=2, desc="Extraction TF-IDF") as pbar:
         train_tfidf = feature_extractor.extract_tfidf_features(train_texts)
@@ -66,28 +60,20 @@ def run_ann_experiments(train_texts, test_texts, train_labels, test_labels):
         test_tfidf = feature_extractor.tfidf_vectorizer.transform(test_texts)
         pbar.update(1)
 
-    # Obtention des top mots pour différentes tailles de sacs de mots
     for n_words in [5, 10, 15]:
-        print(f"\nTraitement ANN avec {n_words} mots...")
-        
-        # Extraction des top mots
+        print(f"\nANN avec {n_words} mots...")
         top_words = feature_extractor.get_top_words(n_words)
         
-        # Création et entraînement du modèle
         ann_classifier = TextClassifierANN(hidden_layer_size=100)
         
-        # Entraînement avec affichage du temps
-        print(f"Entraînement du modèle ANN ({n_words} mots)...")
-        with tqdm(total=1, desc="Entraînement") as pbar:
+        with tqdm(total=500, desc="Entraînement") as pbar:
             ann_classifier.train(train_tfidf, train_labels, progress_bar=pbar)
         
-        # Évaluation avec barre de progression
-        print("Évaluation du modèle...")
         with tqdm(total=1, desc="Évaluation") as pbar:
             results[f'ann_{n_words}_words'] = ann_classifier.evaluate(test_tfidf, test_labels, pbar)
         
-        print(f"Accuracy pour {n_words} mots: {results[f'ann_{n_words}_words']['accuracy']:.4f}")
-        print(f"Recall pour {n_words} mots: {results[f'ann_{n_words}_words']['recall']:.4f}")
+        print(f"Accuracy: {results[f'ann_{n_words}_words']['accuracy']:.4f}")
+        print(f"Recall: {results[f'ann_{n_words}_words']['recall']:.4f}")
     
     return results
 
