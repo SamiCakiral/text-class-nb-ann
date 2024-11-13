@@ -6,3 +6,4 @@ torch  # Si on décide d'utiliser PyTorch pour l'ANN
 matplotlib
 seaborn  # Pour les visualisations
 jupyter  # Pour les notebooks
+tqdm>=4.65.0
