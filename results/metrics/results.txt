@@ -271,3 +271,5 @@ ann_10_words:
 Accuracy: 0.8691
 Recall: 0.8691
 ann_15_words:
+Accuracy: 0.8691
+Recall: 0.8691

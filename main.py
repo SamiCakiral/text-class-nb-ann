@@ -207,4 +207,103 @@ def main():
         
         # Expériences ANN sur ce fold
         print("\nDémarrage des expériences ANN...")
-        fold_ann
+        fold_ann_results = run_ann_experiments(
+            fold_data['X_train'],
+            fold_data['X_val'],  # Utilisation des données de validation au lieu du test
+            fold_data['y_train'],
+            fold_data['y_val']   # Utilisation des données de validation au lieu du test
+        )
+        ann_results['fold_results'].append({
+            'fold_idx': fold_idx,
+            'results': fold_ann_results
+        })
+    
+    # Calcul des moyennes sur tous les folds
+    print("\nCalcul des moyennes sur tous les folds...")
+    
+    # Pour Naive Bayes
+    for method in ['standard', 'laplace', 'goodturing']:
+        for n_gram in [1, 2, 3]:
+            accuracies = []
+            recalls = []
+            
+            for fold_result in nb_results['fold_results']:
+                results = fold_result['results']
+                key = f'{n_gram}-gram_{method}'
+                accuracies.append(results[key]['accuracy'])
+                recalls.append(results[key]['recall'])
+            
+            nb_results['mean_results'][f'{n_gram}-gram_{method}'] = {
+                'accuracy_mean': np.mean(accuracies),
+                'accuracy_std': np.std(accuracies),
+                'recall_mean': np.mean(recalls),
+                'recall_std': np.std(recalls)
+            }
+    
+    # Pour ANN
+    for n_words in [5, 10, 15]:
+        accuracies = []
+        recalls = []
+        
+        for fold_result in ann_results['fold_results']:
+            results = fold_result['results']
+            key = f'ann_{n_words}_words'
+            accuracies.append(results[key]['accuracy'])
+            recalls.append(results[key]['recall'])
+        
+        ann_results['mean_results'][f'ann_{n_words}_words'] = {
+            'accuracy_mean': np.mean(accuracies),
+            'accuracy_std': np.std(accuracies),
+            'recall_mean': np.mean(recalls),
+            'recall_std': np.std(recalls)
+        }
+    
+    # Sauvegarde des résultats
+    metrics_path = os.path.join(args.output_dir, 'metrics', 'results.txt')
+    
+    # Sauvegarde des résultats détaillés
+    with open(metrics_path, 'w') as f:
+        # Résultats Naive Bayes
+        f.write("=== Résultats Naive Bayes ===\n\n")
+        
+        # Résultats moyens
+        f.write("Résultats moyens sur tous les folds:\n")
+        for method_key, results in nb_results['mean_results'].items():
+            f.write(f"\n{method_key}:\n")
+            f.write(f"Accuracy: {results['accuracy_mean']:.4f} (±{results['accuracy_std']:.4f})\n")
+            f.write(f"Recall: {results['recall_mean']:.4f} (±{results['recall_std']:.4f})\n")
+        
+        # Résultats par fold
+        f.write("\nRésultats détaillés par fold:\n")
+        for fold_result in nb_results['fold_results']:
+            f.write(f"\nFold {fold_result['fold_idx'] + 1}:\n")
+            for method_key, metrics in fold_result['results'].items():
+                f.write(f"{method_key}:\n")
+                f.write(f"Accuracy: {metrics['accuracy']:.4f}\n")
+                f.write(f"Recall: {metrics['recall']:.4f}\n")
+        
+        # Résultats ANN
+        f.write("\n\n=== Résultats ANN ===\n\n")
+        
+        # Résultats moyens
+        f.write("Résultats moyens sur tous les folds:\n")
+        for config_key, results in ann_results['mean_results'].items():
+            f.write(f"\n{config_key}:\n")
+            f.write(f"Accuracy: {results['accuracy_mean']:.4f} (±{results['accuracy_std']:.4f})\n")
+            f.write(f"Recall: {results['recall_mean']:.4f} (±{results['recall_std']:.4f})\n")
+        
+        # Résultats par fold
+        f.write("\nRésultats détaillés par fold:\n")
+        for fold_result in ann_results['fold_results']:
+            f.write(f"\nFold {fold_result['fold_idx'] + 1}:\n")
+            for config_key, metrics in fold_result['results'].items():
+                f.write(f"{config_key}:\n")
+                f.write(f"Accuracy: {metrics['accuracy']:.4f}\n")
+                f.write(f"Recall: {metrics['recall']:.4f}\n")
+    
+    print(f"\nTraitement terminé. Résultats sauvegardés dans {metrics_path}")
+
+if __name__ == "__main__":
+    main()
+
+    

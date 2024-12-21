@@ -54,7 +54,7 @@ class DataPreprocessor:
         # Convertir en minuscules
         text = text.lower()
         # Supprimer les caractères spéciaux
-        text = re.sub(r'[^\w\s]', ' ', text)
+        text = re.sub(r'[^\w\s]', ' ', text) # \w : lettres, chiffres, underscores, \s : espaces
         # Supprimer les espaces multiples
         text = re.sub(r'\s+', ' ', text).strip()
         return text
