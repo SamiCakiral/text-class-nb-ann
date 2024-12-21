@@ -7,6 +7,7 @@ from src.naive_bayes import CustomNaiveBayes
 from src.neural_network import TextClassifierANN
 from src.utils import plot_confusion_matrix, save_metrics
 from tqdm import tqdm
+import numpy as np
 
 def setup_argparse():
     """Configuration des arguments en ligne de commande
@@ -140,14 +141,14 @@ def run_ann_experiments(train_texts, test_texts, train_labels, test_labels):
     return results
 
 def main():
-    """Fonction principale qui orchestre tout le processus
+    """Fonction principale qui orchestre tout le processus avec k-fold validation
     
     Étapes :
     1. Configuration et préparation des dossiers
-    2. Chargement et prétraitement des données
-    3. Exécution des expériences Naive Bayes
-    4. Exécution des expériences ANN
-    5. Sauvegarde des résultats
+    2. Chargement et prétraitement des données avec création des folds
+    3. Exécution des expériences Naive Bayes sur chaque fold
+    4. Exécution des expériences ANN sur chaque fold
+    5. Sauvegarde des résultats moyens et par fold
     """
     # Configuration initiale
     args = setup_argparse()
@@ -155,52 +156,55 @@ def main():
     
     print("Démarrage du processus de classification...")
     
-    # Préparation des données
-    preprocessor = DataPreprocessor()
+    # Préparation des données avec 5 folds
+    preprocessor = DataPreprocessor(n_splits=5)
     
     # Chargement et prétraitement des données d'entraînement
     print("Chargement et prétraitement des données d'entraînement...")
     train_df = preprocessor.load_data(args.train_path)
-    train_df = preprocessor.preprocess(train_df)
+    train_df = preprocessor.preprocess(train_df, is_train=True)
+    
+    # Création des folds
+    folds = preprocessor.create_folds()
     
     # Chargement et prétraitement des données de test
     print("Chargement et prétraitement des données de test...")
     test_df = preprocessor.load_data(args.test_path)
-    test_df = preprocessor.preprocess(test_df)
+    test_df = preprocessor.preprocess(test_df, is_train=False)
     
-    # Extraction des textes et labels
-    train_texts = train_df['Cleaned_Text']
-    test_texts = test_df['Cleaned_Text']
-    train_labels = train_df['Class']
-    test_labels = test_df['Class']
+    # Dictionnaires pour stocker tous les résultats
+    nb_results = {
+        'fold_results': [],
+        'test_results': {},
+        'mean_results': {}
+    }
     
-    # Exécution des expériences
-    print("\nDémarrage des expériences Naive Bayes...")
-    nb_results = run_naive_bayes_experiments(train_texts, test_texts, train_labels, test_labels)
+    ann_results = {
+        'fold_results': [],
+        'test_results': {},
+        'mean_results': {}
+    }
     
-    print("\nDémarrage des expériences ANN...")
-    ann_results = run_ann_experiments(train_texts, test_texts, train_labels, test_labels)
-    
-    # Sauvegarde des résultats
-    metrics_path = os.path.join(args.output_dir, 'metrics', 'results.txt')
-    
-    # Sauvegarde des résultats Naive Bayes par méthode
-    save_metrics(nb_results, 'Naive Bayes - Standard', metrics_path)
-    save_metrics({k: v for k, v in nb_results.items() if 'laplace' in k}, 
-                'Naive Bayes - Laplace', metrics_path)
-    save_metrics({k: v for k, v in nb_results.items() if 'goodturing' in k}, 
-                'Naive Bayes - Good-Turing', metrics_path)
-    if 'interpolation' in nb_results:
-        save_metrics({'interpolation': nb_results['interpolation']}, 
-                    'Naive Bayes - Interpolation', metrics_path)
-    
-    # Sauvegarde des résultats ANN
-    save_metrics(ann_results, 'ANN', metrics_path)
-    
-    print(f"\nTraitement terminé. Résultats sauvegardés dans {metrics_path}")
-
-# Point d'entrée du script
-if __name__ == "__main__":
-    main()
-
-    
+    # Pour chaque fold
+    for fold_idx in range(preprocessor.n_splits):
+        print(f"\n=== Traitement du fold {fold_idx + 1}/{preprocessor.n_splits} ===")
+        
+        # Récupération des données du fold
+        fold_data = preprocessor.get_fold(fold_idx)
+        
+        # Expériences Naive Bayes sur ce fold
+        print("\nDémarrage des expériences Naive Bayes...")
+        fold_nb_results = run_naive_bayes_experiments(
+            fold_data['X_train'],
+            fold_data['X_val'],  # Utilisation des données de validation au lieu du test
+            fold_data['y_train'],
+            fold_data['y_val']   # Utilisation des données de validation au lieu du test
+        )
+        nb_results['fold_results'].append({
+            'fold_idx': fold_idx,
+            'results': fold_nb_results
+        })
+        
+        # Expériences ANN sur ce fold
+        print("\nDémarrage des expériences ANN...")
+        fold_ann
