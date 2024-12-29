@@ -1,0 +1,212 @@
+=== Résultats détaillés par fold pour Naive Bayes ===
+
+
+Fold 1:
+
+Configuration: 1-gram_standard
+Accuracy: 0.8708
+Recall: 0.8708
+
+Configuration: 1-gram_laplace
+Accuracy: 0.8999
+Recall: 0.8999
+
+Configuration: 1-gram_goodturing
+Accuracy: 0.8999
+Recall: 0.8999
+
+Configuration: 2-gram_standard
+Accuracy: 0.8997
+Recall: 0.8997
+
+Configuration: 2-gram_laplace
+Accuracy: 0.9041
+Recall: 0.9041
+
+Configuration: 2-gram_goodturing
+Accuracy: 0.9041
+Recall: 0.9041
+
+Configuration: 3-gram_standard
+Accuracy: 0.8734
+Recall: 0.8734
+
+Configuration: 3-gram_laplace
+Accuracy: 0.8765
+Recall: 0.8765
+
+Configuration: 3-gram_goodturing
+Accuracy: 0.8765
+Recall: 0.8765
+
+Configuration: interpolation
+Accuracy: 0.9083
+Recall: 0.9083
+
+Fold 2:
+
+Configuration: 1-gram_standard
+Accuracy: 0.8698
+Recall: 0.8698
+
+Configuration: 1-gram_laplace
+Accuracy: 0.8985
+Recall: 0.8985
+
+Configuration: 1-gram_goodturing
+Accuracy: 0.8985
+Recall: 0.8985
+
+Configuration: 2-gram_standard
+Accuracy: 0.8958
+Recall: 0.8958
+
+Configuration: 2-gram_laplace
+Accuracy: 0.9032
+Recall: 0.9032
+
+Configuration: 2-gram_goodturing
+Accuracy: 0.9032
+Recall: 0.9032
+
+Configuration: 3-gram_standard
+Accuracy: 0.8710
+Recall: 0.8710
+
+Configuration: 3-gram_laplace
+Accuracy: 0.8747
+Recall: 0.8747
+
+Configuration: 3-gram_goodturing
+Accuracy: 0.8747
+Recall: 0.8747
+
+Configuration: interpolation
+Accuracy: 0.9088
+Recall: 0.9088
+
+Fold 3:
+
+Configuration: 1-gram_standard
+Accuracy: 0.8748
+Recall: 0.8748
+
+Configuration: 1-gram_laplace
+Accuracy: 0.9042
+Recall: 0.9042
+
+Configuration: 1-gram_goodturing
+Accuracy: 0.9042
+Recall: 0.9042
+
+Configuration: 2-gram_standard
+Accuracy: 0.9024
+Recall: 0.9024
+
+Configuration: 2-gram_laplace
+Accuracy: 0.9095
+Recall: 0.9095
+
+Configuration: 2-gram_goodturing
+Accuracy: 0.9095
+Recall: 0.9095
+
+Configuration: 3-gram_standard
+Accuracy: 0.8768
+Recall: 0.8768
+
+Configuration: 3-gram_laplace
+Accuracy: 0.8794
+Recall: 0.8794
+
+Configuration: 3-gram_goodturing
+Accuracy: 0.8794
+Recall: 0.8794
+
+Configuration: interpolation
+Accuracy: 0.9120
+Recall: 0.9120
+
+Fold 4:
+
+Configuration: 1-gram_standard
+Accuracy: 0.8707
+Recall: 0.8707
+
+Configuration: 1-gram_laplace
+Accuracy: 0.9010
+Recall: 0.9010
+
+Configuration: 1-gram_goodturing
+Accuracy: 0.9010
+Recall: 0.9010
+
+Configuration: 2-gram_standard
+Accuracy: 0.8995
+Recall: 0.8995
+
+Configuration: 2-gram_laplace
+Accuracy: 0.9066
+Recall: 0.9066
+
+Configuration: 2-gram_goodturing
+Accuracy: 0.9066
+Recall: 0.9066
+
+Configuration: 3-gram_standard
+Accuracy: 0.8722
+Recall: 0.8722
+
+Configuration: 3-gram_laplace
+Accuracy: 0.8760
+Recall: 0.8760
+
+Configuration: 3-gram_goodturing
+Accuracy: 0.8760
+Recall: 0.8760
+
+Configuration: interpolation
+Accuracy: 0.9099
+Recall: 0.9099
+
+Fold 5:
+
+Configuration: 1-gram_standard
+Accuracy: 0.8718
+Recall: 0.8718
+
+Configuration: 1-gram_laplace
+Accuracy: 0.9011
+Recall: 0.9011
+
+Configuration: 1-gram_goodturing
+Accuracy: 0.9011
+Recall: 0.9011
+
+Configuration: 2-gram_standard
+Accuracy: 0.8991
+Recall: 0.8991
+
+Configuration: 2-gram_laplace
+Accuracy: 0.9058
+Recall: 0.9058
+
+Configuration: 2-gram_goodturing
+Accuracy: 0.9058
+Recall: 0.9058
+
+Configuration: 3-gram_standard
+Accuracy: 0.8713
+Recall: 0.8713
+
+Configuration: 3-gram_laplace
+Accuracy: 0.8752
+Recall: 0.8752
+
+Configuration: 3-gram_goodturing
+Accuracy: 0.8752
+Recall: 0.8752
+
+Configuration: interpolation
+Accuracy: 0.9106
+Recall: 0.9106

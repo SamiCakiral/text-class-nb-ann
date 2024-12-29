@@ -1,0 +1,14 @@
+=== Résultats moyens pour ANN ===
+
+
+Configuration: ann_5_words
+Accuracy: 0.6973 (±0.0016)
+Recall: 0.6973 (±0.0016)
+
+Configuration: ann_10_words
+Accuracy: 0.6976 (±0.0013)
+Recall: 0.6976 (±0.0013)
+
+Configuration: ann_15_words
+Accuracy: 0.6980 (±0.0016)
+Recall: 0.6980 (±0.0016)

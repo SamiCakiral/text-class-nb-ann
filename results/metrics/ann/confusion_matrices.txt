@@ -1,0 +1,357 @@
+=== Matrices de confusion pour ANN ===
+
+
+Fold 1:
+
+Configuration: ann_5_words
+Matrice de confusion:
+[[5411,  229,  360,    0],
+ [ 211, 5693,   96,    0],
+ [ 298,   94, 5608,    0],
+ [1369,  333, 4298,    0]]
+
+Classe 1:
+Accuracy: 0.8972
+Recall: 0.9018
+
+Classe 2:
+Accuracy: 0.9599
+Recall: 0.9488
+
+Classe 3:
+Accuracy: 0.7856
+Recall: 0.9347
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_10_words
+Matrice de confusion:
+[[5444,  215,  341,    0],
+ [ 211, 5701,   88,    0],
+ [ 326,  104, 5570,    0],
+ [1385,  338, 4277,    0]]
+
+Classe 1:
+Accuracy: 0.8968
+Recall: 0.9073
+
+Classe 2:
+Accuracy: 0.9602
+Recall: 0.9502
+
+Classe 3:
+Accuracy: 0.7860
+Recall: 0.9283
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_15_words
+Matrice de confusion:
+[[5428,  217,  355,    0],
+ [ 215, 5671,  114,    0],
+ [ 300,   83, 5617,    0],
+ [1360,  306, 4334,    0]]
+
+Classe 1:
+Accuracy: 0.8980
+Recall: 0.9047
+
+Classe 2:
+Accuracy: 0.9610
+Recall: 0.9452
+
+Classe 3:
+Accuracy: 0.7839
+Recall: 0.9362
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Fold 2:
+
+Configuration: ann_5_words
+Matrice de confusion:
+[[5444,  244,  312,    0],
+ [ 202, 5709,   89,    0],
+ [ 335,  102, 5563,    0],
+ [1476,  333, 4191,    0]]
+
+Classe 1:
+Accuracy: 0.8930
+Recall: 0.9073
+
+Classe 2:
+Accuracy: 0.9596
+Recall: 0.9515
+
+Classe 3:
+Accuracy: 0.7905
+Recall: 0.9272
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_10_words
+Matrice de confusion:
+[[5381,  266,  353,    0],
+ [ 164, 5758,   78,    0],
+ [ 296,  106, 5598,    0],
+ [1316,  371, 4313,    0]]
+
+Classe 1:
+Accuracy: 0.9002
+Recall: 0.8968
+
+Classe 2:
+Accuracy: 0.9590
+Recall: 0.9597
+
+Classe 3:
+Accuracy: 0.7856
+Recall: 0.9330
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_15_words
+Matrice de confusion:
+[[5428,  246,  326,    0],
+ [ 178, 5722,  100,    0],
+ [ 323,  107, 5570,    0],
+ [1439,  333, 4228,    0]]
+
+Classe 1:
+Accuracy: 0.8953
+Recall: 0.9047
+
+Classe 2:
+Accuracy: 0.9598
+Recall: 0.9537
+
+Classe 3:
+Accuracy: 0.7882
+Recall: 0.9283
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Fold 3:
+
+Configuration: ann_5_words
+Matrice de confusion:
+[[5476,  196,  328,    0],
+ [ 178, 5724,   98,    0],
+ [ 292,  106, 5602,    0],
+ [1419,  356, 4225,    0]]
+
+Classe 1:
+Accuracy: 0.8995
+Recall: 0.9127
+
+Classe 2:
+Accuracy: 0.9611
+Recall: 0.9540
+
+Classe 3:
+Accuracy: 0.7896
+Recall: 0.9337
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_10_words
+Matrice de confusion:
+[[5469,  212,  319,    0],
+ [ 169, 5717,  114,    0],
+ [ 295,   98, 5607,    0],
+ [1413,  337, 4250,    0]]
+
+Classe 1:
+Accuracy: 0.8997
+Recall: 0.9115
+
+Classe 2:
+Accuracy: 0.9613
+Recall: 0.9528
+
+Classe 3:
+Accuracy: 0.7885
+Recall: 0.9345
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_15_words
+Matrice de confusion:
+[[5481,  207,  312,    0],
+ [ 164, 5734,  102,    0],
+ [ 293,   99, 5608,    0],
+ [1444,  342, 4214,    0]]
+
+Classe 1:
+Accuracy: 0.8992
+Recall: 0.9135
+
+Classe 2:
+Accuracy: 0.9619
+Recall: 0.9557
+
+Classe 3:
+Accuracy: 0.7908
+Recall: 0.9347
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Fold 4:
+
+Configuration: ann_5_words
+Matrice de confusion:
+[[5425,  228,  347,    0],
+ [ 172, 5725,  103,    0],
+ [ 277,  114, 5609,    0],
+ [1410,  347, 4243,    0]]
+
+Classe 1:
+Accuracy: 0.8986
+Recall: 0.9042
+
+Classe 2:
+Accuracy: 0.9598
+Recall: 0.9542
+
+Classe 3:
+Accuracy: 0.7882
+Recall: 0.9348
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_10_words
+Matrice de confusion:
+[[5465,  203,  332,    0],
+ [ 181, 5709,  110,    0],
+ [ 289,  123, 5588,    0],
+ [1435,  351, 4214,    0]]
+
+Classe 1:
+Accuracy: 0.8983
+Recall: 0.9108
+
+Classe 2:
+Accuracy: 0.9597
+Recall: 0.9515
+
+Classe 3:
+Accuracy: 0.7888
+Recall: 0.9313
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_15_words
+Matrice de confusion:
+[[5471,  219,  310,    0],
+ [ 185, 5701,  114,    0],
+ [ 305,  108, 5587,    0],
+ [1445,  336, 4219,    0]]
+
+Classe 1:
+Accuracy: 0.8973
+Recall: 0.9118
+
+Classe 2:
+Accuracy: 0.9599
+Recall: 0.9502
+
+Classe 3:
+Accuracy: 0.7893
+Recall: 0.9312
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Fold 5:
+
+Configuration: ann_5_words
+Matrice de confusion:
+[[5479,  211,  310,    0],
+ [ 223, 5664,  113,    0],
+ [ 350,  101, 5549,    0],
+ [1549,  329, 4122,    0]]
+
+Classe 1:
+Accuracy: 0.8899
+Recall: 0.9132
+
+Classe 2:
+Accuracy: 0.9593
+Recall: 0.9440
+
+Classe 3:
+Accuracy: 0.7918
+Recall: 0.9248
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_10_words
+Matrice de confusion:
+[[5442,  224,  334,    0],
+ [ 194, 5665,  141,    0],
+ [ 297,  106, 5597,    0],
+ [1497,  323, 4180,    0]]
+
+Classe 1:
+Accuracy: 0.8939
+Recall: 0.9070
+
+Classe 2:
+Accuracy: 0.9588
+Recall: 0.9442
+
+Classe 3:
+Accuracy: 0.7893
+Recall: 0.9328
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000
+
+Configuration: ann_15_words
+Matrice de confusion:
+[[5431,  215,  354,    0],
+ [ 187, 5680,  133,    0],
+ [ 274,   99, 5627,    0],
+ [1428,  323, 4249,    0]]
+
+Classe 1:
+Accuracy: 0.8976
+Recall: 0.9052
+
+Classe 2:
+Accuracy: 0.9601
+Recall: 0.9467
+
+Classe 3:
+Accuracy: 0.7871
+Recall: 0.9378
+
+Classe 4:
+Accuracy: 0.7500
+Recall: 0.0000

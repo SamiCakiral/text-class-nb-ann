@@ -1,0 +1,5 @@
+=== Meilleurs résultats pour ANN ===
+
+Meilleure configuration: ann_15_words
+Accuracy: 0.6980 (±0.0016)
+Recall: 0.6980 (±0.0016)

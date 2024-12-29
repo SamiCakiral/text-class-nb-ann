@@ -1,0 +1,72 @@
+=== Résultats détaillés par fold pour ANN ===
+
+
+Fold 1:
+
+Configuration: ann_5_words
+Accuracy: 0.6963
+Recall: 0.6963
+
+Configuration: ann_10_words
+Accuracy: 0.6965
+Recall: 0.6965
+
+Configuration: ann_15_words
+Accuracy: 0.6965
+Recall: 0.6965
+
+Fold 2:
+
+Configuration: ann_5_words
+Accuracy: 0.6965
+Recall: 0.6965
+
+Configuration: ann_10_words
+Accuracy: 0.6974
+Recall: 0.6974
+
+Configuration: ann_15_words
+Accuracy: 0.6967
+Recall: 0.6967
+
+Fold 3:
+
+Configuration: ann_5_words
+Accuracy: 0.7001
+Recall: 0.7001
+
+Configuration: ann_10_words
+Accuracy: 0.6997
+Recall: 0.6997
+
+Configuration: ann_15_words
+Accuracy: 0.7010
+Recall: 0.7010
+
+Fold 4:
+
+Configuration: ann_5_words
+Accuracy: 0.6983
+Recall: 0.6983
+
+Configuration: ann_10_words
+Accuracy: 0.6984
+Recall: 0.6984
+
+Configuration: ann_15_words
+Accuracy: 0.6983
+Recall: 0.6983
+
+Fold 5:
+
+Configuration: ann_5_words
+Accuracy: 0.6955
+Recall: 0.6955
+
+Configuration: ann_10_words
+Accuracy: 0.6960
+Recall: 0.6960
+
+Configuration: ann_15_words
+Accuracy: 0.6974
+Recall: 0.6974
