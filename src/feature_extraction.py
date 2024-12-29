@@ -1,6 +1,8 @@
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+from sklearn.preprocessing import normalize
+from sklearn.preprocessing import MinMaxScaler
 
 
 class FeatureExtractor:
@@ -98,28 +100,30 @@ class EnhancedFeatureExtractor(FeatureExtractor):
         return np.array(features)
     
     def extract_enhanced_features(self, texts, max_features=1000):
-        """Combine TF-IDF (5, 10, ou 15 dimensions) et les 6 features statistiques"""
+        """Combine TF-IDF et les features statistiques avec normalisation appropriée"""
         # Extraction TF-IDF avec le nombre spécifié de features
         tfidf_features = self.extract_tfidf_features(texts, max_features)
         tfidf_dense = tfidf_features.toarray()
         
-        # Normalisation des features TF-IDF
-        tfidf_normalized = self.tfidf_scaler.fit_transform(tfidf_dense)
+        # Normalisation L2 pour TF-IDF (meilleure pour le texte)
+        tfidf_normalized = normalize(tfidf_dense, norm='l2')
         
-        # Extraction et normalisation des 6 features statistiques
-        statistical_features = self.extract_statistical_features(texts)
-        statistical_normalized = self.scaler.fit_transform(statistical_features)
+        # Extraction et normalisation MinMax pour les features statistiques
+        if not hasattr(self, 'stats_scaler'):
+            self.stats_scaler = MinMaxScaler()
+            statistical_features = self.extract_statistical_features(texts)
+            statistical_normalized = self.stats_scaler.fit_transform(statistical_features)
+        else:
+            statistical_features = self.extract_statistical_features(texts)
+            statistical_normalized = self.stats_scaler.transform(statistical_features)
         
-        # Calcul des poids des features
-        if self.feature_weights is None:
-            tfidf_weight, stat_weight = self.compute_feature_weights(tfidf_normalized, statistical_normalized)
-            self.feature_weights = (tfidf_weight, stat_weight)
-        
-        # Application des poids
-        weighted_tfidf = tfidf_normalized * self.feature_weights[0]
-        weighted_stats = statistical_normalized * self.feature_weights[1]
+        # Application des poids (70% TF-IDF, 30% stats)
+        tfidf_weight, stat_weight = 0.7, 0.3
         
         # Combinaison des features
-        combined_features = np.hstack((weighted_tfidf, weighted_stats))
+        combined_features = np.hstack((
+            tfidf_normalized * tfidf_weight,
+            statistical_normalized * stat_weight
+        ))
         
         return combined_features

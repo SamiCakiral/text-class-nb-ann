@@ -22,48 +22,117 @@ class TextClassifierNN(nn.Module):
 
 class EnhancedTextClassifierNN(nn.Module):
     def __init__(self, input_size, n_classes=4, hidden_size=100, tfidf_dim=None, stats_dim=None):
-        super(EnhancedTextClassifierNN, self).__init__()
+        super().__init__()
         
         self.tfidf_dim = tfidf_dim
         self.stats_dim = stats_dim
         
-        # Couches séparées pour TF-IDF et features statistiques
         if tfidf_dim and stats_dim:
-            self.tfidf_layer = nn.Linear(tfidf_dim, hidden_size // 2)
-            self.stats_layer = nn.Linear(stats_dim, hidden_size // 2)
-            self.combine_layer = nn.Linear(hidden_size, hidden_size)
+            # Branche TF-IDF plus profonde
+            self.tfidf_layers = nn.Sequential(
+                nn.Linear(tfidf_dim, hidden_size),
+                nn.LayerNorm(hidden_size),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                
+                nn.Linear(hidden_size, hidden_size),
+                nn.LayerNorm(hidden_size),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                
+                nn.Linear(hidden_size, hidden_size // 2),
+                nn.LayerNorm(hidden_size // 2),
+                nn.ReLU(),
+                nn.Dropout(0.2)
+            )
+            
+            # Branche statistique plus profonde
+            self.stats_layers = nn.Sequential(
+                nn.Linear(stats_dim, hidden_size // 2),
+                nn.LayerNorm(hidden_size // 2),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                
+                nn.Linear(hidden_size // 2, hidden_size // 2),
+                nn.LayerNorm(hidden_size // 2),
+                nn.ReLU(),
+                nn.Dropout(0.2),
+                
+                nn.Linear(hidden_size // 2, hidden_size // 4),
+                nn.LayerNorm(hidden_size // 4),
+                nn.ReLU(),
+                nn.Dropout(0.2)
+            )
+            
+            # Couches de combinaison plus complexes
+            combined_size = (hidden_size // 2) + (hidden_size // 4)
+            self.combine_layer = nn.Sequential(
+                nn.Linear(combined_size, hidden_size),
+                nn.LayerNorm(hidden_size),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                
+                nn.Linear(hidden_size, hidden_size),
+                nn.LayerNorm(hidden_size),
+                nn.ReLU(),
+                nn.Dropout(0.3)
+            )
         else:
-            self.input_layer = nn.Linear(input_size, hidden_size)
+            # Version sans séparation des features
+            self.input_layer = nn.Sequential(
+                nn.Linear(input_size, hidden_size * 2),
+                nn.LayerNorm(hidden_size * 2),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                
+                nn.Linear(hidden_size * 2, hidden_size),
+                nn.LayerNorm(hidden_size),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                
+                nn.Linear(hidden_size, hidden_size),
+                nn.LayerNorm(hidden_size),
+                nn.ReLU(),
+                nn.Dropout(0.2)
+            )
         
-        # Couches communes
-        self.network = nn.Sequential(
-            nn.BatchNorm1d(hidden_size),
+        # Couches de classification plus profondes
+        self.classifier = nn.Sequential(
+            nn.Linear(hidden_size, hidden_size),
+            nn.LayerNorm(hidden_size),
             nn.ReLU(),
             nn.Dropout(0.3),
+            
             nn.Linear(hidden_size, hidden_size // 2),
-            nn.BatchNorm1d(hidden_size // 2),
+            nn.LayerNorm(hidden_size // 2),
             nn.ReLU(),
             nn.Dropout(0.2),
-            nn.Linear(hidden_size // 2, n_classes),
+            
+            nn.Linear(hidden_size // 2, hidden_size // 4),
+            nn.LayerNorm(hidden_size // 4),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            
+            nn.Linear(hidden_size // 4, n_classes),
             nn.LogSoftmax(dim=1)
         )
     
     def forward(self, x):
-        # Traitement séparé des features TF-IDF et statistiques
         if self.tfidf_dim and self.stats_dim:
+            # Séparation et traitement des features
             tfidf_features = x[:, :self.tfidf_dim]
             stats_features = x[:, self.tfidf_dim:]
             
-            tfidf_hidden = self.tfidf_layer(tfidf_features)
-            stats_hidden = self.stats_layer(stats_features)
+            tfidf_out = self.tfidf_layers(tfidf_features)
+            stats_out = self.stats_layers(stats_features)
             
-            # Combinaison des features
-            combined = torch.cat((tfidf_hidden, stats_hidden), dim=1)
+            # Combinaison
+            combined = torch.cat((tfidf_out, stats_out), dim=1)
             x = self.combine_layer(combined)
         else:
             x = self.input_layer(x)
         
-        return self.network(x)
+        return self.classifier(x)
 
 class TextClassifierANN:
     def __init__(self, hidden_layer_size=100):
@@ -216,6 +285,12 @@ class EnhancedTextClassifierANN(TextClassifierANN):
     
     def train(self, X, y, X_val=None, y_val=None, progress_bar=None):
         """Version améliorée de l'entraînement avec apprentissage adaptatif"""
+        # Vérification des données
+        print(f"Stats des features d'entrée:")
+        print(f"Train - Mean: {X.mean():.3f}, Std: {X.std():.3f}")
+        if X_val is not None:
+            print(f"Val - Mean: {X_val.mean():.3f}, Std: {X_val.std():.3f}")
+        
         input_size = self.input_size or X.shape[1]
         self.model = EnhancedTextClassifierNN(
             input_size=input_size,
@@ -224,11 +299,25 @@ class EnhancedTextClassifierANN(TextClassifierANN):
             stats_dim=self.stats_dim
         ).to(self.device)
         
+        # Optimisation avec warmup et learning rate cyclique
         criterion = nn.NLLLoss()
-        optimizer = optim.AdamW(self.model.parameters(), lr=0.01, weight_decay=0.01)
-        self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', 
-                                                            factor=0.5, patience=5)
+        optimizer = optim.AdamW(self.model.parameters(), lr=0.001, weight_decay=0.01)
         
+        # Learning rate scheduler avec warmup
+        num_epochs = 100
+        num_training_steps = num_epochs * int(np.ceil(X.shape[0] / 512))
+        num_warmup_steps = num_training_steps // 10
+        
+        self.scheduler = optim.lr_scheduler.OneCycleLR(
+            optimizer,
+            max_lr=0.003,
+            epochs=num_epochs,
+            steps_per_epoch=int(np.ceil(X.shape[0] / 512)),
+            pct_start=0.3,
+            anneal_strategy='cos'
+        )
+        
+        # Le reste de la méthode train reste identique
         X_tensor, y_tensor = self._to_tensor(X, y)
         if X_val is not None and y_val is not None:
             X_val_tensor, y_val_tensor = self._to_tensor(X_val, y_val)

@@ -168,8 +168,10 @@ def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, va
     for n_words in [5, 10, 15]:
         print(f"\nANN-SPE avec {n_words} mots et features optimisées...")
         
-        # Extraction des caractéristiques améliorées
+        # Extraction et normalisation des features sur train d'abord
         train_features = feature_extractor.extract_enhanced_features(train_texts, max_features=n_words)
+        
+        # Puis val et test avec les mêmes paramètres de normalisation
         val_features = feature_extractor.extract_enhanced_features(val_texts, max_features=n_words)
         test_features = feature_extractor.extract_enhanced_features(test_texts, max_features=n_words)
         
