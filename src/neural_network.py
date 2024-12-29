@@ -281,22 +281,17 @@ class EnhancedTextClassifierANN(TextClassifierANN):
             stats_dim=self.stats_dim
         ).to(self.device)
         
-        # Optimisation avec warmup et learning rate cyclique
+        # Optimisation avec learning rate adaptatif
         criterion = nn.NLLLoss()
         optimizer = optim.AdamW(self.model.parameters(), lr=0.001, weight_decay=0.01)
         
-        # Learning rate scheduler avec warmup
-        num_epochs = 100
-        num_training_steps = num_epochs * int(np.ceil(X.shape[0] / 512))
-        num_warmup_steps = num_training_steps // 10
-        
-        self.scheduler = optim.lr_scheduler.OneCycleLR(
+        # Learning rate scheduler avec ReduceLROnPlateau
+        self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(
             optimizer,
-            max_lr=0.003,
-            epochs=num_epochs,
-            steps_per_epoch=int(np.ceil(X.shape[0] / 512)),
-            pct_start=0.3,
-            anneal_strategy='cos'
+            mode='min',
+            factor=0.5,
+            patience=5,
+            min_lr=1e-6
         )
         
         # Le reste de la méthode train reste identique
@@ -309,7 +304,7 @@ class EnhancedTextClassifierANN(TextClassifierANN):
         
         best_loss = float('inf')
         best_model = None
-        patience = 10
+        patience = 10  # Early stopping patience
         patience_counter = 0
         
         if progress_bar:
@@ -317,7 +312,7 @@ class EnhancedTextClassifierANN(TextClassifierANN):
         
         start_time = time.time()
         
-        for epoch in range(100):
+        for epoch in range(2000):  # Augmentation à 2000 epochs
             # Phase d'entraînement
             total_loss = 0
             self.model.train()
@@ -350,6 +345,9 @@ class EnhancedTextClassifierANN(TextClassifierANN):
                     val_outputs = self.model(X_val_tensor)
                     val_loss = criterion(val_outputs, y_val_tensor).item()
                 
+                # Ajustement du learning rate basé sur la perte de validation
+                self.scheduler.step(val_loss)
+                
                 # Early stopping sur la perte de validation
                 if val_loss < best_loss:
                     best_loss = val_loss
@@ -357,9 +355,6 @@ class EnhancedTextClassifierANN(TextClassifierANN):
                     patience_counter = 0
                 else:
                     patience_counter += 1
-                
-                # Ajustement du learning rate basé sur la perte de validation
-                self.scheduler.step(val_loss)
             else:
                 # Si pas de données de validation, utiliser la perte d'entraînement
                 if train_loss < best_loss:
@@ -373,21 +368,22 @@ class EnhancedTextClassifierANN(TextClassifierANN):
             # Enregistrement des pertes
             self.loss_history.append({
                 'train_loss': train_loss,
-                'val_loss': val_loss
+                'val_loss': val_loss,
+                'learning_rate': optimizer.param_groups[0]['lr']
             })
             
-            if progress_bar and epoch % 2 == 0:
+            if progress_bar and epoch % 20 == 0:  # Mise à jour moins fréquente de la barre de progression
                 elapsed = time.time() - start_time
-                status = f"Epoch {epoch:3d} | Train Loss: {train_loss:.4f}"
+                status = f"Epoch {epoch:4d}/{2000} | Train Loss: {train_loss:.4f}"
                 if val_loss is not None:
                     status += f" | Val Loss: {val_loss:.4f}"
-                status += f" | Temps: {elapsed:.1f}s"
+                status += f" | LR: {optimizer.param_groups[0]['lr']:.2e} | Temps: {elapsed:.1f}s"
                 progress_bar.set_description(status)
-                progress_bar.update(2)
+                progress_bar.update(min(20, progress_bar.total - progress_bar.n))
             
             if patience_counter >= patience:
                 if progress_bar:
-                    progress_bar.set_description(f"Early stopping après {epoch} epochs")
+                    progress_bar.set_description(f"Early stopping après {epoch + 1} epochs")
                 break
         
         # Restauration du meilleur modèle
