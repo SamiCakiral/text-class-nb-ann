@@ -28,51 +28,33 @@ class EnhancedTextClassifierNN(nn.Module):
         self.stats_dim = stats_dim
         
         if tfidf_dim and stats_dim:
-            # Branche TF-IDF plus profonde
+            # Branche TF-IDF
             self.tfidf_layers = nn.Sequential(
                 nn.Linear(tfidf_dim, hidden_size),
                 nn.LayerNorm(hidden_size),
                 nn.ReLU(),
                 nn.Dropout(0.3),
-                
-                nn.Linear(hidden_size, hidden_size),
-                nn.LayerNorm(hidden_size),
-                nn.ReLU(),
-                nn.Dropout(0.3),
-                
-                nn.Linear(hidden_size, hidden_size // 2),
-                nn.LayerNorm(hidden_size // 2),
-                nn.ReLU(),
-                nn.Dropout(0.2)
+                nn.Linear(hidden_size, hidden_size // 2)
             )
             
-            # Branche statistique plus profonde
+            # Branche pour les features statistiques (12 features)
             self.stats_layers = nn.Sequential(
                 nn.Linear(stats_dim, hidden_size // 2),
                 nn.LayerNorm(hidden_size // 2),
                 nn.ReLU(),
                 nn.Dropout(0.3),
                 
-                nn.Linear(hidden_size // 2, hidden_size // 2),
-                nn.LayerNorm(hidden_size // 2),
-                nn.ReLU(),
-                nn.Dropout(0.2),
-                
+                # Couche supplémentaire pour mieux traiter les features complexes
                 nn.Linear(hidden_size // 2, hidden_size // 4),
                 nn.LayerNorm(hidden_size // 4),
                 nn.ReLU(),
                 nn.Dropout(0.2)
             )
             
-            # Couches de combinaison plus complexes
+            # Couche de combinaison
             combined_size = (hidden_size // 2) + (hidden_size // 4)
             self.combine_layer = nn.Sequential(
                 nn.Linear(combined_size, hidden_size),
-                nn.LayerNorm(hidden_size),
-                nn.ReLU(),
-                nn.Dropout(0.3),
-                
-                nn.Linear(hidden_size, hidden_size),
                 nn.LayerNorm(hidden_size),
                 nn.ReLU(),
                 nn.Dropout(0.3)

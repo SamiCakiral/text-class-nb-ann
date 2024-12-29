@@ -156,34 +156,52 @@ def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, va
     """Exécute les expériences avec le réseau de neurones artificiel spécialisé (ANN-SPE)
     
     Architecture:
-    - Input: TF-IDF (5/10/15 dim) + 7 features statistiques
-        * Features de style (3): avg_word_length, letter_ratio, long_words_ratio
-        * Features de structure (2): long_ratio, medium_ratio
-        * Features de taille (1): word_count
-        * Features de variabilité (1): std_word_length
+    - Input: TF-IDF + 12 features statistiques optimisées
+        * Métriques fondamentales (3):
+            - text_length
+            - unique_words_ratio
+            - std_word_length
+        * Style d'écriture (2):
+            - avg_word_length
+            - flesch_reading_ease
+        * Structure du texte (2):
+            - short_sentences_ratio
+            - long_sentences_ratio
+        * Caractéristiques news (3):
+            - starts_with_number
+            - contains_date
+            - contains_money
+        * Style narratif (2):
+            - third_person_pronouns
+            - quote_ratio
     """
     feature_extractor = EnhancedFeatureExtractor()
     results = {}
     
-    for n_words in [5, 10, 15]:
+    for n_words in [15]:
         print(f"\nANN-SPE avec {n_words} mots et features optimisées...")
         
-        # Extraction et normalisation des features sur train d'abord
+        # Extraction des features combinées
         train_features = feature_extractor.extract_enhanced_features(train_texts, max_features=n_words)
-        
-        # Puis val et test avec les mêmes paramètres de normalisation
         val_features = feature_extractor.extract_enhanced_features(val_texts, max_features=n_words)
         test_features = feature_extractor.extract_enhanced_features(test_texts, max_features=n_words)
         
+        # Calcul des dimensions
+        tfidf_dim = n_words
+        stats_dim = 12  # Nombre total de features statistiques
         feature_dim = train_features.shape[1]
-        print(f"Dimension totale des features: {feature_dim} (TF-IDF: {n_words}, Stats: 7)")
+        
+        print(f"Dimensions des features:")
+        print(f"- TF-IDF: {tfidf_dim}")
+        print(f"- Statistiques: {stats_dim}")
+        print(f"- Total: {feature_dim}")
         
         # Création et entraînement du modèle amélioré
         ann_classifier = EnhancedTextClassifierANN(
             hidden_layer_size=200,
             input_size=feature_dim,
-            tfidf_dim=n_words,
-            stats_dim=7
+            tfidf_dim=tfidf_dim,
+            stats_dim=stats_dim
         )
         
         # Entraînement avec validation
@@ -192,10 +210,23 @@ def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, va
                                val_features, val_labels,
                                progress_bar=pbar)
         
-        # Évaluation finale sur les données de test
+        # Évaluation finale
         results[f'ann_spe_{n_words}_words'] = ann_classifier.evaluate(test_features, test_labels)
-        results[f'ann_spe_{n_words}_words']['feature_weights'] = feature_extractor.feature_weights
-        results[f'ann_spe_{n_words}_words']['loss_history'] = ann_classifier.loss_history
+        
+        # Ajout des métriques supplémentaires
+        results[f'ann_spe_{n_words}_words'].update({
+            'feature_importance': {
+                'tfidf_weight': 0.7,
+                'stats_weight': 0.3,
+                'statistical_features': {
+                    'fundamental': ['text_length', 'unique_words_ratio', 'std_word_length'],
+                    'writing_style': ['avg_word_length', 'flesch_reading_ease'],
+                    'structure': ['short_sentences_ratio', 'long_sentences_ratio'],
+                    'news_specific': ['starts_with_number', 'contains_date', 'contains_money'],
+                    'narrative': ['third_person_pronouns', 'quote_ratio']
+                }
+            }
+        })
         
         print(f"Accuracy: {results[f'ann_spe_{n_words}_words']['accuracy']:.4f}")
         print(f"Recall: {results[f'ann_spe_{n_words}_words']['recall']:.4f}")

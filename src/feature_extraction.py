@@ -63,40 +63,39 @@ class EnhancedFeatureExtractor(FeatureExtractor):
         return tfidf_weight, stat_weight
     
     def extract_statistical_features(self, texts):
-        """Extrait les features statistiques optimales selon l'analyse PCA"""
+        """Extrait les features statistiques optimisées selon l'analyse"""
         features = []
-        
         for text in texts:
             words = text.split()
             sentences = text.split('.')
-            word_count = len(words)
             
-            # Calculs des features
-            avg_word_length = np.mean([len(w) for w in words]) if words else 0
-            letter_ratio = sum(c.isalpha() for c in text) / max(len(text), 1)
-            long_words_ratio = len([w for w in words if len(w) >= 7]) / max(word_count, 1)
-            std_word_length = np.std([len(w) for w in words]) if words else 0
+            # Calcul des features selon FEATURES_FINALES
+            feature_dict = {
+                # 1. Métriques fondamentales
+                'text_length': len(text),
+                'unique_words_ratio': len(set(words)) / max(len(words), 1),
+                'std_word_length': np.std([len(w) for w in words]),
+                
+                # 2. Style d'écriture
+                'avg_word_length': np.mean([len(w) for w in words]),
+                'flesch_reading_ease': 206.835 - 1.015 * (len(words)/max(len(sentences), 1)) - 84.6 * (sum(sum(1 for c in w if c.lower() in 'aeiouy') for w in words)/max(len(words), 1)),
+                
+                # 3. Structure du texte
+                'short_sentences_ratio': len([s for s in sentences if len(s.split()) <= 5]) / max(len(sentences), 1),
+                'long_sentences_ratio': len([s for s in sentences if len(s.split()) >= 15]) / max(len(sentences), 1),
+                
+                # 4. Caractéristiques spécifiques aux news
+                'starts_with_number': int(any(c.isdigit() for c in words[0])) if words else 0,
+                'contains_date': int(any(w.replace("/", "").replace("-", "").isdigit() for w in words)),
+                'contains_money': int(any(w.startswith('$') or w.endswith('€') for w in words)),
+                
+                # 5. Style narratif
+                'third_person_pronouns': len([w for w in words if w.lower() in ['he', 'she', 'it', 'they', 'his', 'her', 'their']]) / max(len(words), 1),
+                'quote_ratio': (text.count('"') + text.count("'")) / max(len(text), 1)
+            }
             
-            # Ratios des phrases
-            sentence_lengths = [len(s.strip().split()) for s in sentences if s.strip()]
-            total_sentences = len(sentences) if sentences else 1
-            
-            long_sentences = sum(1 for length in sentence_lengths if length >= 15)
-            medium_sentences = sum(1 for length in sentence_lengths if 5 < length < 15)
-            
-            long_ratio = long_sentences / total_sentences
-            medium_ratio = medium_sentences / total_sentences
-            
-            features.append([
-                word_count,          # Taille
-                avg_word_length,     # Style
-                letter_ratio,        # Style
-                long_words_ratio,    # Style
-                std_word_length,     # Variabilité
-                long_ratio,          # Structure
-                medium_ratio         # Structure
-            ])
-            
+            features.append(list(feature_dict.values()))
+        
         return np.array(features)
     
     def extract_enhanced_features(self, texts, max_features=1000):
