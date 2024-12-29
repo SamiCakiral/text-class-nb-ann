@@ -2,37 +2,37 @@
 
 
 Configuration: 1-gram_standard
-Accuracy: 0.8716 (±0.0017)
-Recall: 0.8716 (±0.0017)
+Accuracy: 0.8731 (±0.0017)
+Recall: 0.8731 (±0.0017)
 
 Configuration: 2-gram_standard
-Accuracy: 0.8993 (±0.0021)
-Recall: 0.8993 (±0.0021)
+Accuracy: 0.8999 (±0.0020)
+Recall: 0.8999 (±0.0020)
 
 Configuration: 3-gram_standard
-Accuracy: 0.8729 (±0.0021)
-Recall: 0.8729 (±0.0021)
+Accuracy: 0.8730 (±0.0020)
+Recall: 0.8730 (±0.0020)
 
 Configuration: 1-gram_laplace
-Accuracy: 0.9009 (±0.0019)
-Recall: 0.9009 (±0.0019)
+Accuracy: 0.9049 (±0.0021)
+Recall: 0.9049 (±0.0021)
 
 Configuration: 2-gram_laplace
-Accuracy: 0.9058 (±0.0022)
-Recall: 0.9058 (±0.0022)
+Accuracy: 0.9067 (±0.0021)
+Recall: 0.9067 (±0.0021)
 
 Configuration: 3-gram_laplace
-Accuracy: 0.8763 (±0.0016)
-Recall: 0.8763 (±0.0016)
+Accuracy: 0.8766 (±0.0017)
+Recall: 0.8766 (±0.0017)
 
 Configuration: 1-gram_goodturing
-Accuracy: 0.9009 (±0.0019)
-Recall: 0.9009 (±0.0019)
+Accuracy: 0.9049 (±0.0021)
+Recall: 0.9049 (±0.0021)
 
 Configuration: 2-gram_goodturing
-Accuracy: 0.9058 (±0.0022)
-Recall: 0.9058 (±0.0022)
+Accuracy: 0.9067 (±0.0021)
+Recall: 0.9067 (±0.0021)
 
 Configuration: 3-gram_goodturing
-Accuracy: 0.8763 (±0.0016)
-Recall: 0.8763 (±0.0016)
+Accuracy: 0.8766 (±0.0017)
+Recall: 0.8766 (±0.0017)

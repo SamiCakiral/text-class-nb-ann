@@ -130,19 +130,27 @@ class DataPreprocessor:
             
         fold = self.folds[fold_idx]
         
-        # Utilisation des données d'entraînement pour la validation croisée
+        # Vérification des données d'entraînement et de test
         if self.train_data is None:
             raise ValueError("Les données d'entraînement doivent d'abord être prétraitées")
+        if self.test_data is None:
+            raise ValueError("Les données de test doivent d'abord être prétraitées")
         
-        # Récupération des données d'entraînement uniquement
-        texts = self.train_data['Cleaned_Text'].values
-        labels = self.train_data['Class'].values
+        # Récupération des données d'entraînement pour le fold
+        train_texts = self.train_data['Cleaned_Text'].values
+        train_labels = self.train_data['Class'].values
+        
+        # Récupération des données de test
+        test_texts = self.test_data['Cleaned_Text'].values
+        test_labels = self.test_data['Class'].values
         
         return {
-            'X_train': texts[fold['train_idx']],
-            'X_val': texts[fold['val_idx']],
-            'y_train': labels[fold['train_idx']],
-            'y_val': labels[fold['val_idx']]
+            'X_train': train_texts[fold['train_idx']],
+            'X_val': train_texts[fold['val_idx']],
+            'y_train': train_labels[fold['train_idx']],
+            'y_val': train_labels[fold['val_idx']],
+            'X_test': test_texts,
+            'y_test': test_labels
         }
 
     def get_all_data(self):

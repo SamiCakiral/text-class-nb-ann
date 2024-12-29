@@ -144,8 +144,9 @@ class CustomNaiveBayes:
                 present_words = X.multiply(model_matrix)
                 scores[:, c_idx] += present_words.sum(axis=1).A1
                 
-                # Good-Turing pour les mots non vus
-                missing_words = (X == 0).multiply(model_matrix != 0)
+                # Good-Turing pour les mots non vus - Version optimisée
+                missing_words = X.multiply(model_matrix != 0)
+                missing_words.data = 1 - missing_words.data  # Inverse les valeurs non nulles
                 gt_score = np.log(self.n1[n_gram] / 
                                 (self.n0[n_gram] * self.word_counts[(n_gram, label)].sum()))
                 scores[:, c_idx] += gt_score * missing_words.sum(axis=1).A1

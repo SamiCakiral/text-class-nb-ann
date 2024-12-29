@@ -137,3 +137,22 @@ def calculate_ann_means(results):
             'recall_mean': np.mean(recalls),
             'recall_std': np.std(recalls)
         }
+
+def calculate_ann_spe_means(results):
+    """Calcule les moyennes pour ANN-SPE"""
+    for n_words in [20, 30, 40]:
+        accuracies = []
+        recalls = []
+        
+        for fold_result in results['fold_results']:
+            res = fold_result['results']
+            key = f'ann_spe_{n_words}_words'
+            accuracies.append(res[key]['accuracy'])
+            recalls.append(res[key]['recall'])
+        
+        results['mean_results'][f'ann_spe_{n_words}_words'] = {
+            'accuracy_mean': np.mean(accuracies),
+            'accuracy_std': np.std(accuracies),
+            'recall_mean': np.mean(recalls),
+            'recall_std': np.std(recalls)
+        }

@@ -1,0 +1,23 @@
+Most important features by principal component:
+
+
+PC1:
+  - space_ratio: 0.376
+  - avg_word_length: 0.368
+  - chars_per_word: 0.366
+  - letter_ratio: 0.334
+  - long_words_ratio: 0.313
+
+PC2:
+  - text_length: 0.470
+  - word_count: 0.401
+  - avg_sentence_length: 0.401
+  - words_per_sentence: 0.401
+  - std_word_length: 0.233
+
+PC3:
+  - long_sentences_ratio: 0.701
+  - medium_sentences_ratio: 0.695
+  - short_sentences_ratio: 0.094
+  - medium_words_ratio: 0.068
+  - digit_ratio: 0.063

@@ -5,353 +5,353 @@ Fold 1:
 
 Configuration: ann_5_words
 Matrice de confusion:
-[[5411,  229,  360,    0],
- [ 211, 5693,   96,    0],
- [ 298,   94, 5608,    0],
- [1369,  333, 4298,    0]]
+[[5296,  217,  281,  206],
+ [ 180, 5640,   86,   94],
+ [ 281,   77, 5087,  555],
+ [ 333,  114,  581, 4972]]
 
 Classe 1:
-Accuracy: 0.8972
-Recall: 0.9018
+Accuracy: 0.9376
+Recall: 0.8827
 
 Classe 2:
-Accuracy: 0.9599
-Recall: 0.9488
+Accuracy: 0.9680
+Recall: 0.9400
 
 Classe 3:
-Accuracy: 0.7856
-Recall: 0.9347
+Accuracy: 0.9225
+Recall: 0.8478
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9215
+Recall: 0.8287
 
 Configuration: ann_10_words
 Matrice de confusion:
-[[5444,  215,  341,    0],
- [ 211, 5701,   88,    0],
- [ 326,  104, 5570,    0],
- [1385,  338, 4277,    0]]
+[[5293,  204,  281,  222],
+ [ 199, 5637,   62,  102],
+ [ 252,   85, 5113,  550],
+ [ 321,  111,  569, 4999]]
 
 Classe 1:
-Accuracy: 0.8968
-Recall: 0.9073
+Accuracy: 0.9384
+Recall: 0.8822
 
 Classe 2:
-Accuracy: 0.9602
-Recall: 0.9502
+Accuracy: 0.9682
+Recall: 0.9395
 
 Classe 3:
-Accuracy: 0.7860
-Recall: 0.9283
+Accuracy: 0.9250
+Recall: 0.8522
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9219
+Recall: 0.8332
 
 Configuration: ann_15_words
 Matrice de confusion:
-[[5428,  217,  355,    0],
- [ 215, 5671,  114,    0],
- [ 300,   83, 5617,    0],
- [1360,  306, 4334,    0]]
+[[5288,  221,  269,  222],
+ [ 170, 5656,   69,  105],
+ [ 280,   92, 5070,  558],
+ [ 320,  113,  557, 5010]]
 
 Classe 1:
-Accuracy: 0.8980
-Recall: 0.9047
+Accuracy: 0.9383
+Recall: 0.8813
 
 Classe 2:
-Accuracy: 0.9610
-Recall: 0.9452
+Accuracy: 0.9679
+Recall: 0.9427
 
 Classe 3:
-Accuracy: 0.7839
-Recall: 0.9362
+Accuracy: 0.9240
+Recall: 0.8450
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9219
+Recall: 0.8350
 
 Fold 2:
 
 Configuration: ann_5_words
 Matrice de confusion:
-[[5444,  244,  312,    0],
- [ 202, 5709,   89,    0],
- [ 335,  102, 5563,    0],
- [1476,  333, 4191,    0]]
+[[5289,  241,  292,  178],
+ [ 156, 5686,   75,   83],
+ [ 280,   95, 5098,  527],
+ [ 309,  130,  563, 4998]]
 
 Classe 1:
-Accuracy: 0.8930
-Recall: 0.9073
+Accuracy: 0.9393
+Recall: 0.8815
 
 Classe 2:
-Accuracy: 0.9596
-Recall: 0.9515
+Accuracy: 0.9675
+Recall: 0.9477
 
 Classe 3:
-Accuracy: 0.7905
-Recall: 0.9272
+Accuracy: 0.9237
+Recall: 0.8497
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9254
+Recall: 0.8330
 
 Configuration: ann_10_words
 Matrice de confusion:
-[[5381,  266,  353,    0],
- [ 164, 5758,   78,    0],
- [ 296,  106, 5598,    0],
- [1316,  371, 4313,    0]]
+[[5301,  243,  270,  186],
+ [ 171, 5696,   67,   66],
+ [ 293,   96, 5086,  525],
+ [ 303,  140,  580, 4977]]
 
 Classe 1:
-Accuracy: 0.9002
-Recall: 0.8968
+Accuracy: 0.9389
+Recall: 0.8835
 
 Classe 2:
-Accuracy: 0.9590
-Recall: 0.9597
+Accuracy: 0.9674
+Recall: 0.9493
 
 Classe 3:
-Accuracy: 0.7856
-Recall: 0.9330
+Accuracy: 0.9237
+Recall: 0.8477
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9250
+Recall: 0.8295
 
 Configuration: ann_15_words
 Matrice de confusion:
-[[5428,  246,  326,    0],
- [ 178, 5722,  100,    0],
- [ 323,  107, 5570,    0],
- [1439,  333, 4228,    0]]
+[[5291,  251,  290,  168],
+ [ 159, 5703,   75,   63],
+ [ 268,   98, 5112,  522],
+ [ 310,  120,  589, 4981]]
 
 Classe 1:
-Accuracy: 0.8953
-Recall: 0.9047
+Accuracy: 0.9397
+Recall: 0.8818
 
 Classe 2:
-Accuracy: 0.9598
-Recall: 0.9537
+Accuracy: 0.9681
+Recall: 0.9505
 
 Classe 3:
-Accuracy: 0.7882
-Recall: 0.9283
+Accuracy: 0.9233
+Recall: 0.8520
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9262
+Recall: 0.8302
 
 Fold 3:
 
 Configuration: ann_5_words
 Matrice de confusion:
-[[5476,  196,  328,    0],
- [ 178, 5724,   98,    0],
- [ 292,  106, 5602,    0],
- [1419,  356, 4225,    0]]
+[[5331,  200,  260,  209],
+ [ 170, 5658,   72,  100],
+ [ 279,   89, 5083,  549],
+ [ 273,  131,  526, 5070]]
 
 Classe 1:
-Accuracy: 0.8995
-Recall: 0.9127
+Accuracy: 0.9420
+Recall: 0.8885
 
 Classe 2:
-Accuracy: 0.9611
-Recall: 0.9540
+Accuracy: 0.9683
+Recall: 0.9430
 
 Classe 3:
-Accuracy: 0.7896
-Recall: 0.9337
+Accuracy: 0.9260
+Recall: 0.8472
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9255
+Recall: 0.8450
 
 Configuration: ann_10_words
 Matrice de confusion:
-[[5469,  212,  319,    0],
- [ 169, 5717,  114,    0],
- [ 295,   98, 5607,    0],
- [1413,  337, 4250,    0]]
+[[5307,  205,  293,  195],
+ [ 159, 5692,   66,   83],
+ [ 272,   86, 5125,  517],
+ [ 272,  142,  527, 5059]]
 
 Classe 1:
-Accuracy: 0.8997
-Recall: 0.9115
+Accuracy: 0.9418
+Recall: 0.8845
 
 Classe 2:
-Accuracy: 0.9613
-Recall: 0.9528
+Accuracy: 0.9691
+Recall: 0.9487
 
 Classe 3:
-Accuracy: 0.7885
-Recall: 0.9345
+Accuracy: 0.9266
+Recall: 0.8542
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9277
+Recall: 0.8432
 
 Configuration: ann_15_words
 Matrice de confusion:
-[[5481,  207,  312,    0],
- [ 164, 5734,  102,    0],
- [ 293,   99, 5608,    0],
- [1444,  342, 4214,    0]]
+[[5308,  198,  283,  211],
+ [ 150, 5685,   77,   88],
+ [ 254,   94, 5157,  495],
+ [ 263,  127,  578, 5032]]
 
 Classe 1:
-Accuracy: 0.8992
-Recall: 0.9135
+Accuracy: 0.9434
+Recall: 0.8847
 
 Classe 2:
-Accuracy: 0.9619
-Recall: 0.9557
+Accuracy: 0.9694
+Recall: 0.9475
 
 Classe 3:
-Accuracy: 0.7908
-Recall: 0.9347
+Accuracy: 0.9258
+Recall: 0.8595
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9266
+Recall: 0.8387
 
 Fold 4:
 
 Configuration: ann_5_words
 Matrice de confusion:
-[[5425,  228,  347,    0],
- [ 172, 5725,  103,    0],
- [ 277,  114, 5609,    0],
- [1410,  347, 4243,    0]]
+[[5274,  203,  296,  227],
+ [ 146, 5672,   89,   93],
+ [ 234,   83, 5133,  550],
+ [ 295,  113,  570, 5022]]
 
 Classe 1:
-Accuracy: 0.8986
-Recall: 0.9042
+Accuracy: 0.9416
+Recall: 0.8790
 
 Classe 2:
-Accuracy: 0.9598
-Recall: 0.9542
+Accuracy: 0.9697
+Recall: 0.9453
 
 Classe 3:
-Accuracy: 0.7882
-Recall: 0.9348
+Accuracy: 0.9241
+Recall: 0.8555
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9230
+Recall: 0.8370
 
 Configuration: ann_10_words
 Matrice de confusion:
-[[5465,  203,  332,    0],
- [ 181, 5709,  110,    0],
- [ 289,  123, 5588,    0],
- [1435,  351, 4214,    0]]
+[[5294,  204,  269,  233],
+ [ 143, 5694,   77,   86],
+ [ 259,  100, 5102,  539],
+ [ 286,  123,  574, 5017]]
 
 Classe 1:
-Accuracy: 0.8983
-Recall: 0.9108
+Accuracy: 0.9419
+Recall: 0.8823
 
 Classe 2:
-Accuracy: 0.9597
-Recall: 0.9515
+Accuracy: 0.9695
+Recall: 0.9490
 
 Classe 3:
-Accuracy: 0.7888
-Recall: 0.9313
+Accuracy: 0.9243
+Recall: 0.8503
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9233
+Recall: 0.8362
 
 Configuration: ann_15_words
 Matrice de confusion:
-[[5471,  219,  310,    0],
- [ 185, 5701,  114,    0],
- [ 305,  108, 5587,    0],
- [1445,  336, 4219,    0]]
+[[5285,  219,  275,  221],
+ [ 139, 5682,   83,   96],
+ [ 228,   87, 5104,  581],
+ [ 274,  129,  556, 5041]]
 
 Classe 1:
-Accuracy: 0.8973
-Recall: 0.9118
+Accuracy: 0.9435
+Recall: 0.8808
 
 Classe 2:
-Accuracy: 0.9599
-Recall: 0.9502
+Accuracy: 0.9686
+Recall: 0.9470
 
 Classe 3:
-Accuracy: 0.7893
-Recall: 0.9312
+Accuracy: 0.9246
+Recall: 0.8507
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9226
+Recall: 0.8402
 
 Fold 5:
 
 Configuration: ann_5_words
 Matrice de confusion:
-[[5479,  211,  310,    0],
- [ 223, 5664,  113,    0],
- [ 350,  101, 5549,    0],
- [1549,  329, 4122,    0]]
+[[5267,  217,  286,  230],
+ [ 164, 5652,   96,   88],
+ [ 268,   96, 5068,  568],
+ [ 281,  147,  555, 5017]]
 
 Classe 1:
-Accuracy: 0.8899
-Recall: 0.9132
+Accuracy: 0.9397
+Recall: 0.8778
 
 Classe 2:
-Accuracy: 0.9593
-Recall: 0.9440
+Accuracy: 0.9663
+Recall: 0.9420
 
 Classe 3:
-Accuracy: 0.7918
-Recall: 0.9248
+Accuracy: 0.9221
+Recall: 0.8447
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9221
+Recall: 0.8362
 
 Configuration: ann_10_words
 Matrice de confusion:
-[[5442,  224,  334,    0],
- [ 194, 5665,  141,    0],
- [ 297,  106, 5597,    0],
- [1497,  323, 4180,    0]]
+[[5278,  209,  296,  217],
+ [ 172, 5632,  101,   95],
+ [ 252,   87, 5108,  553],
+ [ 303,  125,  557, 5015]]
 
 Classe 1:
-Accuracy: 0.8939
-Recall: 0.9070
+Accuracy: 0.9396
+Recall: 0.8797
 
 Classe 2:
-Accuracy: 0.9588
-Recall: 0.9442
+Accuracy: 0.9671
+Recall: 0.9387
 
 Classe 3:
-Accuracy: 0.7893
-Recall: 0.9328
+Accuracy: 0.9231
+Recall: 0.8513
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9229
+Recall: 0.8358
 
 Configuration: ann_15_words
 Matrice de confusion:
-[[5431,  215,  354,    0],
- [ 187, 5680,  133,    0],
- [ 274,   99, 5627,    0],
- [1428,  323, 4249,    0]]
+[[5307,  211,  283,  199],
+ [ 170, 5644,   96,   90],
+ [ 261,   90, 5104,  545],
+ [ 304,  122,  556, 5018]]
 
 Classe 1:
-Accuracy: 0.8976
-Recall: 0.9052
+Accuracy: 0.9405
+Recall: 0.8845
 
 Classe 2:
-Accuracy: 0.9601
-Recall: 0.9467
+Accuracy: 0.9675
+Recall: 0.9407
 
 Classe 3:
-Accuracy: 0.7871
-Recall: 0.9378
+Accuracy: 0.9237
+Recall: 0.8507
 
 Classe 4:
-Accuracy: 0.7500
-Recall: 0.0000
+Accuracy: 0.9243
+Recall: 0.8363

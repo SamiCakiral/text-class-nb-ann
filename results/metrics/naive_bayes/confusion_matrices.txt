@@ -5,1158 +5,1158 @@ Fold 1:
 
 Configuration: 1-gram_standard
 Matrice de confusion:
-[[5173,  211,  287,  329],
- [ 213, 5643,   46,   98],
- [ 323,   76, 4890,  711],
- [ 242,   43,  523, 5192]]
+[[5167,  212,  296,  325],
+ [ 205, 5650,   47,   98],
+ [ 311,   71, 4900,  718],
+ [ 233,   49,  518, 5200]]
 
 Classe 1:
-Accuracy: 0.9331
-Recall: 0.8622
+Accuracy: 0.9341
+Recall: 0.8612
 
 Classe 2:
-Accuracy: 0.9714
-Recall: 0.9405
+Accuracy: 0.9716
+Recall: 0.9417
 
 Classe 3:
-Accuracy: 0.9181
-Recall: 0.8150
+Accuracy: 0.9183
+Recall: 0.8167
 
 Classe 4:
-Accuracy: 0.9189
-Recall: 0.8653
+Accuracy: 0.9191
+Recall: 0.8667
 
 Configuration: 1-gram_laplace
 Matrice de confusion:
-[[5373,  192,  242,  193],
- [  89, 5853,   27,   31],
- [ 236,   53, 5097,  614],
- [ 241,   34,  451, 5274]]
+[[5374,  195,  244,  187],
+ [  76, 5871,   23,   30],
+ [ 223,   54, 5124,  599],
+ [ 231,   38,  427, 5304]]
 
 Classe 1:
-Accuracy: 0.9503
-Recall: 0.8955
+Accuracy: 0.9518
+Recall: 0.8957
 
 Classe 2:
-Accuracy: 0.9822
-Recall: 0.9755
+Accuracy: 0.9827
+Recall: 0.9785
 
 Classe 3:
-Accuracy: 0.9324
-Recall: 0.8495
+Accuracy: 0.9346
+Recall: 0.8540
 
 Classe 4:
-Accuracy: 0.9348
-Recall: 0.8790
+Accuracy: 0.9370
+Recall: 0.8840
 
 Configuration: 1-gram_goodturing
 Matrice de confusion:
-[[5373,  192,  242,  193],
- [  89, 5853,   27,   31],
- [ 236,   53, 5097,  614],
- [ 241,   34,  451, 5274]]
+[[5374,  195,  244,  187],
+ [  76, 5871,   23,   30],
+ [ 223,   54, 5124,  599],
+ [ 231,   38,  427, 5304]]
 
 Classe 1:
-Accuracy: 0.9503
-Recall: 0.8955
+Accuracy: 0.9518
+Recall: 0.8957
 
 Classe 2:
-Accuracy: 0.9822
-Recall: 0.9755
+Accuracy: 0.9827
+Recall: 0.9785
 
 Classe 3:
-Accuracy: 0.9324
-Recall: 0.8495
+Accuracy: 0.9346
+Recall: 0.8540
 
 Classe 4:
-Accuracy: 0.9348
-Recall: 0.8790
+Accuracy: 0.9370
+Recall: 0.8840
 
 Configuration: 2-gram_standard
 Matrice de confusion:
-[[5372,  173,  245,  210],
- [  99, 5819,   18,   64],
- [ 244,   71, 5075,  610],
- [ 211,   37,  425, 5327]]
+[[5367,  176,  244,  213],
+ [ 100, 5822,   18,   60],
+ [ 238,   69, 5087,  606],
+ [ 210,   37,  425, 5328]]
 
 Classe 1:
-Accuracy: 0.9507
-Recall: 0.8953
+Accuracy: 0.9508
+Recall: 0.8945
 
 Classe 2:
 Accuracy: 0.9808
-Recall: 0.9698
+Recall: 0.9703
 
 Classe 3:
-Accuracy: 0.9328
-Recall: 0.8458
+Accuracy: 0.9333
+Recall: 0.8478
 
 Classe 4:
-Accuracy: 0.9351
-Recall: 0.8878
+Accuracy: 0.9354
+Recall: 0.8880
 
 Configuration: 2-gram_laplace
 Matrice de confusion:
-[[5399,  189,  241,  171],
- [  89, 5846,   19,   46],
- [ 219,   84, 5161,  536],
- [ 244,   56,  408, 5292]]
+[[5394,  191,  241,  174],
+ [  88, 5846,   21,   45],
+ [ 216,   81, 5166,  537],
+ [ 248,   52,  404, 5296]]
 
 Classe 1:
-Accuracy: 0.9520
-Recall: 0.8998
+Accuracy: 0.9517
+Recall: 0.8990
 
 Classe 2:
-Accuracy: 0.9799
+Accuracy: 0.9801
 Recall: 0.9743
 
 Classe 3:
-Accuracy: 0.9372
-Recall: 0.8602
+Accuracy: 0.9375
+Recall: 0.8610
 
 Classe 4:
-Accuracy: 0.9391
-Recall: 0.8820
+Accuracy: 0.9392
+Recall: 0.8827
 
 Configuration: 2-gram_goodturing
 Matrice de confusion:
-[[5399,  189,  241,  171],
- [  89, 5846,   19,   46],
- [ 219,   84, 5161,  536],
- [ 244,   56,  408, 5292]]
+[[5394,  191,  241,  174],
+ [  88, 5846,   21,   45],
+ [ 216,   81, 5166,  537],
+ [ 248,   52,  404, 5296]]
 
 Classe 1:
-Accuracy: 0.9520
-Recall: 0.8998
+Accuracy: 0.9517
+Recall: 0.8990
 
 Classe 2:
-Accuracy: 0.9799
+Accuracy: 0.9801
 Recall: 0.9743
 
 Classe 3:
-Accuracy: 0.9372
-Recall: 0.8602
+Accuracy: 0.9375
+Recall: 0.8610
 
 Classe 4:
-Accuracy: 0.9391
-Recall: 0.8820
+Accuracy: 0.9392
+Recall: 0.8827
 
 Configuration: 3-gram_standard
 Matrice de confusion:
-[[5297,  211,  266,  226],
+[[5295,  212,  268,  225],
  [ 167, 5668,   55,  110],
- [ 323,  124, 4940,  613],
- [ 320,  110,  514, 5056]]
+ [ 320,  123, 4946,  611],
+ [ 323,  107,  514, 5056]]
 
 Classe 1:
-Accuracy: 0.9370
-Recall: 0.8828
+Accuracy: 0.9369
+Recall: 0.8825
 
 Classe 2:
-Accuracy: 0.9676
+Accuracy: 0.9677
 Recall: 0.9447
 
 Classe 3:
-Accuracy: 0.9210
-Recall: 0.8233
+Accuracy: 0.9212
+Recall: 0.8243
 
 Classe 4:
-Accuracy: 0.9211
+Accuracy: 0.9213
 Recall: 0.8427
 
 Configuration: 3-gram_laplace
 Matrice de confusion:
-[[5289,  227,  270,  214],
- [ 148, 5683,   59,  110],
- [ 293,  123, 5039,  545],
- [ 346,  127,  502, 5025]]
+[[5285,  227,  272,  216],
+ [ 147, 5683,   61,  109],
+ [ 292,  122, 5042,  544],
+ [ 346,  128,  495, 5031]]
 
 Classe 1:
-Accuracy: 0.9376
-Recall: 0.8815
+Accuracy: 0.9375
+Recall: 0.8808
 
 Classe 2:
 Accuracy: 0.9669
 Recall: 0.9472
 
 Classe 3:
-Accuracy: 0.9253
-Recall: 0.8398
+Accuracy: 0.9256
+Recall: 0.8403
 
 Classe 4:
-Accuracy: 0.9232
-Recall: 0.8375
+Accuracy: 0.9234
+Recall: 0.8385
 
 Configuration: 3-gram_goodturing
 Matrice de confusion:
-[[5289,  227,  270,  214],
- [ 148, 5683,   59,  110],
- [ 293,  123, 5039,  545],
- [ 346,  127,  502, 5025]]
+[[5285,  227,  272,  216],
+ [ 147, 5683,   61,  109],
+ [ 292,  122, 5042,  544],
+ [ 346,  128,  495, 5031]]
 
 Classe 1:
-Accuracy: 0.9376
-Recall: 0.8815
+Accuracy: 0.9375
+Recall: 0.8808
 
 Classe 2:
 Accuracy: 0.9669
 Recall: 0.9472
 
 Classe 3:
-Accuracy: 0.9253
-Recall: 0.8398
+Accuracy: 0.9256
+Recall: 0.8403
 
 Classe 4:
-Accuracy: 0.9232
-Recall: 0.8375
+Accuracy: 0.9234
+Recall: 0.8385
 
 Configuration: interpolation
 Matrice de confusion:
-[[5400,  184,  229,  187],
- [  63, 5887,   22,   28],
- [ 207,   54, 5181,  558],
- [ 225,   34,  409, 5332]]
+[[5404,  181,  236,  179],
+ [  60, 5894,   20,   26],
+ [ 202,   57, 5191,  550],
+ [ 224,   33,  403, 5340]]
 
 Classe 1:
-Accuracy: 0.9544
-Recall: 0.9000
+Accuracy: 0.9549
+Recall: 0.9007
 
 Classe 2:
-Accuracy: 0.9840
-Recall: 0.9812
+Accuracy: 0.9843
+Recall: 0.9823
 
 Classe 3:
-Accuracy: 0.9384
-Recall: 0.8635
+Accuracy: 0.9388
+Recall: 0.8652
 
 Classe 4:
-Accuracy: 0.9400
-Recall: 0.8887
+Accuracy: 0.9410
+Recall: 0.8900
 
 Fold 2:
 
 Configuration: 1-gram_standard
 Matrice de confusion:
-[[5161,  249,  332,  258],
- [ 178, 5673,   54,   95],
- [ 317,   87, 4910,  686],
- [ 264,   55,  549, 5132]]
+[[5176,  250,  326,  248],
+ [ 175, 5677,   53,   95],
+ [ 310,   91, 4917,  682],
+ [ 259,   52,  546, 5143]]
 
 Classe 1:
-Accuracy: 0.9334
-Recall: 0.8602
+Accuracy: 0.9347
+Recall: 0.8627
 
 Classe 2:
-Accuracy: 0.9701
-Recall: 0.9455
+Accuracy: 0.9702
+Recall: 0.9462
 
 Classe 3:
-Accuracy: 0.9156
-Recall: 0.8183
+Accuracy: 0.9163
+Recall: 0.8195
 
 Classe 4:
-Accuracy: 0.9205
-Recall: 0.8553
+Accuracy: 0.9216
+Recall: 0.8572
 
 Configuration: 1-gram_laplace
 Matrice de confusion:
-[[5342,  229,  265,  164],
- [  66, 5860,   40,   34],
- [ 248,   53, 5114,  585],
- [ 244,   51,  457, 5248]]
+[[5374,  225,  250,  151],
+ [  59, 5877,   36,   28],
+ [ 244,   56, 5126,  574],
+ [ 236,   59,  432, 5273]]
 
 Classe 1:
-Accuracy: 0.9493
-Recall: 0.8903
+Accuracy: 0.9515
+Recall: 0.8957
 
 Classe 2:
-Accuracy: 0.9803
-Recall: 0.9767
+Accuracy: 0.9807
+Recall: 0.9795
 
 Classe 3:
-Accuracy: 0.9313
-Recall: 0.8523
+Accuracy: 0.9337
+Recall: 0.8543
 
 Classe 4:
-Accuracy: 0.9360
-Recall: 0.8747
+Accuracy: 0.9383
+Recall: 0.8788
 
 Configuration: 1-gram_goodturing
 Matrice de confusion:
-[[5342,  229,  265,  164],
- [  66, 5860,   40,   34],
- [ 248,   53, 5114,  585],
- [ 244,   51,  457, 5248]]
+[[5374,  225,  250,  151],
+ [  59, 5877,   36,   28],
+ [ 244,   56, 5126,  574],
+ [ 236,   59,  432, 5273]]
 
 Classe 1:
-Accuracy: 0.9493
-Recall: 0.8903
+Accuracy: 0.9515
+Recall: 0.8957
 
 Classe 2:
-Accuracy: 0.9803
-Recall: 0.9767
+Accuracy: 0.9807
+Recall: 0.9795
 
 Classe 3:
-Accuracy: 0.9313
-Recall: 0.8523
+Accuracy: 0.9337
+Recall: 0.8543
 
 Classe 4:
-Accuracy: 0.9360
-Recall: 0.8747
+Accuracy: 0.9383
+Recall: 0.8788
 
 Configuration: 2-gram_standard
 Matrice de confusion:
-[[5329,  216,  259,  196],
+[[5334,  213,  257,  196],
  [ 116, 5810,   31,   43],
- [ 249,   58, 5119,  574],
- [ 216,   57,  486, 5241]]
+ [ 239,   56, 5130,  575],
+ [ 217,   55,  483, 5245]]
 
 Classe 1:
-Accuracy: 0.9478
-Recall: 0.8882
+Accuracy: 0.9484
+Recall: 0.8890
 
 Classe 2:
-Accuracy: 0.9783
+Accuracy: 0.9786
 Recall: 0.9683
 
 Classe 3:
-Accuracy: 0.9310
-Recall: 0.8532
+Accuracy: 0.9316
+Recall: 0.8550
 
 Classe 4:
-Accuracy: 0.9345
-Recall: 0.8735
+Accuracy: 0.9346
+Recall: 0.8742
 
 Configuration: 2-gram_laplace
 Matrice de confusion:
-[[5355,  245,  245,  155],
- [  64, 5874,   35,   27],
- [ 203,   71, 5196,  530],
- [ 244,   71,  433, 5252]]
+[[5366,  240,  249,  145],
+ [  62, 5876,   34,   28],
+ [ 202,   66, 5208,  524],
+ [ 234,   69,  424, 5273]]
 
 Classe 1:
-Accuracy: 0.9518
-Recall: 0.8925
+Accuracy: 0.9528
+Recall: 0.8943
 
 Classe 2:
-Accuracy: 0.9786
-Recall: 0.9790
+Accuracy: 0.9792
+Recall: 0.9793
 
 Classe 3:
-Accuracy: 0.9368
-Recall: 0.8660
+Accuracy: 0.9375
+Recall: 0.8680
 
 Classe 4:
-Accuracy: 0.9392
-Recall: 0.8753
+Accuracy: 0.9407
+Recall: 0.8788
 
 Configuration: 2-gram_goodturing
 Matrice de confusion:
-[[5355,  245,  245,  155],
- [  64, 5874,   35,   27],
- [ 203,   71, 5196,  530],
- [ 244,   71,  433, 5252]]
+[[5366,  240,  249,  145],
+ [  62, 5876,   34,   28],
+ [ 202,   66, 5208,  524],
+ [ 234,   69,  424, 5273]]
 
 Classe 1:
-Accuracy: 0.9518
-Recall: 0.8925
+Accuracy: 0.9528
+Recall: 0.8943
 
 Classe 2:
-Accuracy: 0.9786
-Recall: 0.9790
+Accuracy: 0.9792
+Recall: 0.9793
 
 Classe 3:
-Accuracy: 0.9368
-Recall: 0.8660
+Accuracy: 0.9375
+Recall: 0.8680
 
 Classe 4:
-Accuracy: 0.9392
-Recall: 0.8753
+Accuracy: 0.9407
+Recall: 0.8788
 
 Configuration: 3-gram_standard
 Matrice de confusion:
-[[5247,  268,  287,  198],
- [ 163, 5677,   60,  100],
- [ 300,  120, 4967,  613],
- [ 296,  146,  545, 5013]]
+[[5247,  269,  286,  198],
+ [ 163, 5676,   60,  101],
+ [ 299,  121, 4966,  614],
+ [ 297,  145,  541, 5017]]
 
 Classe 1:
 Accuracy: 0.9370
 Recall: 0.8745
 
 Classe 2:
-Accuracy: 0.9643
-Recall: 0.9462
+Accuracy: 0.9642
+Recall: 0.9460
 
 Classe 3:
-Accuracy: 0.9198
-Recall: 0.8278
+Accuracy: 0.9200
+Recall: 0.8277
 
 Classe 4:
-Accuracy: 0.9209
-Recall: 0.8355
+Accuracy: 0.9210
+Recall: 0.8362
 
 Configuration: 3-gram_laplace
 Matrice de confusion:
-[[5243,  288,  287,  182],
- [ 132, 5709,   71,   88],
- [ 264,  131, 5049,  556],
- [ 316,  161,  532, 4991]]
+[[5239,  289,  290,  182],
+ [ 132, 5707,   71,   90],
+ [ 257,  133, 5055,  555],
+ [ 317,  161,  529, 4993]]
 
 Classe 1:
-Accuracy: 0.9388
-Recall: 0.8738
+Accuracy: 0.9389
+Recall: 0.8732
 
 Classe 2:
-Accuracy: 0.9637
-Recall: 0.9515
+Accuracy: 0.9635
+Recall: 0.9512
 
 Classe 3:
-Accuracy: 0.9233
-Recall: 0.8415
+Accuracy: 0.9235
+Recall: 0.8425
 
 Classe 4:
-Accuracy: 0.9235
-Recall: 0.8318
+Accuracy: 0.9236
+Recall: 0.8322
 
 Configuration: 3-gram_goodturing
 Matrice de confusion:
-[[5243,  288,  287,  182],
- [ 132, 5709,   71,   88],
- [ 264,  131, 5049,  556],
- [ 316,  161,  532, 4991]]
+[[5239,  289,  290,  182],
+ [ 132, 5707,   71,   90],
+ [ 257,  133, 5055,  555],
+ [ 317,  161,  529, 4993]]
 
 Classe 1:
-Accuracy: 0.9388
-Recall: 0.8738
+Accuracy: 0.9389
+Recall: 0.8732
 
 Classe 2:
-Accuracy: 0.9637
-Recall: 0.9515
+Accuracy: 0.9635
+Recall: 0.9512
 
 Classe 3:
-Accuracy: 0.9233
-Recall: 0.8415
+Accuracy: 0.9235
+Recall: 0.8425
 
 Classe 4:
-Accuracy: 0.9235
-Recall: 0.8318
+Accuracy: 0.9236
+Recall: 0.8322
 
 Configuration: interpolation
 Matrice de confusion:
-[[5390,  226,  240,  144],
- [  54, 5887,   37,   22],
- [ 205,   55, 5209,  531],
- [ 214,   45,  415, 5326]]
+[[5397,  225,  239,  139],
+ [  51, 5897,   32,   20],
+ [ 200,   49, 5228,  523],
+ [ 222,   50,  407, 5321]]
 
 Classe 1:
-Accuracy: 0.9549
-Recall: 0.8983
+Accuracy: 0.9552
+Recall: 0.8995
 
 Classe 2:
-Accuracy: 0.9817
-Recall: 0.9812
+Accuracy: 0.9822
+Recall: 0.9828
 
 Classe 3:
-Accuracy: 0.9382
-Recall: 0.8682
+Accuracy: 0.9396
+Recall: 0.8713
 
 Classe 4:
-Accuracy: 0.9429
-Recall: 0.8877
+Accuracy: 0.9433
+Recall: 0.8868
 
 Fold 3:
 
 Configuration: 1-gram_standard
 Matrice de confusion:
-[[5176,  222,  310,  292],
- [ 168, 5671,   64,   97],
- [ 313,   81, 4956,  650],
- [ 243,   44,  521, 5192]]
+[[5178,  222,  306,  294],
+ [ 171, 5673,   63,   93],
+ [ 304,   85, 4967,  644],
+ [ 237,   46,  507, 5210]]
 
 Classe 1:
-Accuracy: 0.9355
-Recall: 0.8627
+Accuracy: 0.9361
+Recall: 0.8630
 
 Classe 2:
-Accuracy: 0.9718
-Recall: 0.9452
+Accuracy: 0.9717
+Recall: 0.9455
 
 Classe 3:
-Accuracy: 0.9192
-Recall: 0.8260
+Accuracy: 0.9205
+Recall: 0.8278
 
 Classe 4:
-Accuracy: 0.9230
-Recall: 0.8653
+Accuracy: 0.9241
+Recall: 0.8683
 
 Configuration: 1-gram_laplace
 Matrice de confusion:
-[[5369,  200,  260,  171],
- [  55, 5872,   31,   42],
- [ 225,   58, 5141,  576],
- [ 205,   49,  427, 5319]]
+[[5385,  206,  252,  157],
+ [  42, 5891,   26,   41],
+ [ 214,   64, 5160,  562],
+ [ 195,   48,  398, 5359]]
 
 Classe 1:
-Accuracy: 0.9535
-Recall: 0.8948
+Accuracy: 0.9556
+Recall: 0.8975
 
 Classe 2:
-Accuracy: 0.9819
-Recall: 0.9787
+Accuracy: 0.9822
+Recall: 0.9818
 
 Classe 3:
-Accuracy: 0.9343
-Recall: 0.8568
+Accuracy: 0.9368
+Recall: 0.8600
 
 Classe 4:
-Accuracy: 0.9387
-Recall: 0.8865
+Accuracy: 0.9416
+Recall: 0.8932
 
 Configuration: 1-gram_goodturing
 Matrice de confusion:
-[[5369,  200,  260,  171],
- [  55, 5872,   31,   42],
- [ 225,   58, 5141,  576],
- [ 205,   49,  427, 5319]]
+[[5385,  206,  252,  157],
+ [  42, 5891,   26,   41],
+ [ 214,   64, 5160,  562],
+ [ 195,   48,  398, 5359]]
 
 Classe 1:
-Accuracy: 0.9535
-Recall: 0.8948
+Accuracy: 0.9556
+Recall: 0.8975
 
 Classe 2:
-Accuracy: 0.9819
-Recall: 0.9787
+Accuracy: 0.9822
+Recall: 0.9818
 
 Classe 3:
-Accuracy: 0.9343
-Recall: 0.8568
+Accuracy: 0.9368
+Recall: 0.8600
 
 Classe 4:
-Accuracy: 0.9387
-Recall: 0.8865
+Accuracy: 0.9416
+Recall: 0.8932
 
 Configuration: 2-gram_standard
 Matrice de confusion:
-[[5400,  181,  239,  180],
- [ 104, 5806,   32,   58],
- [ 234,   57, 5141,  568],
- [ 192,   41,  457, 5310]]
+[[5401,  179,  237,  183],
+ [ 102, 5806,   33,   59],
+ [ 235,   52, 5148,  565],
+ [ 190,   38,  457, 5315]]
 
 Classe 1:
-Accuracy: 0.9529
-Recall: 0.9000
+Accuracy: 0.9531
+Recall: 0.9002
 
 Classe 2:
-Accuracy: 0.9803
+Accuracy: 0.9807
 Recall: 0.9677
 
 Classe 3:
-Accuracy: 0.9339
-Recall: 0.8568
+Accuracy: 0.9342
+Recall: 0.8580
 
 Classe 4:
-Accuracy: 0.9377
-Recall: 0.8850
+Accuracy: 0.9378
+Recall: 0.8858
 
 Configuration: 2-gram_laplace
 Matrice de confusion:
-[[5397,  207,  249,  147],
- [  60, 5863,   27,   50],
- [ 191,   80, 5244,  485],
- [ 207,   57,  411, 5325]]
+[[5394,  207,  250,  149],
+ [  61, 5866,   25,   48],
+ [ 190,   77, 5248,  485],
+ [ 196,   54,  411, 5339]]
 
 Classe 1:
-Accuracy: 0.9558
-Recall: 0.8995
+Accuracy: 0.9561
+Recall: 0.8990
 
 Classe 2:
-Accuracy: 0.9800
-Recall: 0.9772
+Accuracy: 0.9803
+Recall: 0.9777
 
 Classe 3:
-Accuracy: 0.9399
-Recall: 0.8740
+Accuracy: 0.9401
+Recall: 0.8747
 
 Classe 4:
-Accuracy: 0.9435
-Recall: 0.8875
+Accuracy: 0.9440
+Recall: 0.8898
 
 Configuration: 2-gram_goodturing
 Matrice de confusion:
-[[5397,  207,  249,  147],
- [  60, 5863,   27,   50],
- [ 191,   80, 5244,  485],
- [ 207,   57,  411, 5325]]
+[[5394,  207,  250,  149],
+ [  61, 5866,   25,   48],
+ [ 190,   77, 5248,  485],
+ [ 196,   54,  411, 5339]]
 
 Classe 1:
-Accuracy: 0.9558
-Recall: 0.8995
+Accuracy: 0.9561
+Recall: 0.8990
 
 Classe 2:
-Accuracy: 0.9800
-Recall: 0.9772
+Accuracy: 0.9803
+Recall: 0.9777
 
 Classe 3:
-Accuracy: 0.9399
-Recall: 0.8740
+Accuracy: 0.9401
+Recall: 0.8747
 
 Classe 4:
-Accuracy: 0.9435
-Recall: 0.8875
+Accuracy: 0.9440
+Recall: 0.8898
 
 Configuration: 3-gram_standard
 Matrice de confusion:
-[[5340,  219,  265,  176],
- [ 148, 5671,   64,  117],
- [ 289,  116, 4992,  603],
- [ 294,  128,  538, 5040]]
+[[5336,  221,  267,  176],
+ [ 148, 5670,   64,  118],
+ [ 289,  116, 4996,  599],
+ [ 290,  127,  543, 5040]]
 
 Classe 1:
 Accuracy: 0.9420
-Recall: 0.8900
+Recall: 0.8893
 
 Classe 2:
-Accuracy: 0.9670
-Recall: 0.9452
+Accuracy: 0.9669
+Recall: 0.9450
 
 Classe 3:
-Accuracy: 0.9219
-Recall: 0.8320
+Accuracy: 0.9217
+Recall: 0.8327
 
 Classe 4:
-Accuracy: 0.9227
+Accuracy: 0.9228
 Recall: 0.8400
 
 Configuration: 3-gram_laplace
 Matrice de confusion:
-[[5327,  233,  270,  170],
- [ 121, 5698,   65,  116],
- [ 256,  132, 5074,  538],
- [ 313,  160,  521, 5006]]
+[[5323,  233,  275,  169],
+ [ 120, 5699,   65,  116],
+ [ 257,  129, 5078,  536],
+ [ 310,  159,  519, 5012]]
 
 Classe 1:
 Accuracy: 0.9432
-Recall: 0.8878
+Recall: 0.8872
 
 Classe 2:
-Accuracy: 0.9655
-Recall: 0.9497
+Accuracy: 0.9657
+Recall: 0.9498
 
 Classe 3:
-Accuracy: 0.9257
-Recall: 0.8457
+Accuracy: 0.9258
+Recall: 0.8463
 
 Classe 4:
-Accuracy: 0.9243
-Recall: 0.8343
+Accuracy: 0.9246
+Recall: 0.8353
 
 Configuration: 3-gram_goodturing
 Matrice de confusion:
-[[5327,  233,  270,  170],
- [ 121, 5698,   65,  116],
- [ 256,  132, 5074,  538],
- [ 313,  160,  521, 5006]]
+[[5323,  233,  275,  169],
+ [ 120, 5699,   65,  116],
+ [ 257,  129, 5078,  536],
+ [ 310,  159,  519, 5012]]
 
 Classe 1:
 Accuracy: 0.9432
-Recall: 0.8878
+Recall: 0.8872
 
 Classe 2:
-Accuracy: 0.9655
-Recall: 0.9497
+Accuracy: 0.9657
+Recall: 0.9498
 
 Classe 3:
-Accuracy: 0.9257
-Recall: 0.8457
+Accuracy: 0.9258
+Recall: 0.8463
 
 Classe 4:
-Accuracy: 0.9243
-Recall: 0.8343
+Accuracy: 0.9246
+Recall: 0.8353
 
 Configuration: interpolation
 Matrice de confusion:
-[[5403,  193,  243,  161],
- [  50, 5880,   31,   39],
- [ 190,   58, 5219,  533],
- [ 183,   40,  391, 5386]]
+[[5423,  187,  242,  148],
+ [  42, 5894,   24,   40],
+ [ 182,   63, 5243,  512],
+ [ 182,   38,  378, 5402]]
 
 Classe 1:
-Accuracy: 0.9575
-Recall: 0.9005
+Accuracy: 0.9590
+Recall: 0.9038
 
 Classe 2:
-Accuracy: 0.9829
-Recall: 0.9800
+Accuracy: 0.9836
+Recall: 0.9823
 
 Classe 3:
-Accuracy: 0.9397
-Recall: 0.8698
+Accuracy: 0.9416
+Recall: 0.8738
 
 Classe 4:
-Accuracy: 0.9439
-Recall: 0.8977
+Accuracy: 0.9459
+Recall: 0.9003
 
 Fold 4:
 
 Configuration: 1-gram_standard
 Matrice de confusion:
-[[5154,  212,  334,  300],
- [ 216, 5647,   43,   94],
- [ 304,   83, 4939,  674],
- [ 258,   53,  533, 5156]]
+[[5159,  213,  333,  295],
+ [ 215, 5657,   43,   85],
+ [ 296,   86, 4954,  664],
+ [ 249,   51,  520, 5180]]
 
 Classe 1:
-Accuracy: 0.9323
-Recall: 0.8590
+Accuracy: 0.9333
+Recall: 0.8598
 
 Classe 2:
-Accuracy: 0.9708
-Recall: 0.9412
+Accuracy: 0.9711
+Recall: 0.9428
 
 Classe 3:
-Accuracy: 0.9179
-Recall: 0.8232
+Accuracy: 0.9191
+Recall: 0.8257
 
 Classe 4:
-Accuracy: 0.9203
-Recall: 0.8593
+Accuracy: 0.9223
+Recall: 0.8633
 
 Configuration: 1-gram_laplace
 Matrice de confusion:
-[[5336,  191,  275,  198],
- [  67, 5878,   21,   34],
- [ 215,   57, 5115,  613],
- [ 228,   53,  423, 5296]]
+[[5361,  184,  259,  196],
+ [  55, 5895,   20,   30],
+ [ 205,   61, 5145,  589],
+ [ 217,   55,  399, 5329]]
 
 Classe 1:
-Accuracy: 0.9511
-Recall: 0.8893
+Accuracy: 0.9535
+Recall: 0.8935
 
 Classe 2:
-Accuracy: 0.9824
-Recall: 0.9797
+Accuracy: 0.9831
+Recall: 0.9825
 
 Classe 3:
-Accuracy: 0.9332
-Recall: 0.8525
+Accuracy: 0.9361
+Recall: 0.8575
 
 Classe 4:
-Accuracy: 0.9355
-Recall: 0.8827
+Accuracy: 0.9381
+Recall: 0.8882
 
 Configuration: 1-gram_goodturing
 Matrice de confusion:
-[[5336,  191,  275,  198],
- [  67, 5878,   21,   34],
- [ 215,   57, 5115,  613],
- [ 228,   53,  423, 5296]]
+[[5361,  184,  259,  196],
+ [  55, 5895,   20,   30],
+ [ 205,   61, 5145,  589],
+ [ 217,   55,  399, 5329]]
 
 Classe 1:
-Accuracy: 0.9511
-Recall: 0.8893
+Accuracy: 0.9535
+Recall: 0.8935
 
 Classe 2:
-Accuracy: 0.9824
-Recall: 0.9797
+Accuracy: 0.9831
+Recall: 0.9825
 
 Classe 3:
-Accuracy: 0.9332
-Recall: 0.8525
+Accuracy: 0.9361
+Recall: 0.8575
 
 Classe 4:
-Accuracy: 0.9355
-Recall: 0.8827
+Accuracy: 0.9381
+Recall: 0.8882
 
 Configuration: 2-gram_standard
 Matrice de confusion:
-[[5333,  191,  244,  232],
- [  98, 5829,   24,   49],
- [ 225,   58, 5113,  604],
- [ 224,   42,  422, 5312]]
+[[5329,  189,  248,  234],
+ [  99, 5828,   23,   50],
+ [ 217,   57, 5127,  599],
+ [ 220,   43,  420, 5317]]
 
 Classe 1:
-Accuracy: 0.9494
-Recall: 0.8888
+Accuracy: 0.9497
+Recall: 0.8882
 
 Classe 2:
 Accuracy: 0.9808
-Recall: 0.9715
+Recall: 0.9713
 
 Classe 3:
-Accuracy: 0.9343
-Recall: 0.8522
+Accuracy: 0.9348
+Recall: 0.8545
 
 Classe 4:
-Accuracy: 0.9345
-Recall: 0.8853
+Accuracy: 0.9347
+Recall: 0.8862
 
 Configuration: 2-gram_laplace
 Matrice de confusion:
-[[5389,  199,  230,  182],
- [  56, 5890,   23,   31],
- [ 199,   84, 5162,  555],
- [ 220,   63,  399, 5318]]
+[[5381,  200,  231,  188],
+ [  59, 5892,   20,   29],
+ [ 192,   86, 5175,  547],
+ [ 218,   63,  399, 5320]]
 
 Classe 1:
 Accuracy: 0.9547
-Recall: 0.8982
+Recall: 0.8968
 
 Classe 2:
 Accuracy: 0.9810
-Recall: 0.9817
+Recall: 0.9820
 
 Classe 3:
-Accuracy: 0.9379
-Recall: 0.8603
+Accuracy: 0.9385
+Recall: 0.8625
 
 Classe 4:
-Accuracy: 0.9396
-Recall: 0.8863
+Accuracy: 0.9398
+Recall: 0.8867
 
 Configuration: 2-gram_goodturing
 Matrice de confusion:
-[[5389,  199,  230,  182],
- [  56, 5890,   23,   31],
- [ 199,   84, 5162,  555],
- [ 220,   63,  399, 5318]]
+[[5381,  200,  231,  188],
+ [  59, 5892,   20,   29],
+ [ 192,   86, 5175,  547],
+ [ 218,   63,  399, 5320]]
 
 Classe 1:
 Accuracy: 0.9547
-Recall: 0.8982
+Recall: 0.8968
 
 Classe 2:
 Accuracy: 0.9810
-Recall: 0.9817
+Recall: 0.9820
 
 Classe 3:
-Accuracy: 0.9379
-Recall: 0.8603
+Accuracy: 0.9385
+Recall: 0.8625
 
 Classe 4:
-Accuracy: 0.9396
-Recall: 0.8863
+Accuracy: 0.9398
+Recall: 0.8867
 
 Configuration: 3-gram_standard
 Matrice de confusion:
-[[5259,  232,  270,  239],
- [ 170, 5668,   52,  110],
- [ 301,  124, 4988,  587],
- [ 294,  138,  550, 5018]]
+[[5258,  232,  271,  239],
+ [ 167, 5672,   52,  109],
+ [ 300,  124, 4991,  585],
+ [ 297,  137,  547, 5019]]
 
 Classe 1:
 Accuracy: 0.9373
-Recall: 0.8765
+Recall: 0.8763
 
 Classe 2:
-Accuracy: 0.9656
-Recall: 0.9447
+Accuracy: 0.9658
+Recall: 0.9453
 
 Classe 3:
-Accuracy: 0.9215
-Recall: 0.8313
+Accuracy: 0.9217
+Recall: 0.8318
 
 Classe 4:
-Accuracy: 0.9201
-Recall: 0.8363
+Accuracy: 0.9203
+Recall: 0.8365
 
 Configuration: 3-gram_laplace
 Matrice de confusion:
-[[5267,  242,  270,  221],
- [ 136, 5700,   59,  105],
- [ 263,  141, 5039,  557],
- [ 302,  150,  530, 5018]]
+[[5269,  242,  269,  220],
+ [ 133, 5705,   57,  105],
+ [ 263,  142, 5036,  559],
+ [ 303,  150,  528, 5019]]
 
 Classe 1:
-Accuracy: 0.9403
-Recall: 0.8778
+Accuracy: 0.9404
+Recall: 0.8782
 
 Classe 2:
-Accuracy: 0.9653
-Recall: 0.9500
+Accuracy: 0.9655
+Recall: 0.9508
 
 Classe 3:
-Accuracy: 0.9242
-Recall: 0.8398
+Accuracy: 0.9243
+Recall: 0.8393
 
 Classe 4:
 Accuracy: 0.9223
-Recall: 0.8363
+Recall: 0.8365
 
 Configuration: 3-gram_goodturing
 Matrice de confusion:
-[[5267,  242,  270,  221],
- [ 136, 5700,   59,  105],
- [ 263,  141, 5039,  557],
- [ 302,  150,  530, 5018]]
+[[5269,  242,  269,  220],
+ [ 133, 5705,   57,  105],
+ [ 263,  142, 5036,  559],
+ [ 303,  150,  528, 5019]]
 
 Classe 1:
-Accuracy: 0.9403
-Recall: 0.8778
+Accuracy: 0.9404
+Recall: 0.8782
 
 Classe 2:
-Accuracy: 0.9653
-Recall: 0.9500
+Accuracy: 0.9655
+Recall: 0.9508
 
 Classe 3:
-Accuracy: 0.9242
-Recall: 0.8398
+Accuracy: 0.9243
+Recall: 0.8393
 
 Classe 4:
 Accuracy: 0.9223
-Recall: 0.8363
+Recall: 0.8365
 
 Configuration: interpolation
 Matrice de confusion:
-[[5379,  184,  255,  182],
- [  49, 5911,   13,   27],
- [ 187,   57, 5185,  571],
- [ 207,   40,  391, 5362]]
+[[5389,  184,  248,  179],
+ [  43, 5915,   14,   28],
+ [ 183,   60, 5202,  555],
+ [ 199,   44,  377, 5380]]
 
 Classe 1:
-Accuracy: 0.9557
-Recall: 0.8965
+Accuracy: 0.9568
+Recall: 0.8982
 
 Classe 2:
-Accuracy: 0.9846
-Recall: 0.9852
+Accuracy: 0.9845
+Recall: 0.9858
 
 Classe 3:
-Accuracy: 0.9386
-Recall: 0.8642
+Accuracy: 0.9401
+Recall: 0.8670
 
 Classe 4:
-Accuracy: 0.9409
-Recall: 0.8937
+Accuracy: 0.9424
+Recall: 0.8967
 
 Fold 5:
 
 Configuration: 1-gram_standard
 Matrice de confusion:
-[[5172,  231,  307,  290],
- [ 186, 5664,   61,   89],
- [ 315,   80, 4920,  685],
- [ 261,   45,  528, 5166]]
+[[5159,  237,  305,  299],
+ [ 181, 5676,   57,   86],
+ [ 307,   85, 4919,  689],
+ [ 262,   42,  489, 5207]]
 
 Classe 1:
 Accuracy: 0.9337
-Recall: 0.8620
+Recall: 0.8598
 
 Classe 2:
-Accuracy: 0.9712
-Recall: 0.9440
+Accuracy: 0.9713
+Recall: 0.9460
 
 Classe 3:
-Accuracy: 0.9177
-Recall: 0.8200
+Accuracy: 0.9195
+Recall: 0.8198
 
 Classe 4:
-Accuracy: 0.9209
-Recall: 0.8610
+Accuracy: 0.9222
+Recall: 0.8678
 
 Configuration: 1-gram_laplace
 Matrice de confusion:
-[[5364,  199,  261,  176],
- [  66, 5864,   35,   35],
- [ 221,   54, 5107,  618],
- [ 237,   37,  434, 5292]]
+[[5368,  202,  259,  171],
+ [  61, 5881,   28,   30],
+ [ 200,   59, 5127,  614],
+ [ 229,   33,  377, 5361]]
 
 Classe 1:
-Accuracy: 0.9517
-Recall: 0.8940
+Accuracy: 0.9533
+Recall: 0.8947
 
 Classe 2:
-Accuracy: 0.9822
-Recall: 0.9773
+Accuracy: 0.9828
+Recall: 0.9802
 
 Classe 3:
-Accuracy: 0.9324
-Recall: 0.8512
+Accuracy: 0.9360
+Recall: 0.8545
 
 Classe 4:
-Accuracy: 0.9360
-Recall: 0.8820
+Accuracy: 0.9394
+Recall: 0.8935
 
 Configuration: 1-gram_goodturing
 Matrice de confusion:
-[[5364,  199,  261,  176],
- [  66, 5864,   35,   35],
- [ 221,   54, 5107,  618],
- [ 237,   37,  434, 5292]]
+[[5368,  202,  259,  171],
+ [  61, 5881,   28,   30],
+ [ 200,   59, 5127,  614],
+ [ 229,   33,  377, 5361]]
 
 Classe 1:
-Accuracy: 0.9517
-Recall: 0.8940
+Accuracy: 0.9533
+Recall: 0.8947
 
 Classe 2:
-Accuracy: 0.9822
-Recall: 0.9773
+Accuracy: 0.9828
+Recall: 0.9802
 
 Classe 3:
-Accuracy: 0.9324
-Recall: 0.8512
+Accuracy: 0.9360
+Recall: 0.8545
 
 Classe 4:
-Accuracy: 0.9360
-Recall: 0.8820
+Accuracy: 0.9394
+Recall: 0.8935
 
 Configuration: 2-gram_standard
 Matrice de confusion:
-[[5372,  175,  257,  196],
- [ 107, 5820,   19,   54],
- [ 240,   63, 5099,  598],
- [ 222,   54,  437, 5287]]
+[[5367,  173,  260,  200],
+ [ 106, 5819,   19,   56],
+ [ 238,   60, 5110,  592],
+ [ 218,   54,  436, 5292]]
 
 Classe 1:
-Accuracy: 0.9501
-Recall: 0.8953
+Accuracy: 0.9502
+Recall: 0.8945
 
 Classe 2:
-Accuracy: 0.9803
-Recall: 0.9700
+Accuracy: 0.9805
+Recall: 0.9698
 
 Classe 3:
-Accuracy: 0.9327
-Recall: 0.8498
+Accuracy: 0.9331
+Recall: 0.8517
 
 Classe 4:
-Accuracy: 0.9350
-Recall: 0.8812
+Accuracy: 0.9352
+Recall: 0.8820
 
 Configuration: 2-gram_laplace
 Matrice de confusion:
-[[5395,  191,  252,  162],
- [  79, 5850,   26,   45],
- [ 210,   82, 5175,  533],
- [ 223,   60,  399, 5318]]
+[[5400,  188,  253,  159],
+ [  77, 5853,   24,   46],
+ [ 211,   80, 5184,  525],
+ [ 220,   60,  390, 5330]]
 
 Classe 1:
-Accuracy: 0.9535
-Recall: 0.8992
+Accuracy: 0.9538
+Recall: 0.9000
 
 Classe 2:
-Accuracy: 0.9799
-Recall: 0.9750
+Accuracy: 0.9802
+Recall: 0.9755
 
 Classe 3:
-Accuracy: 0.9374
-Recall: 0.8625
+Accuracy: 0.9382
+Recall: 0.8640
 
 Classe 4:
-Accuracy: 0.9407
-Recall: 0.8863
+Accuracy: 0.9417
+Recall: 0.8883
 
 Configuration: 2-gram_goodturing
 Matrice de confusion:
-[[5395,  191,  252,  162],
- [  79, 5850,   26,   45],
- [ 210,   82, 5175,  533],
- [ 223,   60,  399, 5318]]
+[[5400,  188,  253,  159],
+ [  77, 5853,   24,   46],
+ [ 211,   80, 5184,  525],
+ [ 220,   60,  390, 5330]]
 
 Classe 1:
-Accuracy: 0.9535
-Recall: 0.8992
+Accuracy: 0.9538
+Recall: 0.9000
 
 Classe 2:
-Accuracy: 0.9799
-Recall: 0.9750
+Accuracy: 0.9802
+Recall: 0.9755
 
 Classe 3:
-Accuracy: 0.9374
-Recall: 0.8625
+Accuracy: 0.9382
+Recall: 0.8640
 
 Classe 4:
-Accuracy: 0.9407
-Recall: 0.8863
+Accuracy: 0.9417
+Recall: 0.8883
 
 Configuration: 3-gram_standard
 Matrice de confusion:
-[[5291,  218,  265,  226],
- [ 175, 5650,   57,  118],
- [ 311,  104, 4946,  639],
- [ 313,  155,  508, 5024]]
+[[5287,  218,  266,  229],
+ [ 176, 5649,   58,  117],
+ [ 314,  104, 4949,  633],
+ [ 314,  155,  503, 5028]]
 
 Classe 1:
-Accuracy: 0.9372
-Recall: 0.8818
+Accuracy: 0.9368
+Recall: 0.8812
 
 Classe 2:
 Accuracy: 0.9655
-Recall: 0.9417
+Recall: 0.9415
 
 Classe 3:
-Accuracy: 0.9215
-Recall: 0.8243
+Accuracy: 0.9217
+Recall: 0.8248
 
 Classe 4:
-Accuracy: 0.9184
-Recall: 0.8373
+Accuracy: 0.9187
+Recall: 0.8380
 
 Configuration: 3-gram_laplace
 Matrice de confusion:
-[[5282,  231,  259,  228],
- [ 139, 5685,   67,  109],
- [ 295,  121, 5014,  570],
- [ 331,  156,  490, 5023]]
+[[5281,  231,  262,  226],
+ [ 139, 5686,   66,  109],
+ [ 295,  123, 5018,  564],
+ [ 330,  155,  489, 5026]]
 
 Classe 1:
 Accuracy: 0.9382
-Recall: 0.8803
+Recall: 0.8802
 
 Classe 2:
 Accuracy: 0.9657
-Recall: 0.9475
+Recall: 0.9477
 
 Classe 3:
-Accuracy: 0.9249
-Recall: 0.8357
+Accuracy: 0.9250
+Recall: 0.8363
 
 Classe 4:
-Accuracy: 0.9215
-Recall: 0.8372
+Accuracy: 0.9220
+Recall: 0.8377
 
 Configuration: 3-gram_goodturing
 Matrice de confusion:
-[[5282,  231,  259,  228],
- [ 139, 5685,   67,  109],
- [ 295,  121, 5014,  570],
- [ 331,  156,  490, 5023]]
+[[5281,  231,  262,  226],
+ [ 139, 5686,   66,  109],
+ [ 295,  123, 5018,  564],
+ [ 330,  155,  489, 5026]]
 
 Classe 1:
 Accuracy: 0.9382
-Recall: 0.8803
+Recall: 0.8802
 
 Classe 2:
 Accuracy: 0.9657
-Recall: 0.9475
+Recall: 0.9477
 
 Classe 3:
-Accuracy: 0.9249
-Recall: 0.8357
+Accuracy: 0.9250
+Recall: 0.8363
 
 Classe 4:
-Accuracy: 0.9215
-Recall: 0.8372
+Accuracy: 0.9220
+Recall: 0.8377
 
 Configuration: interpolation
 Matrice de confusion:
-[[5401,  193,  244,  162],
- [  67, 5886,   24,   23],
- [ 195,   59, 5197,  549],
- [ 204,   39,  386, 5371]]
+[[5407,  190,  243,  160],
+ [  62, 5893,   21,   24],
+ [ 191,   59, 5195,  555],
+ [ 214,   31,  361, 5394]]
 
 Classe 1:
-Accuracy: 0.9556
-Recall: 0.9002
+Accuracy: 0.9558
+Recall: 0.9012
 
 Classe 2:
-Accuracy: 0.9831
-Recall: 0.9810
+Accuracy: 0.9839
+Recall: 0.9822
 
 Classe 3:
-Accuracy: 0.9393
-Recall: 0.8662
+Accuracy: 0.9404
+Recall: 0.8658
 
 Classe 4:
-Accuracy: 0.9432
-Recall: 0.8952
+Accuracy: 0.9440
+Recall: 0.8990

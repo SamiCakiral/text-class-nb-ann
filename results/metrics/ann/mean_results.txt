@@ -2,13 +2,13 @@
 
 
 Configuration: ann_5_words
-Accuracy: 0.6973 (±0.0016)
-Recall: 0.6973 (±0.0016)
+Accuracy: 0.8776 (±0.0023)
+Recall: 0.8776 (±0.0023)
 
 Configuration: ann_10_words
-Accuracy: 0.6976 (±0.0013)
-Recall: 0.6976 (±0.0013)
+Accuracy: 0.8785 (±0.0023)
+Recall: 0.8785 (±0.0023)
 
 Configuration: ann_15_words
-Accuracy: 0.6980 (±0.0016)
-Recall: 0.6980 (±0.0016)
+Accuracy: 0.8790 (±0.0022)
+Recall: 0.8790 (±0.0022)
