@@ -5,7 +5,7 @@ from src.data_preprocessing import DataPreprocessor
 from src.feature_extraction import FeatureExtractor
 from src.naive_bayes import CustomNaiveBayes
 from src.neural_network import TextClassifierANN
-from src.utils import plot_confusion_matrix, save_metrics
+from src.utils import plot_confusion_matrix, save_metrics, save_detailed_metrics
 from tqdm import tqdm
 import numpy as np
 
@@ -112,11 +112,9 @@ def run_ann_experiments(train_texts, test_texts, train_labels, test_labels):
 
     # Extraction des caractéristiques TF-IDF
     print("\nCalcul des TF-IDF...")
-    with tqdm(total=2, desc="Extraction TF-IDF") as pbar:
-        train_tfidf = feature_extractor.extract_tfidf_features(train_texts)
-        pbar.update(1)
-        test_tfidf = feature_extractor.tfidf_vectorizer.transform(test_texts)
-        pbar.update(1)
+    train_tfidf = feature_extractor.extract_tfidf_features(train_texts)
+    test_tfidf = feature_extractor.tfidf_vectorizer.transform(test_texts)
+
 
     # Test différentes tailles de vocabulaire
     for n_words in [5, 10, 15]:
@@ -131,8 +129,7 @@ def run_ann_experiments(train_texts, test_texts, train_labels, test_labels):
             ann_classifier.train(train_tfidf, train_labels, progress_bar=pbar)
         
         # Évaluation avec suivi de progression
-        with tqdm(total=1, desc="Évaluation") as pbar:
-            results[f'ann_{n_words}_words'] = ann_classifier.evaluate(test_tfidf, test_labels, pbar)
+        results[f'ann_{n_words}_words'] = ann_classifier.evaluate(test_tfidf, test_labels)
         
         # Affichage des résultats
         print(f"Accuracy: {results[f'ann_{n_words}_words']['accuracy']:.4f}")
@@ -258,50 +255,11 @@ def main():
             'recall_std': np.std(recalls)
         }
     
-    # Sauvegarde des résultats
-    metrics_path = os.path.join(args.output_dir, 'metrics', 'results.txt')
-    
     # Sauvegarde des résultats détaillés
-    with open(metrics_path, 'w') as f:
-        # Résultats Naive Bayes
-        f.write("=== Résultats Naive Bayes ===\n\n")
-        
-        # Résultats moyens
-        f.write("Résultats moyens sur tous les folds:\n")
-        for method_key, results in nb_results['mean_results'].items():
-            f.write(f"\n{method_key}:\n")
-            f.write(f"Accuracy: {results['accuracy_mean']:.4f} (±{results['accuracy_std']:.4f})\n")
-            f.write(f"Recall: {results['recall_mean']:.4f} (±{results['recall_std']:.4f})\n")
-        
-        # Résultats par fold
-        f.write("\nRésultats détaillés par fold:\n")
-        for fold_result in nb_results['fold_results']:
-            f.write(f"\nFold {fold_result['fold_idx'] + 1}:\n")
-            for method_key, metrics in fold_result['results'].items():
-                f.write(f"{method_key}:\n")
-                f.write(f"Accuracy: {metrics['accuracy']:.4f}\n")
-                f.write(f"Recall: {metrics['recall']:.4f}\n")
-        
-        # Résultats ANN
-        f.write("\n\n=== Résultats ANN ===\n\n")
-        
-        # Résultats moyens
-        f.write("Résultats moyens sur tous les folds:\n")
-        for config_key, results in ann_results['mean_results'].items():
-            f.write(f"\n{config_key}:\n")
-            f.write(f"Accuracy: {results['accuracy_mean']:.4f} (±{results['accuracy_std']:.4f})\n")
-            f.write(f"Recall: {results['recall_mean']:.4f} (±{results['recall_std']:.4f})\n")
-        
-        # Résultats par fold
-        f.write("\nRésultats détaillés par fold:\n")
-        for fold_result in ann_results['fold_results']:
-            f.write(f"\nFold {fold_result['fold_idx'] + 1}:\n")
-            for config_key, metrics in fold_result['results'].items():
-                f.write(f"{config_key}:\n")
-                f.write(f"Accuracy: {metrics['accuracy']:.4f}\n")
-                f.write(f"Recall: {metrics['recall']:.4f}\n")
+    save_detailed_metrics(nb_results, 'Naive Bayes', args.output_dir)
+    save_detailed_metrics(ann_results, 'ANN', args.output_dir)
     
-    print(f"\nTraitement terminé. Résultats sauvegardés dans {metrics_path}")
+    print(f"\nTraitement terminé. Résultats sauvegardés dans {args.output_dir}/metrics/")
 
 if __name__ == "__main__":
     main()

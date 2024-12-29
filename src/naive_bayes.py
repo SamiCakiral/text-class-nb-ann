@@ -87,77 +87,86 @@ class CustomNaiveBayes:
             pbar.update(100)
 
     def predict(self, X, n_gram):
-        """Fait des prédictions en utilisant Good-Turing pour les mots non vus"""
+        """Prédiction vectorisée standard"""
         if n_gram not in self.models:
             raise ValueError(f"Pas de modèle entraîné pour {n_gram}-gram")
         
-        predictions = []
         classes = list(self.models[n_gram].keys())
+        n_samples = X.shape[0]
+        n_classes = len(classes)
         
-        # Prédiction pour chaque document avec barre de progression
-        for i in tqdm(range(X.shape[0]), desc="Prédiction"):
-            scores = {}
-            for c in classes:
-                # Score initial avec la probabilité a priori
-                score = np.log(self.class_priors[n_gram][c])
-                
-                # Ajout des scores des mots avec Good-Turing smoothing
-                present_words = X[i].nonzero()[1]
-                for word_idx in present_words:
-                    if word_idx < len(self.models[n_gram][c]):  # Vérification de l'index
-                        if X[i, word_idx] > 0:
-                            score += self.models[n_gram][c][word_idx]
-                        else:
-                            # Utilisation de Good-Turing pour les mots non vus
-                            score += np.log(self.n1[n_gram] / 
-                                          (self.n0[n_gram] * self.word_counts[(n_gram, c)].sum()))
-                
-                scores[c] = score
+        # Initialisation de la matrice de scores
+        scores = np.zeros((n_samples, n_classes))
+        
+        # Calcul vectorisé pour chaque classe
+        for c_idx, c in enumerate(classes):
+            # Log probabilité a priori
+            scores[:, c_idx] = np.log(self.class_priors[n_gram][c])
             
-            predictions.append(max(scores.items(), key=lambda x: x[1])[0])
+            # Préparation du modèle
+            model_matrix = np.zeros(X.shape[1])
+            model_matrix[:len(self.models[n_gram][c])] = self.models[n_gram][c]
+            
+            # Calcul vectorisé des scores
+            scores[:, c_idx] += X.multiply(model_matrix).sum(axis=1).A1
         
-        return np.array(predictions)
+        # Retourne les classes prédites
+        return np.array(classes)[np.argmax(scores, axis=1)]
 
     def predict_with_interpolation(self, X_dict, labels):
-        """
-        Fait des prédictions en utilisant l'interpolation des modèles n-gram
+        """Prédiction vectorisée avec interpolation"""
+        n_samples = X_dict[1].shape[0]
+        n_classes = len(labels)
         
-        Args:
-            X_dict: Dictionnaire contenant les matrices de caractéristiques pour chaque n-gram
-            labels: Labels possibles
-        """
-        predictions = []
+        # Initialisation des scores finaux
+        final_scores = np.zeros((n_samples, n_classes))
         
-        # Prédiction pour chaque document avec barre de progression
-        for i in tqdm(range(X_dict[1].shape[0]), desc="Prédiction avec interpolation"):
-            scores = {label: 0 for label in labels}
+        # Pour chaque n-gram
+        for n_gram in [1, 2, 3]:
+            if n_gram not in X_dict:
+                continue
             
-            for label in labels:
-                # Combinaison des scores de chaque modèle n-gram
-                for n_gram in [1, 2, 3]:
-                    if n_gram in X_dict:
-                        X = X_dict[n_gram]
-                        score = np.log(self.class_priors[n_gram][label])
-                        
-                        present_words = X[i].nonzero()[1]
-                        for word_idx in present_words:
-                            if X[i, word_idx] > 0:
-                                score += self.models[n_gram][label][word_idx]
-                            else:
-                                score += np.log(self.n1[n_gram] / 
-                                              (self.n0[n_gram] * self.word_counts[(n_gram, label)].sum()))
-                        
-                        scores[label] += self.interpolation_weights[n_gram] * score
+            X = X_dict[n_gram]
+            weight = self.interpolation_weights[n_gram]
             
-            predictions.append(max(scores.items(), key=lambda x: x[1])[0])
+            # Calcul des scores pour ce n-gram
+            scores = np.zeros((n_samples, n_classes))
+            
+            for c_idx, label in enumerate(labels):
+                # Log probabilité a priori
+                scores[:, c_idx] = np.log(self.class_priors[n_gram][label])
+                
+                # Préparation du modèle
+                model_matrix = np.zeros(X.shape[1])
+                model_matrix[:len(self.models[n_gram][label])] = self.models[n_gram][label]
+                
+                # Calcul vectorisé des scores
+                present_words = X.multiply(model_matrix)
+                scores[:, c_idx] += present_words.sum(axis=1).A1
+                
+                # Good-Turing pour les mots non vus
+                missing_words = (X == 0).multiply(model_matrix != 0)
+                gt_score = np.log(self.n1[n_gram] / 
+                                (self.n0[n_gram] * self.word_counts[(n_gram, label)].sum()))
+                scores[:, c_idx] += gt_score * missing_words.sum(axis=1).A1
+            
+            # Ajout pondéré des scores de ce n-gram
+            final_scores += weight * scores
         
-        return np.array(predictions)
+        # Retourne les classes prédites
+        return np.array(labels)[np.argmax(final_scores, axis=1)]
 
     def evaluate(self, X, y_true, n_gram, pbar=None):
-        """Évalue le modèle et retourne les métriques"""
+        """Évaluation vectorisée"""
+        if pbar:
+            pbar.set_description("Prédiction vectorisée")
+        
         y_pred = self.predict(X, n_gram)
+        
         if pbar:
             pbar.update(len(y_true))
+            pbar.set_description("Calcul des métriques")
+        
         return {
             'accuracy': accuracy_score(y_true, y_pred),
             'recall': recall_score(y_true, y_pred, average='weighted'),
@@ -165,10 +174,16 @@ class CustomNaiveBayes:
         }
 
     def evaluate_interpolation(self, X_dict, y_true, pbar=None):
-        """Évalue le modèle avec interpolation et retourne les métriques"""
+        """Évaluation vectorisée pour l'interpolation"""
+        if pbar:
+            pbar.set_description("Prédiction vectorisée avec interpolation")
+        
         y_pred = self.predict_with_interpolation(X_dict, np.unique(y_true))
+        
         if pbar:
             pbar.update(len(y_true))
+            pbar.set_description("Calcul des métriques")
+        
         return {
             'accuracy': accuracy_score(y_true, y_pred),
             'recall': recall_score(y_true, y_pred, average='weighted'),
