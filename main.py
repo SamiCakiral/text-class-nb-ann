@@ -137,7 +137,7 @@ def run_ann_experiments(train_texts, val_texts, test_texts, train_labels, val_la
         ann_classifier = TextClassifierANN(hidden_layer_size=100)
         
         # Entraînement avec validation
-        with tqdm(total=500, desc="Entraînement") as pbar:
+        with tqdm(total=100, desc="Entraînement") as pbar:
             ann_classifier.train(train_tfidf, train_labels, 
                                val_tfidf, val_labels, 
                                progress_bar=pbar)
@@ -153,32 +153,46 @@ def run_ann_experiments(train_texts, val_texts, test_texts, train_labels, val_la
     return results
 
 def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, val_labels, test_labels):
-    """Exécute les expériences avec le réseau de neurones artificiel spécialisé (ANN-SPE)"""
+    """Exécute les expériences avec le réseau de neurones artificiel spécialisé (ANN-SPE)
+    
+    Architecture:
+    - Input: TF-IDF (5/10/15 dim) + 7 features statistiques
+        * Features de style (3): avg_word_length, letter_ratio, long_words_ratio
+        * Features de structure (2): long_ratio, medium_ratio
+        * Features de taille (1): word_count
+        * Features de variabilité (1): std_word_length
+    """
     feature_extractor = EnhancedFeatureExtractor()
     results = {}
     
     for n_words in [5, 10, 15]:
-        print(f"\nANN-SPE avec {n_words} mots et caractéristiques améliorées...")
+        print(f"\nANN-SPE avec {n_words} mots et features optimisées...")
         
         # Extraction des caractéristiques améliorées
         train_features = feature_extractor.extract_enhanced_features(train_texts, max_features=n_words)
         val_features = feature_extractor.extract_enhanced_features(val_texts, max_features=n_words)
         test_features = feature_extractor.extract_enhanced_features(test_texts, max_features=n_words)
         
-        top_words = feature_extractor.get_top_words(n_words)
+        feature_dim = train_features.shape[1]
+        print(f"Dimension totale des features: {feature_dim} (TF-IDF: {n_words}, Stats: 7)")
         
         # Création et entraînement du modèle amélioré
-        ann_classifier = EnhancedTextClassifierANN(hidden_layer_size=200)
+        ann_classifier = EnhancedTextClassifierANN(
+            hidden_layer_size=200,
+            input_size=feature_dim,
+            tfidf_dim=n_words,
+            stats_dim=7
+        )
         
         # Entraînement avec validation
-        with tqdm(total=500, desc="Entraînement") as pbar:
+        with tqdm(total=100, desc="Entraînement") as pbar:
             ann_classifier.train(train_features, train_labels,
                                val_features, val_labels,
                                progress_bar=pbar)
         
         # Évaluation finale sur les données de test
         results[f'ann_spe_{n_words}_words'] = ann_classifier.evaluate(test_features, test_labels)
-        results[f'ann_spe_{n_words}_words']['top_words'] = top_words
+        results[f'ann_spe_{n_words}_words']['feature_weights'] = feature_extractor.feature_weights
         results[f'ann_spe_{n_words}_words']['loss_history'] = ann_classifier.loss_history
         
         print(f"Accuracy: {results[f'ann_spe_{n_words}_words']['accuracy']:.4f}")

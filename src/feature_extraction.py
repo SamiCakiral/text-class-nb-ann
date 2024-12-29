@@ -61,37 +61,38 @@ class EnhancedFeatureExtractor(FeatureExtractor):
         return tfidf_weight, stat_weight
     
     def extract_statistical_features(self, texts):
-        """Extrait exactement les 6 caractéristiques statistiques spécifiées"""
+        """Extrait les features statistiques optimales selon l'analyse PCA"""
         features = []
         
         for text in texts:
-            # 1-2. Text length and word count
-            text_length = len(text)
             words = text.split()
+            sentences = text.split('.')
             word_count = len(words)
             
-            # 3-4. Space ratio and average word length
-            space_ratio = text.count(' ') / text_length if text_length > 0 else 0
-            avg_word_length = sum(len(word) for word in words) / word_count if word_count > 0 else 0
+            # Calculs des features
+            avg_word_length = np.mean([len(w) for w in words]) if words else 0
+            letter_ratio = sum(c.isalpha() for c in text) / max(len(text), 1)
+            long_words_ratio = len([w for w in words if len(w) >= 7]) / max(word_count, 1)
+            std_word_length = np.std([len(w) for w in words]) if words else 0
             
-            # 5-6. Long/medium sentence ratios
-            sentences = text.split('.')
+            # Ratios des phrases
             sentence_lengths = [len(s.strip().split()) for s in sentences if s.strip()]
             total_sentences = len(sentences) if sentences else 1
             
-            long_sentences = sum(1 for length in sentence_lengths if length > 20)
-            medium_sentences = sum(1 for length in sentence_lengths if 10 <= length <= 20)
+            long_sentences = sum(1 for length in sentence_lengths if length >= 15)
+            medium_sentences = sum(1 for length in sentence_lengths if 5 < length < 15)
             
             long_ratio = long_sentences / total_sentences
             medium_ratio = medium_sentences / total_sentences
             
             features.append([
-                text_length,        # 1
-                word_count,         # 2
-                space_ratio,        # 3
-                avg_word_length,    # 4
-                long_ratio,         # 5
-                medium_ratio        # 6
+                word_count,          # Taille
+                avg_word_length,     # Style
+                letter_ratio,        # Style
+                long_words_ratio,    # Style
+                std_word_length,     # Variabilité
+                long_ratio,          # Structure
+                medium_ratio         # Structure
             ])
             
         return np.array(features)

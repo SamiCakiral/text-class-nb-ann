@@ -21,10 +21,22 @@ class TextClassifierNN(nn.Module):
         return self.network(x)
 
 class EnhancedTextClassifierNN(nn.Module):
-    def __init__(self, input_size, n_classes=4, hidden_size=100):
+    def __init__(self, input_size, n_classes=4, hidden_size=100, tfidf_dim=None, stats_dim=None):
         super(EnhancedTextClassifierNN, self).__init__()
+        
+        self.tfidf_dim = tfidf_dim
+        self.stats_dim = stats_dim
+        
+        # Couches séparées pour TF-IDF et features statistiques
+        if tfidf_dim and stats_dim:
+            self.tfidf_layer = nn.Linear(tfidf_dim, hidden_size // 2)
+            self.stats_layer = nn.Linear(stats_dim, hidden_size // 2)
+            self.combine_layer = nn.Linear(hidden_size, hidden_size)
+        else:
+            self.input_layer = nn.Linear(input_size, hidden_size)
+        
+        # Couches communes
         self.network = nn.Sequential(
-            nn.Linear(input_size, hidden_size),
             nn.BatchNorm1d(hidden_size),
             nn.ReLU(),
             nn.Dropout(0.3),
@@ -37,7 +49,20 @@ class EnhancedTextClassifierNN(nn.Module):
         )
     
     def forward(self, x):
-        """Méthode forward requise pour tous les modèles PyTorch"""
+        # Traitement séparé des features TF-IDF et statistiques
+        if self.tfidf_dim and self.stats_dim:
+            tfidf_features = x[:, :self.tfidf_dim]
+            stats_features = x[:, self.tfidf_dim:]
+            
+            tfidf_hidden = self.tfidf_layer(tfidf_features)
+            stats_hidden = self.stats_layer(stats_features)
+            
+            # Combinaison des features
+            combined = torch.cat((tfidf_hidden, stats_hidden), dim=1)
+            x = self.combine_layer(combined)
+        else:
+            x = self.input_layer(x)
+        
         return self.network(x)
 
 class TextClassifierANN:
@@ -182,20 +207,27 @@ class TextClassifierANN:
         }
 
 class EnhancedTextClassifierANN(TextClassifierANN):
-    def __init__(self, hidden_layer_size=100):
+    def __init__(self, hidden_layer_size=100, input_size=None, tfidf_dim=None, stats_dim=None):
         super().__init__(hidden_layer_size)
+        self.input_size = input_size
+        self.tfidf_dim = tfidf_dim
+        self.stats_dim = stats_dim
         self.scheduler = None
     
     def train(self, X, y, X_val=None, y_val=None, progress_bar=None):
         """Version améliorée de l'entraînement avec apprentissage adaptatif"""
-        input_size = X.shape[1]
-        self.model = EnhancedTextClassifierNN(input_size, hidden_size=self.hidden_layer_size).to(self.device)
+        input_size = self.input_size or X.shape[1]
+        self.model = EnhancedTextClassifierNN(
+            input_size=input_size,
+            hidden_size=self.hidden_layer_size,
+            tfidf_dim=self.tfidf_dim,
+            stats_dim=self.stats_dim
+        ).to(self.device)
         
         criterion = nn.NLLLoss()
-        optimizer = optim.AdamW(self.model.parameters(), lr=0.001, weight_decay=0.01)
+        optimizer = optim.AdamW(self.model.parameters(), lr=0.01, weight_decay=0.01)
         self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', 
-                                                            factor=0.5, patience=5, 
-                                                            verbose=True)
+                                                            factor=0.5, patience=5)
         
         X_tensor, y_tensor = self._to_tensor(X, y)
         if X_val is not None and y_val is not None:
