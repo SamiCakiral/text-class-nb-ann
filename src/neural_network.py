@@ -3,17 +3,16 @@ import torch.nn as nn
 import torch.optim as optim
 from sklearn.metrics import accuracy_score, recall_score, confusion_matrix
 import numpy as np
-from tqdm import tqdm
 import time
 
 class TextClassifierNN(nn.Module):
-    def __init__(self, input_size, hidden_size=100):
+    def __init__(self, input_size, n_classes=4, hidden_size=100):
         super(TextClassifierNN, self).__init__()
         self.network = nn.Sequential(
             nn.Linear(input_size, hidden_size),
             nn.ReLU(),
             nn.Dropout(0.2),
-            nn.Linear(hidden_size, 4),  # 4 classes
+            nn.Linear(hidden_size, n_classes),
             nn.LogSoftmax(dim=1)
         )
     

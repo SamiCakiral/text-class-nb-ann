@@ -156,16 +156,10 @@ class CustomNaiveBayes:
         # Retourne les classes prédites
         return np.array(labels)[np.argmax(final_scores, axis=1)]
 
-    def evaluate(self, X, y_true, n_gram, pbar=None):
+    def evaluate(self, X, y_true, n_gram):
         """Évaluation vectorisée"""
-        if pbar:
-            pbar.set_description("Prédiction vectorisée")
         
         y_pred = self.predict(X, n_gram)
-        
-        if pbar:
-            pbar.update(len(y_true))
-            pbar.set_description("Calcul des métriques")
         
         return {
             'accuracy': accuracy_score(y_true, y_pred),
@@ -173,16 +167,10 @@ class CustomNaiveBayes:
             'confusion_matrix': confusion_matrix(y_true, y_pred)
         }
 
-    def evaluate_interpolation(self, X_dict, y_true, pbar=None):
+    def evaluate_interpolation(self, X_dict, y_true):
         """Évaluation vectorisée pour l'interpolation"""
-        if pbar:
-            pbar.set_description("Prédiction vectorisée avec interpolation")
         
         y_pred = self.predict_with_interpolation(X_dict, np.unique(y_true))
-        
-        if pbar:
-            pbar.update(len(y_true))
-            pbar.set_description("Calcul des métriques")
         
         return {
             'accuracy': accuracy_score(y_true, y_pred),

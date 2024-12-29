@@ -35,14 +35,28 @@ class DataPreprocessor:
             # Gestion des valeurs manquantes si nécessaire
             df = df.fillna('')
             
-            # Combine title et description pour le texte complet
+            # Vérification et correction des classes
+            df['Class'] = pd.to_numeric(df['Class'])
+            
+            # Si les classes commencent à 1, on les décale pour commencer à 0
+            if df['Class'].min() == 1:
+                df['Class'] = df['Class'] - 1
+            
+            # Vérification du nombre de classes
+            n_classes = len(df['Class'].unique())
+            print(f"Nombre de classes détectées: {n_classes}")
+            print(f"Classes uniques: {sorted(df['Class'].unique())}")
+            
+            if n_classes > 4:
+                raise ValueError(f"Le nombre de classes ({n_classes}) est supérieur à 4")
+            
             df['Text'] = df['Title'] + ' ' + df['Description']
             
             # Conversion de la colonne Class en type numérique
             df['Class'] = pd.to_numeric(df['Class'])
             
             print(f"Données chargées : {len(df)} lignes")
-            print(f"Distribution des classes :\n{df['Class'].value_counts()}")
+            print(f"Distribution des classes :\n{df['Class'].value_counts().sort_index()}")
             
             return df
         except Exception as e:

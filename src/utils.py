@@ -1,21 +1,7 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import seaborn as sns
 import os
 
-def split_data(X, y, test_size=0.2, random_state=42):
-    """Divise les données en ensembles d'entraînement et de test"""
-    return train_test_split(X, y, test_size=test_size, random_state=random_state)
-
-def plot_confusion_matrix(cm, classes):
-    """Affiche la matrice de confusion"""
-    plt.figure(figsize=(10,7))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-    plt.xlabel('Prédictions')
-    plt.ylabel('Vraies classes')
-    plt.title('Matrice de confusion')
-    plt.show()
 
 def save_metrics(metrics, model_name, file_path):
     """Sauvegarde les métriques dans un fichier"""
@@ -79,6 +65,12 @@ def save_detailed_metrics(results_dict, model_name, output_dir):
                 f.write(f"\nConfiguration: {config}\n")
                 f.write(f"Accuracy: {metrics['accuracy']:.4f}\n")
                 f.write(f"Recall: {metrics['recall']:.4f}\n")
+                
+                # Ajout des top words pour ANN
+                if model_name == 'ANN' and 'top_words' in metrics:
+                    f.write("\nMots les plus importants:\n")
+                    for word, score in metrics['top_words']:
+                        f.write(f"{word}: {score:.4f}\n")
     
     # Sauvegarde des matrices de confusion
     with open(os.path.join(model_dir, 'confusion_matrices.txt'), 'w') as f:
@@ -106,3 +98,42 @@ def save_detailed_metrics(results_dict, model_name, output_dir):
                     f.write(f"\nClasse {i+1}:\n")
                     f.write(f"Accuracy: {accuracy:.4f}\n")
                     f.write(f"Recall: {recall:.4f}\n")
+
+def calculate_nb_means(results):
+    """Calcule les moyennes pour Naive Bayes"""
+    for method in ['standard', 'laplace', 'goodturing']:
+        for n_gram in [1, 2, 3]:
+            accuracies = []
+            recalls = []
+            
+            for fold_result in results['fold_results']:
+                res = fold_result['results']
+                key = f'{n_gram}-gram_{method}'
+                accuracies.append(res[key]['accuracy'])
+                recalls.append(res[key]['recall'])
+            
+            results['mean_results'][f'{n_gram}-gram_{method}'] = {
+                'accuracy_mean': np.mean(accuracies),
+                'accuracy_std': np.std(accuracies),
+                'recall_mean': np.mean(recalls),
+                'recall_std': np.std(recalls)
+            }
+
+def calculate_ann_means(results):
+    """Calcule les moyennes pour ANN"""
+    for n_words in [5, 10, 15]:
+        accuracies = []
+        recalls = []
+        
+        for fold_result in results['fold_results']:
+            res = fold_result['results']
+            key = f'ann_{n_words}_words'
+            accuracies.append(res[key]['accuracy'])
+            recalls.append(res[key]['recall'])
+        
+        results['mean_results'][f'ann_{n_words}_words'] = {
+            'accuracy_mean': np.mean(accuracies),
+            'accuracy_std': np.std(accuracies),
+            'recall_mean': np.mean(recalls),
+            'recall_std': np.std(recalls)
+        }
