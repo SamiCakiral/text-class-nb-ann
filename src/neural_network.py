@@ -21,11 +21,12 @@ class TextClassifierNN(nn.Module):
         return self.network(x)
 
 class EnhancedTextClassifierNN(nn.Module):
-    def __init__(self, input_size, n_classes=4, hidden_size=64, tfidf_dim=None, stats_dim=None):
+    def __init__(self, input_size, n_classes=4, hidden_size=64, tfidf_dim=None, stats_dim=None, categorical_dims=None):
         super().__init__()
         
         self.tfidf_dim = tfidf_dim
         self.stats_dim = stats_dim
+        self.categorical_dims = categorical_dims or {}  # Dict avec les dimensions de chaque variable catégorielle
         
         if tfidf_dim and stats_dim:
             # Branche TF-IDF - Réduction progressive
@@ -37,7 +38,7 @@ class EnhancedTextClassifierNN(nn.Module):
                 nn.Linear(hidden_size, hidden_size // 2)  # Réduction à 32
             )
             
-            # Branche statistique - Plus petite mais plus dense
+            # Branche statistique continue - Plus petite mais plus dense
             self.stats_layers = nn.Sequential(
                 nn.Linear(stats_dim, hidden_size // 4),  # 16 neurones
                 nn.LayerNorm(hidden_size // 4),
@@ -45,23 +46,23 @@ class EnhancedTextClassifierNN(nn.Module):
                 nn.Dropout(0.1)
             )
             
+            # Branches catégorielles (one-hot)
+            self.categorical_layers = nn.ModuleDict()
+            total_cat_size = 0
+            for name, dim in self.categorical_dims.items():
+                # Embedding pour chaque variable catégorielle
+                self.categorical_layers[name] = nn.Sequential(
+                    nn.Linear(dim, hidden_size // 8),
+                    nn.LayerNorm(hidden_size // 8),
+                    nn.ReLU(),
+                    nn.Dropout(0.1)
+                )
+                total_cat_size += hidden_size // 8
+            
             # Combinaison des branches
-            combined_size = (hidden_size // 2) + (hidden_size // 4)  # 32 + 16 = 48
+            combined_size = (hidden_size // 2) + (hidden_size // 4) + total_cat_size
             self.combine_layer = nn.Sequential(
-                nn.Linear(combined_size, hidden_size // 2),  # 48 -> 32
-                nn.LayerNorm(hidden_size // 2),
-                nn.ReLU(),
-                nn.Dropout(0.2)
-            )
-        else:
-            # Version simple sans séparation
-            self.input_layer = nn.Sequential(
-                nn.Linear(input_size, hidden_size),
-                nn.LayerNorm(hidden_size),
-                nn.ReLU(),
-                nn.Dropout(0.2),
-                
-                nn.Linear(hidden_size, hidden_size // 2),
+                nn.Linear(combined_size, hidden_size // 2),
                 nn.LayerNorm(hidden_size // 2),
                 nn.ReLU(),
                 nn.Dropout(0.2)
@@ -69,27 +70,42 @@ class EnhancedTextClassifierNN(nn.Module):
         
         # Classifier simplifié
         self.classifier = nn.Sequential(
-            nn.Linear(hidden_size // 2, hidden_size // 4),  # 32 -> 16
+            nn.Linear(hidden_size // 2, hidden_size // 4),
             nn.LayerNorm(hidden_size // 4),
             nn.ReLU(),
             nn.Dropout(0.1),
-            
-            nn.Linear(hidden_size // 4, n_classes),  # 16 -> 4
+            nn.Linear(hidden_size // 4, n_classes),
             nn.LogSoftmax(dim=1)
         )
     
     def forward(self, x):
         if self.tfidf_dim and self.stats_dim:
             # Séparation des features
-            tfidf_features = x[:, :self.tfidf_dim]
-            stats_features = x[:, self.tfidf_dim:]
+            current_pos = 0
             
-            # Traitement séparé
+            # TF-IDF features
+            tfidf_features = x[:, :self.tfidf_dim]
+            current_pos += self.tfidf_dim
+            
+            # Features statistiques continues
+            stats_features = x[:, current_pos:current_pos + self.stats_dim]
+            current_pos += self.stats_dim
+            
+            # Traitement des branches principales
             tfidf_out = self.tfidf_layers(tfidf_features)
             stats_out = self.stats_layers(stats_features)
             
-            # Combinaison
-            combined = torch.cat((tfidf_out, stats_out), dim=1)
+            # Traitement des features catégorielles
+            cat_outputs = []
+            for name, dim in self.categorical_dims.items():
+                cat_features = x[:, current_pos:current_pos + dim]
+                cat_out = self.categorical_layers[name](cat_features)
+                cat_outputs.append(cat_out)
+                current_pos += dim
+            
+            # Combinaison de toutes les sorties
+            all_outputs = [tfidf_out, stats_out] + cat_outputs
+            combined = torch.cat(all_outputs, dim=1)
             x = self.combine_layer(combined)
         else:
             x = self.input_layer(x)
@@ -97,12 +113,13 @@ class EnhancedTextClassifierNN(nn.Module):
         return self.classifier(x)
 
 class TextClassifierANN:
-    def __init__(self, hidden_layer_size=100):
+    def __init__(self, hidden_layer_size=100, n_epochs=100):
         self.device = torch.device("mps" if torch.backends.mps.is_available() else 
                                  "cuda" if torch.cuda.is_available() else 
                                  "cpu")
         print(f"Utilisation de l'accélérateur: {self.device}")
         self.hidden_layer_size = hidden_layer_size
+        self.n_epochs = n_epochs
         self.model = None
         self.loss_history = []
         
@@ -130,7 +147,7 @@ class TextClassifierANN:
             X_val_tensor, y_val_tensor = self._to_tensor(X_val, y_val)
         
         # Paramètres de batch
-        batch_size = 512
+        batch_size = 8192
         n_batches = int(np.ceil(X.shape[0] / batch_size))
         
         # Entraînement
@@ -140,11 +157,12 @@ class TextClassifierANN:
         patience_counter = 0
         
         if progress_bar:
-            progress_bar.reset(total=100)
+            progress_bar.reset(total=self.n_epochs)
+            progress_bar.set_description(f"Epochs: 0/{self.n_epochs}")
         
         start_time = time.time()
         
-        for epoch in range(100):  # max 100 epochs
+        for epoch in range(self.n_epochs):
             # Phase d'entraînement
             total_loss = 0
             self.model.train()
@@ -196,14 +214,14 @@ class TextClassifierANN:
                 'val_loss': val_loss
             })
             
-            if progress_bar and epoch % 2 == 0:
+            if progress_bar and epoch % 1 == 0:
                 elapsed = time.time() - start_time
-                status = f"Epoch {epoch:3d} | Train Loss: {train_loss:.4f}"
+                status = f"Epoch {epoch+1}/{self.n_epochs} | Train Loss: {train_loss:.4f}"
                 if val_loss is not None:
                     status += f" | Val Loss: {val_loss:.4f}"
                 status += f" | Temps: {elapsed:.1f}s"
                 progress_bar.set_description(status)
-                progress_bar.update(2)
+                progress_bar.update(1)
             
             if patience_counter >= patience:
                 if progress_bar:
@@ -238,11 +256,12 @@ class TextClassifierANN:
         }
 
 class EnhancedTextClassifierANN(TextClassifierANN):
-    def __init__(self, hidden_layer_size=100, input_size=None, tfidf_dim=None, stats_dim=None):
-        super().__init__(hidden_layer_size)
+    def __init__(self, hidden_layer_size=100, input_size=None, tfidf_dim=None, stats_dim=None, categorical_dims=None, n_epochs=500):
+        super().__init__(hidden_layer_size, n_epochs)
         self.input_size = input_size
         self.tfidf_dim = tfidf_dim
         self.stats_dim = stats_dim
+        self.categorical_dims = categorical_dims
         self.scheduler = None
     
     def train(self, X, y, X_val=None, y_val=None, progress_bar=None):
@@ -258,7 +277,8 @@ class EnhancedTextClassifierANN(TextClassifierANN):
             input_size=input_size,
             hidden_size=self.hidden_layer_size,
             tfidf_dim=self.tfidf_dim,
-            stats_dim=self.stats_dim
+            stats_dim=self.stats_dim,
+            categorical_dims=self.categorical_dims
         ).to(self.device)
         
         # Optimisation avec learning rate adaptatif
@@ -274,12 +294,12 @@ class EnhancedTextClassifierANN(TextClassifierANN):
             min_lr=1e-6
         )
         
-        # Le reste de la méthode train reste identique
+        # Conversion des données
         X_tensor, y_tensor = self._to_tensor(X, y)
         if X_val is not None and y_val is not None:
             X_val_tensor, y_val_tensor = self._to_tensor(X_val, y_val)
         
-        batch_size = 2048*4
+        batch_size = 8192
         n_batches = int(np.ceil(X.shape[0] / batch_size))
         
         best_loss = float('inf')

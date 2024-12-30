@@ -7,6 +7,7 @@ from src.naive_bayes import CustomNaiveBayes
 from src.neural_network import TextClassifierANN, EnhancedTextClassifierANN
 import src.utils as utils
 from tqdm import tqdm
+import numpy as np
 
 def setup_argparse():
     """Configuration des arguments en ligne de commande"""
@@ -122,22 +123,20 @@ def run_ann_experiments(train_texts, val_texts, test_texts, train_labels, val_la
     feature_extractor = FeatureExtractor()
     results = {}
     
-    # Extraction des caractéristiques TF-IDF
     print("\nCalcul des TF-IDF...")
     train_tfidf = feature_extractor.extract_tfidf_features(train_texts)
     val_tfidf = feature_extractor.tfidf_vectorizer.transform(val_texts)
     test_tfidf = feature_extractor.tfidf_vectorizer.transform(test_texts)
-
-    # Test différentes tailles de vocabulaire
+    n_epochs = 500
     for n_words in [5, 10, 15]:
         print(f"\nANN avec {n_words} mots...")
         top_words = feature_extractor.get_top_words(n_words)
         
         # Création et entraînement du modèle
-        ann_classifier = TextClassifierANN(hidden_layer_size=100)
+        ann_classifier = TextClassifierANN(hidden_layer_size=100, n_epochs=n_epochs)
         
         # Entraînement avec validation
-        with tqdm(total=100, desc="Entraînement") as pbar:
+        with tqdm(total=n_epochs, desc=f"Entraînement {n_words} mots") as pbar:
             ann_classifier.train(train_tfidf, train_labels, 
                                val_tfidf, val_labels, 
                                progress_bar=pbar)
@@ -153,47 +152,70 @@ def run_ann_experiments(train_texts, val_texts, test_texts, train_labels, val_la
     return results
 
 def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, val_labels, test_labels):
-    """Exécute les expériences avec le réseau de neurones artificiel spécialisé (ANN-SPE)
-    
-    Architecture:
-    - Input: TF-IDF + 12 features statistiques optimisées
-        * Métriques fondamentales (3):
-            - text_length
-            - unique_words_ratio
-            - std_word_length
-        * Style d'écriture (2):
-            - avg_word_length
-            - flesch_reading_ease
-        * Structure du texte (2):
-            - short_sentences_ratio
-            - long_sentences_ratio
-        * Caractéristiques news (3):
-            - starts_with_number
-            - contains_date
-            - contains_money
-        * Style narratif (2):
-            - third_person_pronouns
-            - quote_ratio
-    """
+    """Exécute les expériences avec le réseau de neurones artificiel spécialisé (ANN-SPE)"""
     feature_extractor = EnhancedFeatureExtractor()
     results = {}
+    
+    # Définition des variables catégorielles et leurs dimensions
+    categorical_dims = {
+        'starts_with_number': 2,  # Binaire (0/1)
+        'contains_date': 2,       # Binaire (0/1)
+        'contains_money': 2,      # Binaire (0/1)
+    }
     
     for n_words in [15]:
         print(f"\nANN-SPE avec {n_words} mots et features optimisées...")
         
-        # Extraction des features combinées
+        # Extraction des features de base
         train_features = feature_extractor.extract_enhanced_features(train_texts, max_features=n_words)
         val_features = feature_extractor.extract_enhanced_features(val_texts, max_features=n_words)
         test_features = feature_extractor.extract_enhanced_features(test_texts, max_features=n_words)
         
+        # Conversion des features catégorielles en one-hot
+        train_features_final = []
+        val_features_final = []
+        test_features_final = []
+        
+        # Position des features catégorielles dans le vecteur original
+        cat_positions = {
+            'starts_with_number': -5,  # Ajustez ces positions selon l'ordre réel
+            'contains_date': -4,
+            'contains_money': -3
+        }
+        
+        # Conversion en one-hot pour chaque jeu de données
+        for features, output_list in [(train_features, train_features_final),
+                                    (val_features, val_features_final),
+                                    (test_features, test_features_final)]:
+            # Séparation des features continues et catégorielles
+            continuous_features = np.delete(features, [abs(pos) for pos in cat_positions.values()], axis=1)
+            
+            # Création des encodages one-hot
+            categorical_encoded = []
+            for name, pos in cat_positions.items():
+                cat_feature = features[:, pos].astype(int)
+                one_hot = np.eye(categorical_dims[name])[cat_feature]
+                categorical_encoded.append(one_hot)
+            
+            # Combinaison des features
+            combined = np.hstack([continuous_features] + categorical_encoded)
+            output_list.append(combined)
+        
+        # Conversion en array numpy
+        train_features = np.vstack(train_features_final)
+        val_features = np.vstack(val_features_final)
+        test_features = np.vstack(test_features_final)
+        
         # Calcul des dimensions
         tfidf_dim = n_words
-        stats_dim = 12  # Nombre total de features statistiques
+        stats_dim = 9  # Features statistiques continues
         feature_dim = train_features.shape[1]
-        
+        n_epochs = 500
+
         print(f"Dimensions des features:")
         print(f"- TF-IDF: {tfidf_dim}")
-        print(f"- Statistiques: {stats_dim}")
+        print(f"- Statistiques continues: {stats_dim}")
+        print(f"- Catégorielles (one-hot): {sum(categorical_dims.values())}")
         print(f"- Total: {feature_dim}")
         
         # Création et entraînement du modèle amélioré
@@ -201,11 +223,13 @@ def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, va
             hidden_layer_size=200,
             input_size=feature_dim,
             tfidf_dim=tfidf_dim,
-            stats_dim=stats_dim
+            stats_dim=stats_dim,
+            categorical_dims=categorical_dims,
+            n_epochs=n_epochs
         )
         
         # Entraînement avec validation
-        with tqdm(total=100, desc="Entraînement") as pbar:
+        with tqdm(total=n_epochs, desc=f"Entraînement {n_words} mots") as pbar:
             ann_classifier.train(train_features, train_labels,
                                val_features, val_labels,
                                progress_bar=pbar)
@@ -216,14 +240,17 @@ def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, va
         # Ajout des métriques supplémentaires
         results[f'ann_spe_{n_words}_words'].update({
             'feature_importance': {
-                'tfidf_weight': 0.7,
-                'stats_weight': 0.3,
-                'statistical_features': {
-                    'fundamental': ['text_length', 'unique_words_ratio', 'std_word_length'],
-                    'writing_style': ['avg_word_length', 'flesch_reading_ease'],
-                    'structure': ['short_sentences_ratio', 'long_sentences_ratio'],
-                    'news_specific': ['starts_with_number', 'contains_date', 'contains_money'],
-                    'narrative': ['third_person_pronouns', 'quote_ratio']
+                'tfidf_weight': 0.9,
+                'stats_weight': 0.075,
+                'categorical_weight': 0.025,
+                'features': {
+                    'continuous': [
+                        'text_length', 'unique_words_ratio', 'std_word_length',
+                        'avg_word_length', 'flesch_reading_ease',
+                        'short_sentences_ratio', 'long_sentences_ratio',
+                        'third_person_pronouns', 'quote_ratio'
+                    ],
+                    'categorical': list(categorical_dims.keys())
                 }
             }
         })
@@ -253,8 +280,8 @@ def main():
     
     print("Démarrage du processus de classification...")
     
-    # Préparation des données avec 5 folds
-    preprocessor = DataPreprocessor(n_splits=5)
+    # Préparation des données avec n_folds folds (par défaut 5)
+    preprocessor = DataPreprocessor(n_splits=args.n_folds)
     
     # Chargement et prétraitement des données d'entraînement
     print("Chargement et prétraitement des données d'entraînement...")

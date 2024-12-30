@@ -7,6 +7,8 @@ import re
 from tqdm import tqdm
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
+from multiprocessing import Pool
+from functools import partial
 
 class DataPreprocessor:
     def __init__(self, n_splits=5, random_state=42):
