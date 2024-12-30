@@ -53,7 +53,7 @@ def run_naive_bayes_experiments(train_texts, val_texts, test_texts, train_labels
         # 1. Test Naive Bayes standard (sans smoothing)
         print(f"\nTest Naive Bayes standard pour {n}-gram...")
         nb_standard = CustomNaiveBayes(alpha=0)
-        with tqdm(total=100, desc=f"Entraînement standard {n}-gram") as pbar:
+        with tqdm(total=2000, desc=f"Entraînement standard {n}-gram") as pbar:
             nb_standard.train_model(train_vectors, train_labels, n, pbar)
             # Validation sur val_vectors
             val_results = nb_standard.evaluate(val_vectors, val_labels, n)
@@ -63,7 +63,7 @@ def run_naive_bayes_experiments(train_texts, val_texts, test_texts, train_labels
         # 2. Test avec Laplace smoothing
         print(f"\nTest Naive Bayes avec Laplace smoothing pour {n}-gram...")
         nb_laplace = CustomNaiveBayes(alpha=1.0)
-        with tqdm(total=100, desc=f"Entraînement Laplace {n}-gram") as pbar:
+        with tqdm(total=2000, desc=f"Entraînement Laplace {n}-gram") as pbar:
             nb_laplace.train_model(train_vectors, train_labels, n, pbar)
             val_results = nb_laplace.evaluate(val_vectors, val_labels, n)
             print(f"Validation Accuracy: {val_results['accuracy']:.4f}")

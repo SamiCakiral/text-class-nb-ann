@@ -21,90 +21,70 @@ class TextClassifierNN(nn.Module):
         return self.network(x)
 
 class EnhancedTextClassifierNN(nn.Module):
-    def __init__(self, input_size, n_classes=4, hidden_size=100, tfidf_dim=None, stats_dim=None):
+    def __init__(self, input_size, n_classes=4, hidden_size=64, tfidf_dim=None, stats_dim=None):
         super().__init__()
         
         self.tfidf_dim = tfidf_dim
         self.stats_dim = stats_dim
         
         if tfidf_dim and stats_dim:
-            # Branche TF-IDF
+            # Branche TF-IDF - Réduction progressive
             self.tfidf_layers = nn.Sequential(
                 nn.Linear(tfidf_dim, hidden_size),
                 nn.LayerNorm(hidden_size),
                 nn.ReLU(),
-                nn.Dropout(0.3),
-                nn.Linear(hidden_size, hidden_size // 2)
+                nn.Dropout(0.2),
+                nn.Linear(hidden_size, hidden_size // 2)  # Réduction à 32
             )
             
-            # Branche pour les features statistiques (12 features)
+            # Branche statistique - Plus petite mais plus dense
             self.stats_layers = nn.Sequential(
-                nn.Linear(stats_dim, hidden_size // 2),
-                nn.LayerNorm(hidden_size // 2),
-                nn.ReLU(),
-                nn.Dropout(0.3),
-                
-                # Couche supplémentaire pour mieux traiter les features complexes
-                nn.Linear(hidden_size // 2, hidden_size // 4),
+                nn.Linear(stats_dim, hidden_size // 4),  # 16 neurones
                 nn.LayerNorm(hidden_size // 4),
+                nn.ReLU(),
+                nn.Dropout(0.1)
+            )
+            
+            # Combinaison des branches
+            combined_size = (hidden_size // 2) + (hidden_size // 4)  # 32 + 16 = 48
+            self.combine_layer = nn.Sequential(
+                nn.Linear(combined_size, hidden_size // 2),  # 48 -> 32
+                nn.LayerNorm(hidden_size // 2),
                 nn.ReLU(),
                 nn.Dropout(0.2)
             )
-            
-            # Couche de combinaison
-            combined_size = (hidden_size // 2) + (hidden_size // 4)
-            self.combine_layer = nn.Sequential(
-                nn.Linear(combined_size, hidden_size),
-                nn.LayerNorm(hidden_size),
-                nn.ReLU(),
-                nn.Dropout(0.3)
-            )
         else:
-            # Version sans séparation des features
+            # Version simple sans séparation
             self.input_layer = nn.Sequential(
-                nn.Linear(input_size, hidden_size * 2),
-                nn.LayerNorm(hidden_size * 2),
-                nn.ReLU(),
-                nn.Dropout(0.3),
-                
-                nn.Linear(hidden_size * 2, hidden_size),
+                nn.Linear(input_size, hidden_size),
                 nn.LayerNorm(hidden_size),
                 nn.ReLU(),
-                nn.Dropout(0.3),
+                nn.Dropout(0.2),
                 
-                nn.Linear(hidden_size, hidden_size),
-                nn.LayerNorm(hidden_size),
+                nn.Linear(hidden_size, hidden_size // 2),
+                nn.LayerNorm(hidden_size // 2),
                 nn.ReLU(),
                 nn.Dropout(0.2)
             )
         
-        # Couches de classification plus profondes
+        # Classifier simplifié
         self.classifier = nn.Sequential(
-            nn.Linear(hidden_size, hidden_size),
-            nn.LayerNorm(hidden_size),
-            nn.ReLU(),
-            nn.Dropout(0.3),
-            
-            nn.Linear(hidden_size, hidden_size // 2),
-            nn.LayerNorm(hidden_size // 2),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            
-            nn.Linear(hidden_size // 2, hidden_size // 4),
+            nn.Linear(hidden_size // 2, hidden_size // 4),  # 32 -> 16
             nn.LayerNorm(hidden_size // 4),
             nn.ReLU(),
             nn.Dropout(0.1),
             
-            nn.Linear(hidden_size // 4, n_classes),
+            nn.Linear(hidden_size // 4, n_classes),  # 16 -> 4
             nn.LogSoftmax(dim=1)
         )
     
     def forward(self, x):
         if self.tfidf_dim and self.stats_dim:
-            # Séparation et traitement des features
+            # Séparation des features
             tfidf_features = x[:, :self.tfidf_dim]
             stats_features = x[:, self.tfidf_dim:]
             
+            # Traitement séparé
             tfidf_out = self.tfidf_layers(tfidf_features)
             stats_out = self.stats_layers(stats_features)
             
@@ -283,7 +263,7 @@ class EnhancedTextClassifierANN(TextClassifierANN):
         
         # Optimisation avec learning rate adaptatif
         criterion = nn.NLLLoss()
-        optimizer = optim.AdamW(self.model.parameters(), lr=0.001, weight_decay=0.01)
+        optimizer = optim.AdamW(self.model.parameters(), lr=0.01, weight_decay=0.01)
         
         # Learning rate scheduler avec ReduceLROnPlateau
         self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(
@@ -299,20 +279,20 @@ class EnhancedTextClassifierANN(TextClassifierANN):
         if X_val is not None and y_val is not None:
             X_val_tensor, y_val_tensor = self._to_tensor(X_val, y_val)
         
-        batch_size = 512
+        batch_size = 2048*4
         n_batches = int(np.ceil(X.shape[0] / batch_size))
         
         best_loss = float('inf')
         best_model = None
         patience = 10  # Early stopping patience
         patience_counter = 0
-        
+        epochTotal = 500
         if progress_bar:
-            progress_bar.reset(total=100)
+            progress_bar.reset(total=epochTotal)
         
         start_time = time.time()
         
-        for epoch in range(2000):  # Augmentation à 2000 epochs
+        for epoch in range(epochTotal):  # Augmentation à 2000 epochs
             # Phase d'entraînement
             total_loss = 0
             self.model.train()
@@ -372,14 +352,14 @@ class EnhancedTextClassifierANN(TextClassifierANN):
                 'learning_rate': optimizer.param_groups[0]['lr']
             })
             
-            if progress_bar and epoch % 20 == 0:  # Mise à jour moins fréquente de la barre de progression
+            if progress_bar and epoch % 1 == 0:  # Mise à jour moins fréquente de la barre de progression
                 elapsed = time.time() - start_time
                 status = f"Epoch {epoch:4d}/{2000} | Train Loss: {train_loss:.4f}"
                 if val_loss is not None:
                     status += f" | Val Loss: {val_loss:.4f}"
                 status += f" | LR: {optimizer.param_groups[0]['lr']:.2e} | Temps: {elapsed:.1f}s"
                 progress_bar.set_description(status)
-                progress_bar.update(min(20, progress_bar.total - progress_bar.n))
+                progress_bar.update(min(1, progress_bar.total - progress_bar.n))
             
             if patience_counter >= patience:
                 if progress_bar:
