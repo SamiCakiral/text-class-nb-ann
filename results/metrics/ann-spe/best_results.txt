@@ -1,0 +1,5 @@
+=== Meilleurs résultats pour ANN-SPE ===
+
+Meilleure configuration: ann_spe_15_words
+Accuracy: 0.3820 (±0.0028)
+Recall: 0.3820 (±0.0028)

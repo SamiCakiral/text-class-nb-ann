@@ -111,10 +111,22 @@ class TextFeatureAnalyzer:
         plt.savefig(f'{output_dir}/feature_correlation.png')
         plt.close()
         
-        # 4. Main feature distribution
-        self.features_df.boxplot(figsize=(15, 6))
+        # 4. Distribution des features avec normalisation et gestion des outliers
+        plt.figure(figsize=(15, 6))
+        
+        # Normaliser les données
+        features_normalized = pd.DataFrame(
+            self.scaler.fit_transform(self.features_df),
+            columns=self.features_df.columns
+        )
+        
+        # Clipper les valeurs extrêmes à ±5 écarts-types
+        features_normalized = features_normalized.clip(-5, 5)
+        
+        # Créer le boxplot
+        features_normalized.boxplot(figsize=(15, 6))
         plt.xticks(rotation=90)
-        plt.title('Feature Distribution')
+        plt.title('Feature Distribution (Normalized with Clip at ±5σ)')
         plt.tight_layout()
         plt.savefig(f'{output_dir}/feature_distribution.png')
         plt.close()
@@ -145,6 +157,7 @@ class TextFeatureAnalyzer:
         # Save descriptive statistics
         stats_description = self.features_df.describe()
         stats_description.to_csv(f'{output_dir}/feature_statistics.csv')
+
 def main():
     """Main entry point for analysis"""
     

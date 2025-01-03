@@ -10,7 +10,17 @@ from tqdm import tqdm
 import numpy as np
 
 def setup_argparse():
-    """Configuration des arguments en ligne de commande"""
+    """
+    Configuration des arguments en ligne de commande.
+    
+    Arguments disponibles:
+    - mode: Type d'expérience à exécuter (ann, nbayes, annspe, all)
+    - output_dir: Dossier de sortie pour les résultats
+    - n_folds: Nombre de folds pour la validation croisée
+    
+    Returns:
+        argparse.Namespace: Arguments parsés
+    """
     parser = argparse.ArgumentParser(description='NLP Classification Project')
     parser.add_argument('--mode', type=str, choices=['ann', 'nbayes', 'annspe', 'all'], 
                        default='all', help='Mode d\'exécution (ann: réseaux de neurones, nbayes: naive bayes, annspe: réseau de neurones spécialisé, all: tous)')
@@ -22,20 +32,43 @@ def setup_argparse():
     return parser.parse_args()
 
 def ensure_directories(base_dir):
-    """Crée la structure des dossiers pour sauvegarder les résultats
-    - base_dir/metrics : pour les métriques de performance
-    - base_dir/models : pour sauvegarder les modèles"""
+    """
+    Crée la structure des dossiers pour sauvegarder les résultats.
+    
+    Structure:
+    base_dir/
+    ├── metrics/  # Métriques de performance
+    └── models/   # Modèles sauvegardés
+    
+    Args:
+        base_dir (str): Chemin du dossier racine
+    """
     Path(base_dir).mkdir(parents=True, exist_ok=True)
     Path(os.path.join(base_dir, 'metrics')).mkdir(exist_ok=True)
     Path(os.path.join(base_dir, 'models')).mkdir(exist_ok=True)
 
 def run_naive_bayes_experiments(train_texts, val_texts, test_texts, train_labels, val_labels, test_labels):
-    """Exécute les expériences avec l'algorithme Naive Bayes avec différentes méthodes
+    """
+    Exécute les expériences avec l'algorithme Naive Bayes.
     
-    1. Naive Bayes standard
-    2. Naive Bayes avec Laplace smoothing
-    3. Naive Bayes avec Good-Turing
-    4. Naive Bayes avec interpolation
+    Algorithme:
+    1. Pour chaque n-gram (1, 2, 3):
+       - Crée les vecteurs de caractéristiques
+       - Teste Naive Bayes standard (sans lissage)
+       - Teste avec lissage de Laplace
+       - Teste avec Good-Turing
+    2. Test final avec interpolation des n-grams
+    
+    Args:
+        train_texts (list): Textes d'entraînement
+        val_texts (list): Textes de validation
+        test_texts (list): Textes de test
+        train_labels (array): Labels d'entraînement
+        val_labels (array): Labels de validation
+        test_labels (array): Labels de test
+    
+    Returns:
+        dict: Résultats des différentes expériences
     """
     feature_extractor = FeatureExtractor()
     results = {}
@@ -110,33 +143,45 @@ def run_naive_bayes_experiments(train_texts, val_texts, test_texts, train_labels
     return results
 
 def run_ann_experiments(train_texts, val_texts, test_texts, train_labels, val_labels, test_labels):
-    """Exécute les expériences avec le réseau de neurones artificiel (ANN)
+    """
+    Exécute les expériences avec le réseau de neurones standard.
     
-    Processus :
-    1. Extraction des caractéristiques TF-IDF
-    2. Test différentes configurations (5, 10, 15 mots)
-    3. Entraînement et évaluation pour chaque configuration
+    Algorithme:
+    1. Pour chaque taille de vocabulaire (5, 10, 15 mots):
+       - Extrait les caractéristiques
+       - Entraîne le modèle avec early stopping
+       - Évalue sur validation et test
+    
+    Args:
+        train_texts (list): Textes d'entraînement
+        val_texts (list): Textes de validation
+        test_texts (list): Textes de test
+        train_labels (array): Labels d'entraînement
+        val_labels (array): Labels de validation
+        test_labels (array): Labels de test
     
     Returns:
-        dict: Résultats pour chaque configuration
+        dict: Résultats des différentes configurations
     """
     feature_extractor = FeatureExtractor()
     results = {}
     
+    # Extraction des caractéristiques TF-IDF
     print("\nCalcul des TF-IDF...")
     train_tfidf = feature_extractor.extract_tfidf_features(train_texts)
     val_tfidf = feature_extractor.tfidf_vectorizer.transform(val_texts)
     test_tfidf = feature_extractor.tfidf_vectorizer.transform(test_texts)
-    n_epochs = 500
+
+    # Test différentes tailles de vocabulaire
     for n_words in [5, 10, 15]:
         print(f"\nANN avec {n_words} mots...")
         top_words = feature_extractor.get_top_words(n_words)
         
         # Création et entraînement du modèle
-        ann_classifier = TextClassifierANN(hidden_layer_size=100, n_epochs=n_epochs)
+        ann_classifier = TextClassifierANN(hidden_layer_size=100)
         
         # Entraînement avec validation
-        with tqdm(total=n_epochs, desc=f"Entraînement {n_words} mots") as pbar:
+        with tqdm(total=100, desc="Entraînement") as pbar:
             ann_classifier.train(train_tfidf, train_labels, 
                                val_tfidf, val_labels, 
                                progress_bar=pbar)
@@ -152,123 +197,94 @@ def run_ann_experiments(train_texts, val_texts, test_texts, train_labels, val_la
     return results
 
 def run_ann_spe_experiments(train_texts, val_texts, test_texts, train_labels, val_labels, test_labels):
-    """Exécute les expériences avec le réseau de neurones artificiel spécialisé (ANN-SPE)"""
+    """
+    Exécute les expériences avec le réseau de neurones spécialisé.
+    
+    Algorithme:
+    1. Extraction des caractéristiques améliorées
+    2. Entraînement avec architecture spécialisée
+    3. Évaluation avec métriques détaillées
+    
+    Args:
+        train_texts (list): Textes d'entraînement
+        val_texts (list): Textes de validation
+        test_texts (list): Textes de test
+        train_labels (array): Labels d'entraînement
+        val_labels (array): Labels de validation
+        test_labels (array): Labels de test
+    
+    Returns:
+        dict: Résultats des expériences
+    """
     feature_extractor = EnhancedFeatureExtractor()
     results = {}
     
-    # Définition des variables catégorielles et leurs dimensions
-    categorical_dims = {
-        'starts_with_number': 2,  # Binaire (0/1)
-        'contains_date': 2,       # Binaire (0/1)
-        'contains_money': 2,      # Binaire (0/1)
-    }
+    # Normalisation des labels
+    train_labels = np.array(train_labels).ravel()
+    val_labels = np.array(val_labels).ravel()
+    test_labels = np.array(test_labels).ravel()
     
     for n_words in [15]:
         print(f"\nANN-SPE avec {n_words} mots et features optimisées...")
         
-        # Extraction des features de base
+        # Extraction des features
         train_features = feature_extractor.extract_enhanced_features(train_texts, max_features=n_words)
         val_features = feature_extractor.extract_enhanced_features(val_texts, max_features=n_words)
         test_features = feature_extractor.extract_enhanced_features(test_texts, max_features=n_words)
         
-        # Conversion des features catégorielles en one-hot
-        train_features_final = []
-        val_features_final = []
-        test_features_final = []
-        
-        # Position des features catégorielles dans le vecteur original
-        cat_positions = {
-            'starts_with_number': -5,  # Ajustez ces positions selon l'ordre réel
-            'contains_date': -4,
-            'contains_money': -3
-        }
-        
-        # Conversion en one-hot pour chaque jeu de données
-        for features, output_list in [(train_features, train_features_final),
-                                    (val_features, val_features_final),
-                                    (test_features, test_features_final)]:
-            # Séparation des features continues et catégorielles
-            continuous_features = np.delete(features, [abs(pos) for pos in cat_positions.values()], axis=1)
-            
-            # Création des encodages one-hot
-            categorical_encoded = []
-            for name, pos in cat_positions.items():
-                cat_feature = features[:, pos].astype(int)
-                one_hot = np.eye(categorical_dims[name])[cat_feature]
-                categorical_encoded.append(one_hot)
-            
-            # Combinaison des features
-            combined = np.hstack([continuous_features] + categorical_encoded)
-            output_list.append(combined)
-        
-        # Conversion en array numpy
-        train_features = np.vstack(train_features_final)
-        val_features = np.vstack(val_features_final)
-        test_features = np.vstack(test_features_final)
-        
-        # Calcul des dimensions
-        tfidf_dim = n_words
-        stats_dim = 9  # Features statistiques continues
-        feature_dim = train_features.shape[1]
-        n_epochs = 500
-
-        print(f"Dimensions des features:")
-        print(f"- TF-IDF: {tfidf_dim}")
-        print(f"- Statistiques continues: {stats_dim}")
-        print(f"- Catégorielles (one-hot): {sum(categorical_dims.values())}")
-        print(f"- Total: {feature_dim}")
-        
-        # Création et entraînement du modèle amélioré
+        # Configuration et entraînement
         ann_classifier = EnhancedTextClassifierANN(
             hidden_layer_size=200,
-            input_size=feature_dim,
-            tfidf_dim=tfidf_dim,
-            stats_dim=stats_dim,
-            categorical_dims=categorical_dims,
-            n_epochs=n_epochs
+            input_size=train_features.shape[1],
+            tfidf_dim=n_words,
+            stats_dim=6
         )
         
-        # Entraînement avec validation
-        with tqdm(total=n_epochs, desc=f"Entraînement {n_words} mots") as pbar:
+        with tqdm(total=100, desc="Entraînement") as pbar:
             ann_classifier.train(train_features, train_labels,
                                val_features, val_labels,
                                progress_bar=pbar)
         
-        # Évaluation finale
-        results[f'ann_spe_{n_words}_words'] = ann_classifier.evaluate(test_features, test_labels)
+        # Évaluation
+        evaluation = ann_classifier.evaluate(test_features, test_labels)
         
-        # Ajout des métriques supplémentaires
-        results[f'ann_spe_{n_words}_words'].update({
-            'feature_importance': {
-                'tfidf_weight': 0.9,
-                'stats_weight': 0.075,
-                'categorical_weight': 0.025,
-                'features': {
-                    'continuous': [
-                        'text_length', 'unique_words_ratio', 'std_word_length',
-                        'avg_word_length', 'flesch_reading_ease',
-                        'short_sentences_ratio', 'long_sentences_ratio',
-                        'third_person_pronouns', 'quote_ratio'
-                    ],
-                    'categorical': list(categorical_dims.keys())
-                }
-            }
-        })
+        # Stockage des résultats dans le même format que Naive Bayes
+        results[f'ann_spe_{n_words}_words'] = {
+            'accuracy': evaluation['accuracy'],
+            'recall': evaluation['recall'],
+            'confusion_matrix': evaluation['confusion_matrix']
+        }
         
-        print(f"Accuracy: {results[f'ann_spe_{n_words}_words']['accuracy']:.4f}")
-        print(f"Recall: {results[f'ann_spe_{n_words}_words']['recall']:.4f}")
+        print(f"Accuracy: {evaluation['accuracy']:.4f}")
+        print(f"Recall: {evaluation['recall']:.4f}")
     
     return results
 
 def main():
-    """Fonction principale qui orchestre tout le processus avec k-fold validation
+    """
+    Fonction principale qui orchestre tout le processus avec k-fold validation.
     
-    Étapes :
-    1. Configuration et préparation des dossiers
-    2. Chargement et prétraitement des données avec création des folds
-    3. Exécution des expériences Naive Bayes sur chaque fold
-    4. Exécution des expériences ANN sur chaque fold
-    5. Sauvegarde des résultats moyens et par fold
+    Algorithme:
+    1. Configuration et préparation:
+       - Parse les arguments
+       - Crée les dossiers nécessaires
+       - Charge et prétraite les données
+    
+    2. Pour chaque fold:
+       - Divise les données (train/val/test)
+       - Si mode 'nbayes' ou 'all':
+         * Exécute expériences Naive Bayes
+       - Si mode 'ann' ou 'all':
+         * Exécute expériences ANN
+       - Si mode 'annspe' ou 'all':
+         * Exécute expériences ANN-SPE
+    
+    3. Finalisation:
+       - Calcule les moyennes sur tous les folds
+       - Sauvegarde les résultats détaillés
+    
+    Utilisation:
+        python main.py --mode [ann|nbayes|annspe|all] --output_dir results --n_folds 5
     """
     # Configuration initiale
     args = setup_argparse()
@@ -280,7 +296,7 @@ def main():
     
     print("Démarrage du processus de classification...")
     
-    # Préparation des données avec n_folds folds (par défaut 5)
+    # Préparation des données avec n_folds folds (5 par défaut)
     preprocessor = DataPreprocessor(n_splits=args.n_folds)
     
     # Chargement et prétraitement des données d'entraînement

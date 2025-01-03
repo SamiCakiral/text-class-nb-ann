@@ -1,0 +1,32 @@
+=== Résultats détaillés par fold pour ANN-SPE ===
+
+
+Fold 1:
+
+Configuration: ann_spe_15_words
+Accuracy: 0.3799
+Recall: 0.3799
+
+Fold 2:
+
+Configuration: ann_spe_15_words
+Accuracy: 0.3838
+Recall: 0.3838
+
+Fold 3:
+
+Configuration: ann_spe_15_words
+Accuracy: 0.3804
+Recall: 0.3804
+
+Fold 4:
+
+Configuration: ann_spe_15_words
+Accuracy: 0.3792
+Recall: 0.3792
+
+Fold 5:
+
+Configuration: ann_spe_15_words
+Accuracy: 0.3867
+Recall: 0.3867

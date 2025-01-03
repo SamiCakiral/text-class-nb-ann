@@ -6,8 +6,18 @@ from tqdm import tqdm
 class CustomNaiveBayes:
     def __init__(self, alpha=1.0):
         """
-        Initialisation du classifieur Naive Bayes
-        
+        Initialise le classifieur Naive Bayes avec lissage de Laplace et Good-Turing.
+
+        Attributs:
+            models (dict): Stocke les modèles de probabilités pour chaque n-gram et classe
+            vocabularies (dict): Stocke le vocabulaire pour chaque n-gram
+            class_priors (dict): Probabilités a priori des classes pour chaque n-gram
+            word_counts (dict): Compte des mots pour chaque n-gram et classe
+            n1 (dict): Nombre de mots vus une seule fois (pour Good-Turing)
+            n0 (dict): Estimation des mots jamais vus (pour Good-Turing)
+            alpha (float): Paramètre de lissage de Laplace
+            interpolation_weights (dict): Poids pour l'interpolation des différents n-grams
+
         Args:
             alpha (float): Paramètre de lissage Laplace (default: 1.0)
         """
@@ -25,7 +35,22 @@ class CustomNaiveBayes:
         }
 
     def _calculate_good_turing_counts(self, X, n_gram):
-        """Calcule les statistiques nécessaires pour Good-Turing smoothing de manière vectorisée"""
+        """
+        Calcule les statistiques nécessaires pour le lissage Good-Turing de manière vectorisée.
+        
+        Algorithme:
+        1. Calcule la fréquence de chaque mot dans le corpus (word_counts)
+        2. Compte combien de mots apparaissent exactement k fois (word_freq)
+        3. Calcule N1 (nombre de mots vus une seule fois)
+        4. Estime N0 (nombre de mots jamais vus) avec la formule: N0 = N1²/(2*N2)
+        
+        Args:
+            X (sparse matrix): Matrice de caractéristiques
+            n_gram (int): Taille du n-gram
+
+        Returns:
+            int: Nombre total de mots dans le corpus
+        """
         # Calcul vectorisé des fréquences
         word_counts = X.sum(axis=0).A1  # .A1 convertit la matrice sparse en array 1D
         unique_counts, count_freq = np.unique(word_counts, return_counts=True)
@@ -43,13 +68,22 @@ class CustomNaiveBayes:
 
     def train_model(self, X, y, n_gram, pbar=None):
         """
-        Entraîne le modèle Naive Bayes avec Laplace smoothing
-        
+        Entraîne le modèle Naive Bayes avec lissage de Laplace et Good-Turing.
+
+        Algorithme:
+        1. Calcul des probabilités a priori P(classe)
+        2. Pour chaque classe:
+           - Sélectionne les documents de la classe
+           - Applique le lissage de Laplace aux comptes de mots
+           - Calcule P(mot|classe) = (count + alpha) / (total + alpha*|V|)
+           - Stocke les log-probabilités pour optimiser les calculs
+        3. Calcule les statistiques Good-Turing pour le n-gram
+
         Args:
-            X: Matrice de caractéristiques
-            y: Labels
-            n_gram: Taille du n-gram
-            pbar: Barre de progression
+            X (sparse matrix): Matrice de caractéristiques (documents × mots)
+            y (array): Labels des documents
+            n_gram (int): Taille du n-gram
+            pbar (tqdm): Barre de progression optionnelle
         """
         # Calcul des probabilités a priori des classes
         self.class_priors[n_gram] = {}
@@ -87,7 +121,23 @@ class CustomNaiveBayes:
             pbar.update(100)
 
     def predict(self, X, n_gram):
-        """Prédiction vectorisée standard"""
+        """
+        Effectue la prédiction vectorisée standard sans interpolation.
+
+        Algorithme:
+        1. Pour chaque classe:
+           - Calcule log P(classe)
+           - Pour chaque document:
+             * Somme log P(mot|classe) pour les mots présents
+        2. Retourne la classe avec le score maximum
+
+        Args:
+            X (sparse matrix): Matrice de caractéristiques à prédire
+            n_gram (int): Taille du n-gram
+
+        Returns:
+            array: Classes prédites pour chaque document
+        """
         if n_gram not in self.models:
             raise ValueError(f"Pas de modèle entraîné pour {n_gram}-gram")
         
@@ -114,7 +164,24 @@ class CustomNaiveBayes:
         return np.array(classes)[np.argmax(scores, axis=1)]
 
     def predict_with_interpolation(self, X_dict, labels):
-        """Prédiction vectorisée avec interpolation"""
+        """
+        Effectue la prédiction avec interpolation linéaire des n-grams.
+
+        Algorithme:
+        1. Pour chaque n-gram (1, 2, 3):
+           - Calcule les scores comme dans predict()
+           - Applique le lissage Good-Turing pour les mots non vus
+           - Pondère les scores selon interpolation_weights
+        2. Combine les scores de tous les n-grams
+        3. Retourne la classe avec le score maximum
+
+        Args:
+            X_dict (dict): Dictionnaire des matrices de caractéristiques par n-gram
+            labels (array): Liste des labels possibles
+
+        Returns:
+            array: Classes prédites pour chaque document
+        """
         n_samples = X_dict[1].shape[0]
         n_classes = len(labels)
         
@@ -158,7 +225,22 @@ class CustomNaiveBayes:
         return np.array(labels)[np.argmax(final_scores, axis=1)]
 
     def evaluate(self, X, y_true, n_gram):
-        """Évaluation vectorisée"""
+        """
+        Évalue les performances du modèle sans interpolation.
+
+        Métriques calculées:
+        - Accuracy: Proportion de prédictions correctes
+        - Recall pondéré: Moyenne du recall par classe, pondérée par leur fréquence
+        - Matrice de confusion: Visualisation des prédictions vs réalité
+
+        Args:
+            X (sparse matrix): Matrice de caractéristiques à évaluer
+            y_true (array): Labels réels
+            n_gram (int): Taille du n-gram
+
+        Returns:
+            dict: Dictionnaire contenant accuracy, recall et matrice de confusion
+        """
         
         y_pred = self.predict(X, n_gram)
         
@@ -169,7 +251,21 @@ class CustomNaiveBayes:
         }
 
     def evaluate_interpolation(self, X_dict, y_true):
-        """Évaluation vectorisée pour l'interpolation"""
+        """
+        Évalue les performances du modèle avec interpolation.
+
+        Métriques calculées:
+        - Accuracy: Proportion de prédictions correctes
+        - Recall pondéré: Moyenne du recall par classe, pondérée par leur fréquence
+        - Matrice de confusion: Visualisation des prédictions vs réalité
+
+        Args:
+            X_dict (dict): Dictionnaire des matrices de caractéristiques par n-gram
+            y_true (array): Labels réels
+
+        Returns:
+            dict: Dictionnaire contenant accuracy, recall et matrice de confusion
+        """
         
         y_pred = self.predict_with_interpolation(X_dict, np.unique(y_true))
         
