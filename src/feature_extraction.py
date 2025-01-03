@@ -1,44 +1,84 @@
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, normalize, MinMaxScaler
 import numpy as np
-from sklearn.preprocessing import normalize
-from sklearn.preprocessing import MinMaxScaler
-
+import nltk
+from nltk import pos_tag
+from nltk.tokenize import word_tokenize
 
 class FeatureExtractor:
     def __init__(self):
-        self.tfidf_vectorizer = None
-        self.count_vectorizers = {}
-        self.top_features = {}
-
+        self.tfidf_vectorizers = {}  # Un vectorizer par classe
+        self.top_words_per_class = {}  # Stockage des mots importants par classe
+        self.count_vectorizers = {}  # Pour Naive Bayes
+        
+    def is_noun_or_adj(self, word, tag):
+        """Vérifie si le mot est un nom ou un adjectif"""
+        return (tag.startswith('NN') or tag.startswith('JJ'))
+    
     def create_ngram_vectors(self, texts, n):
-        """Crée les vecteurs n-gram"""
-        vectorizer = CountVectorizer(ngram_range=(n, n)) # Création du vectorizer
-        vectors = vectorizer.fit_transform(texts) # Création des vecteurs
-        self.count_vectorizers[n] = vectorizer # Sauvegarde du vectorizer
-        
+        """Crée les vecteurs n-gram pour Naive Bayes"""
+        vectorizer = CountVectorizer(ngram_range=(n, n))
+        vectors = vectorizer.fit_transform(texts)
+        self.count_vectorizers[n] = vectorizer
         return vectors
-
-    def extract_tfidf_features(self, texts, max_features=1000):
-        """Extrait les caractéristiques TF-IDF"""
+    
+    def extract_tfidf_features_by_class(self, texts, labels, n_words):
+        """
+        Extrait les n mots les plus importants par classe selon TF-IDF.
+        Ne garde que les noms et adjectifs.
+        """
+        unique_classes = np.unique(labels)
+        all_important_words = set()
         
-        self.tfidf_vectorizer = TfidfVectorizer(max_features=max_features) # Création du vectorizer
-        tfidf_matrix = self.tfidf_vectorizer.fit_transform(texts) # Création des vecteurs
+        # Pour chaque classe
+        for class_label in unique_classes:
+            # Sélectionner les textes de cette classe
+            class_mask = labels == class_label
+            class_texts = [texts[i] for i in range(len(texts)) if class_mask[i]]
+            
+            # Créer et entraîner le vectorizer pour cette classe
+            vectorizer = TfidfVectorizer()
+            tfidf_matrix = vectorizer.fit_transform(class_texts)
+            
+            # Récupérer les mots et leurs scores
+            feature_names = vectorizer.get_feature_names_out()
+            tfidf_scores = np.asarray(tfidf_matrix.mean(axis=0)).ravel()
+            
+            # Filtrer pour ne garder que les noms et adjectifs
+            word_pos_pairs = pos_tag(feature_names)
+            valid_words = [(word, score) for (word, tag), score 
+                          in zip(word_pos_pairs, tfidf_scores) 
+                          if self.is_noun_or_adj(word, tag)]
+            
+            # Trier par score TF-IDF et prendre les n_words premiers
+            valid_words.sort(key=lambda x: x[1], reverse=True)
+            top_words = [word for word, _ in valid_words[:n_words]]
+            
+            # Sauvegarder pour cette classe
+            self.top_words_per_class[class_label] = top_words
+            all_important_words.update(top_words)
+            
+        return list(all_important_words)
+    
+    def create_bow_features(self, texts, n_words):
+        """
+        Crée la matrice de features basée sur les bags of words.
+        """
+        # Créer un vocabulaire à partir de tous les mots importants
+        all_words = []
+        for words in self.top_words_per_class.values():
+            all_words.extend(words)
+        vocabulary = list(set(all_words))
         
-        return tfidf_matrix
-
-    def get_top_words(self, n_words=15):
-        """Obtient les mots avec les scores TF-IDF les plus élevés"""
-        if self.tfidf_vectorizer is None:
-            raise ValueError("TF-IDF vectorizer n'a pas encore été entraîné")
+        # Créer la matrice de features
+        features = np.zeros((len(texts), len(vocabulary)))
         
-        feature_names = self.tfidf_vectorizer.get_feature_names_out() # Récupération des noms des caractéristiques
-        scores = self.tfidf_vectorizer.idf_ # Récupération des scores TF-IDF
-        word_scores = list(zip(feature_names, scores)) # Création de la liste des mots avec leurs scores
-        word_scores.sort(key=lambda x: x[1], reverse=True) # Tri des mots par score décroissant
-        
-        return word_scores[:n_words] # Retour des n_words mots avec les scores les plus élevés
-
+        for i, text in enumerate(texts):
+            words = word_tokenize(text.lower())
+            for j, vocab_word in enumerate(vocabulary):
+                features[i, j] = words.count(vocab_word)
+                
+        return features
 class EnhancedFeatureExtractor(FeatureExtractor):
     def __init__(self):
         super().__init__()
@@ -91,8 +131,9 @@ class EnhancedFeatureExtractor(FeatureExtractor):
     def extract_enhanced_features(self, texts, max_features=1000):
         """Combine TF-IDF et les features statistiques avec normalisation appropriée"""
         # Extraction TF-IDF avec le nombre spécifié de features
-        tfidf_features = self.extract_tfidf_features(texts, max_features)
-        tfidf_dense = tfidf_features.toarray()
+        tfidf_features = super().extract_tfidf_features_by_class(texts, np.zeros(len(texts)), max_features)
+        tfidf_matrix = TfidfVectorizer(vocabulary=tfidf_features).fit_transform(texts)
+        tfidf_dense = tfidf_matrix.toarray()
         
         # Normalisation L2 pour TF-IDF (meilleure pour le texte)
         tfidf_normalized = normalize(tfidf_dense, norm='l2')
@@ -116,3 +157,4 @@ class EnhancedFeatureExtractor(FeatureExtractor):
         ))
         
         return combined_features
+

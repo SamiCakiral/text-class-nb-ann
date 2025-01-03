@@ -166,33 +166,36 @@ def run_ann_experiments(train_texts, val_texts, test_texts, train_labels, val_la
     feature_extractor = FeatureExtractor()
     results = {}
     
-    # Extraction des caractéristiques TF-IDF
-    print("\nCalcul des TF-IDF...")
-    train_tfidf = feature_extractor.extract_tfidf_features(train_texts)
-    val_tfidf = feature_extractor.tfidf_vectorizer.transform(val_texts)
-    test_tfidf = feature_extractor.tfidf_vectorizer.transform(test_texts)
-
     # Test différentes tailles de vocabulaire
     for n_words in [5, 10, 15]:
-        print(f"\nANN avec {n_words} mots...")
-        top_words = feature_extractor.get_top_words(n_words)
+        print(f"\nANN avec {n_words} mots par classe...")
+        
+        # Extraction des mots importants par classe
+        feature_extractor.extract_tfidf_features_by_class(train_texts, train_labels, n_words)
+        
+        # Création des features pour train, val et test
+        train_features = feature_extractor.create_bow_features(train_texts, n_words)
+        val_features = feature_extractor.create_bow_features(val_texts, n_words)
+        test_features = feature_extractor.create_bow_features(test_texts, n_words)
         
         # Création et entraînement du modèle
         ann_classifier = TextClassifierANN(hidden_layer_size=100)
         
         # Entraînement avec validation
-        with tqdm(total=100, desc="Entraînement") as pbar:
-            ann_classifier.train(train_tfidf, train_labels, 
-                               val_tfidf, val_labels, 
+        with tqdm(total=1000, desc="Entraînement") as pbar:
+            ann_classifier.train(train_features, train_labels, 
+                               val_features, val_labels, 
                                progress_bar=pbar)
         
         # Évaluation finale sur les données de test
-        results[f'ann_{n_words}_words'] = ann_classifier.evaluate(test_tfidf, test_labels)
-        results[f'ann_{n_words}_words']['top_words'] = top_words
-        results[f'ann_{n_words}_words']['loss_history'] = ann_classifier.loss_history
+        results[f'ann_{n_words}_words'] = ann_classifier.evaluate(test_features, test_labels)
+        results[f'ann_{n_words}_words']['top_words_per_class'] = feature_extractor.top_words_per_class.copy()
         
         print(f"Accuracy: {results[f'ann_{n_words}_words']['accuracy']:.4f}")
         print(f"Recall: {results[f'ann_{n_words}_words']['recall']:.4f}")
+        print("\nMots les plus importants par classe:")
+        for class_label, words in feature_extractor.top_words_per_class.items():
+            print(f"Classe {class_label}: {', '.join(words)}")
     
     return results
 

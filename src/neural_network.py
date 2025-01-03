@@ -119,11 +119,11 @@ class TextClassifierANN:
         # Entraînement
         best_loss = float('inf')
         best_model = None
-        patience = 10 # nombre de patience
+        patience = 5 # nombre de patience
         patience_counter = 0 # compteur de patience
         
         if progress_bar:
-            progress_bar.reset(total=100)
+            progress_bar.reset(total=1000)
         
         start_time = time.time()
         
@@ -401,7 +401,7 @@ class EnhancedTextClassifierANN(TextClassifierANN):
         
         best_loss = float('inf')
         best_model = None
-        patience = 15  # Early stopping patience
+        patience = 5  # Early stopping patience
         patience_counter = 0
         epochTotal = 1000
         if progress_bar:

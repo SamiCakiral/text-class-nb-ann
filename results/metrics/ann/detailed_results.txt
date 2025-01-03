@@ -4,249 +4,69 @@
 Fold 1:
 
 Configuration: ann_5_words
-Accuracy: 0.8748
-Recall: 0.8748
-
-Mots les plus importants:
-delta: 6.7784
-dvd: 6.7132
-boeing: 6.7038
-yukos: 6.6945
-davis: 6.6883
+Accuracy: 0.4221
+Recall: 0.4221
 
 Configuration: ann_10_words
-Accuracy: 0.8768
-Recall: 0.8768
-
-Mots les plus importants:
-delta: 6.7784
-dvd: 6.7132
-boeing: 6.7038
-yukos: 6.6945
-davis: 6.6883
-amd: 6.6640
-cisco: 6.6640
-font: 6.6432
-dell: 6.6373
-storage: 6.6170
+Accuracy: 0.5657
+Recall: 0.5657
 
 Configuration: ann_15_words
-Accuracy: 0.8760
-Recall: 0.8760
-
-Mots les plus importants:
-delta: 6.7784
-dvd: 6.7132
-boeing: 6.7038
-yukos: 6.6945
-davis: 6.6883
-amd: 6.6640
-cisco: 6.6640
-font: 6.6432
-dell: 6.6373
-storage: 6.6170
-satellite: 6.5613
-sharon: 6.5034
-blair: 6.4535
-cricket: 6.4511
-spam: 6.4462
+Accuracy: 0.6171
+Recall: 0.6171
 
 Fold 2:
 
 Configuration: ann_5_words
-Accuracy: 0.8780
-Recall: 0.8780
-
-Mots les plus importants:
-nokia: 6.7851
-delta: 6.7683
-yukos: 6.7291
-cisco: 6.6945
-dvd: 6.6761
+Accuracy: 0.4330
+Recall: 0.4330
 
 Configuration: ann_10_words
-Accuracy: 0.8775
-Recall: 0.8775
-
-Mots les plus importants:
-nokia: 6.7851
-delta: 6.7683
-yukos: 6.7291
-cisco: 6.6945
-dvd: 6.6761
-dell: 6.6700
-font: 6.6373
-davis: 6.6344
-browser: 6.5805
-satellite: 6.5805
+Accuracy: 0.5620
+Recall: 0.5620
 
 Configuration: ann_15_words
-Accuracy: 0.8786
-Recall: 0.8786
-
-Mots les plus importants:
-nokia: 6.7851
-delta: 6.7683
-yukos: 6.7291
-cisco: 6.6945
-dvd: 6.6761
-dell: 6.6700
-font: 6.6373
-davis: 6.6344
-browser: 6.5805
-satellite: 6.5805
-storage: 6.5805
-sharon: 6.5695
-singapore: 6.5695
-ivan: 6.4907
-yahoo: 6.4782
+Accuracy: 0.6161
+Recall: 0.6161
 
 Fold 3:
 
 Configuration: ann_5_words
-Accuracy: 0.8809
-Recall: 0.8809
-
-Mots les plus importants:
-nokia: 6.7717
-yukos: 6.7617
-dvd: 6.7420
-wal: 6.7323
-mart: 6.7291
+Accuracy: 0.4330
+Recall: 0.4330
 
 Configuration: ann_10_words
-Accuracy: 0.8826
-Recall: 0.8826
-
-Mots les plus importants:
-nokia: 6.7717
-yukos: 6.7617
-dvd: 6.7420
-wal: 6.7323
-mart: 6.7291
-cisco: 6.6852
-dell: 6.6520
-font: 6.6199
-davis: 6.6142
-xp: 6.6085
+Accuracy: 0.5443
+Recall: 0.5443
 
 Configuration: ann_15_words
-Accuracy: 0.8826
-Recall: 0.8826
-
-Mots les plus importants:
-nokia: 6.7717
-yukos: 6.7617
-dvd: 6.7420
-wal: 6.7323
-mart: 6.7291
-cisco: 6.6852
-dell: 6.6520
-font: 6.6199
-davis: 6.6142
-xp: 6.6085
-satellite: 6.5640
-storage: 6.5640
-singh: 6.5559
-sharon: 6.4857
-cricket: 6.4806
+Accuracy: 0.6146
+Recall: 0.6146
 
 Fold 4:
 
 Configuration: ann_5_words
-Accuracy: 0.8792
-Recall: 0.8792
-
-Mots les plus importants:
-najaf: 6.8231
-nokia: 6.8022
-delta: 6.7355
-yukos: 6.7291
-dvd: 6.6945
+Accuracy: 0.4267
+Recall: 0.4267
 
 Configuration: ann_10_words
-Accuracy: 0.8795
-Recall: 0.8795
-
-Mots les plus importants:
-najaf: 6.8231
-nokia: 6.8022
-delta: 6.7355
-yukos: 6.7291
-dvd: 6.6945
-boeing: 6.6640
-astros: 6.6610
-cisco: 6.6580
-dell: 6.6402
-davis: 6.6344
+Accuracy: 0.5638
+Recall: 0.5638
 
 Configuration: ann_15_words
-Accuracy: 0.8797
-Recall: 0.8797
-
-Mots les plus importants:
-najaf: 6.8231
-nokia: 6.8022
-delta: 6.7355
-yukos: 6.7291
-dvd: 6.6945
-boeing: 6.6640
-astros: 6.6610
-cisco: 6.6580
-dell: 6.6402
-davis: 6.6344
-xp: 6.6056
-font: 6.5750
-satellite: 6.5695
-storage: 6.5613
-dutch: 6.5111
+Accuracy: 0.6132
+Recall: 0.6132
 
 Fold 5:
 
 Configuration: ann_5_words
-Accuracy: 0.8752
-Recall: 0.8752
-
-Mots les plus importants:
-nokia: 6.8057
-yukos: 6.7420
-delta: 6.7259
-dvd: 6.7038
-cisco: 6.6914
+Accuracy: 0.4359
+Recall: 0.4359
 
 Configuration: ann_10_words
-Accuracy: 0.8764
-Recall: 0.8764
-
-Mots les plus importants:
-nokia: 6.8057
-yukos: 6.7420
-delta: 6.7259
-dvd: 6.7038
-cisco: 6.6914
-davis: 6.6550
-dell: 6.6491
-xp: 6.6170
-font: 6.6000
-storage: 6.5832
+Accuracy: 0.5553
+Recall: 0.5553
 
 Configuration: ann_15_words
-Accuracy: 0.8780
-Recall: 0.8780
-
-Mots les plus importants:
-nokia: 6.8057
-yukos: 6.7420
-delta: 6.7259
-dvd: 6.7038
-cisco: 6.6914
-davis: 6.6550
-dell: 6.6491
-xp: 6.6170
-font: 6.6000
-storage: 6.5832
-singapore: 6.5777
-satellite: 6.5750
-browser: 6.5586
-ivan: 6.5189
-ireland: 6.5085
+Accuracy: 0.6096
+Recall: 0.6096

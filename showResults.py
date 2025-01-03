@@ -76,54 +76,71 @@ def extraire_matrice_confusion(chemin):
         return []
 
 def afficher_resultats():
-    """Affiche tous les résultats d'analyse."""
+    """
+    Affiche tous les résultats d'analyse avec comparaison des 4 modèles sur deux figures séparées.
+    
+    Figure 1: Histogramme comparatif des accuracies
+    Figure 2: Matrices de confusion des 4 modèles
+    """
     print("\n=== Analyse des résultats de classification ===\n")
-    
-    # Configuration des sous-plots
-    plt.figure(figsize=(15, 10))
-    
-    # 1. Graphique de comparaison des modèles
-    plt.subplot(2, 2, 1)
-    modeles = ['naive_bayes', 'ann', 'ann-spe']
+    modeles = ['naive_bayes', 'ann', 'ann-spe', 'ann-doc']
     resultats = {}
     
+    # Collecte des résultats
     print("Meilleures performances par modèle:")
-    print("-" * 40)
-    
+    print("-" * 50)
     for modele in modeles:
         acc, std = charger_resultats(f'results/metrics/{modele}/best_results.txt')
         if acc is not None:
             resultats[modele] = (acc, std)
             print(f"{modele.upper():<15} : {acc:.4f} (±{std:.4f})")
     
+    # Figure 1: Histogramme comparatif - Taille responsive
+    plt.figure(figsize=(min(12, len(modeles) * 2.5), 6))
     if resultats:
         x = np.arange(len(resultats))
         modeles = list(resultats.keys())
         accuracies = [resultats[m][0] for m in modeles]
         stds = [resultats[m][1] for m in modeles]
         
-        plt.bar(x, accuracies, yerr=stds, capsize=5)
-        plt.xticks(x, [m.upper() for m in modeles], rotation=45)
+        # Personnalisation des barres avec espacement adaptatif
+        bar_width = min(0.8, 1.0/len(modeles))
+        bars = plt.bar(x, accuracies, width=bar_width, yerr=stds, capsize=5)
+        plt.xticks(x, [m.upper() for m in modeles], rotation=45, ha='right')
         plt.ylabel('Accuracy')
-        plt.title('Comparaison des performances')
+        plt.title('Comparaison des performances des modèles')
         
+        # Ajout des valeurs sur les barres avec position adaptative
+        max_height = max(accuracies) + max(stds)
         for i, v in enumerate(accuracies):
-            plt.text(i, v + 0.01, f'{v:.4f}', ha='center')
+            plt.text(i, v + stds[i] + max_height * 0.01, 
+                    f'{v:.4f}', ha='center', va='bottom')
     
-    # 2. Matrices de confusion
-    for i, modele in enumerate(modeles, start=2):
-        plt.subplot(2, 2, i)
+    plt.tight_layout()
+
+    
+    # Figure 2: Matrices de confusion - Taille et disposition responsives
+    n_models = len(modeles)
+    n_cols = min(2, n_models)
+    n_rows = (n_models + n_cols - 1) // n_cols
+    
+    fig = plt.figure(figsize=(7*n_cols, 5*n_rows))
+    for i, modele in enumerate(modeles, 1):
+        plt.subplot(n_rows, n_cols, i)
         matrices = extraire_matrice_confusion(f'results/metrics/{modele}/confusion_matrices.txt')
         
         if matrices:
             sns.heatmap(matrices[0], annot=True, fmt='d', cmap='Blues',
                        xticklabels=['C1', 'C2', 'C3', 'C4'],
-                       yticklabels=['C1', 'C2', 'C3', 'C4'])
+                       yticklabels=['C1', 'C2', 'C3', 'C4'],
+                       annot_kws={'size': min(10, 120//n_models)})  # Taille de police adaptative
             plt.title(f'Matrice de confusion - {modele.upper()}')
             plt.xlabel('Classe prédite')
             plt.ylabel('Classe réelle')
     
-    plt.tight_layout()
+    plt.suptitle('Matrices de confusion pour tous les modèles', 
+                 y=1.02, fontsize=min(16, 160//n_models))
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Ajustement des marges
     plt.show()
 
 def main():
